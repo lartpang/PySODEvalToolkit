@@ -14,7 +14,12 @@ from utils.misc import (
     get_valid_key_name,
     make_dir,
 )
-from utils.recorder import CurveDrawer, MetricRecorder, TxtRecorder
+from utils.recorders import (
+    CurveDrawer,
+    MetricExcelRecorder,
+    MetricRecorder,
+    TxtRecorder,
+)
 
 """
 Include: Fm Curve/PR Curves/MAE/(max/mean/weighted) Fmeasure/Smeasure/Emeasure
@@ -66,6 +71,13 @@ def cal_all_metrics():
     quantitative_results = defaultdict(dict)  # Six numerical metrics
 
     txt_recoder = TxtRecorder(txt_path=cfg["record_path"], resume=cfg["resume_record"])
+    excel_recorder = MetricExcelRecorder(
+        xlsx_path=cfg["xlsx_path"],
+        sheet_name=data_type,
+        row_header=["methods"],
+        dataset_names=["ImagePair", "MSRC", "WICOS", "iCoSeg", "CoCA", "CoSal2015", "CoSOD3k"],
+        metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
+    )
 
     for dataset_name, dataset_path in cfg["dataset_info"].items():
         txt_recoder.add_row(row_name="Dataset", row_data=dataset_name)
@@ -160,6 +172,12 @@ def cal_all_metrics():
                     }
                 }
             )
+
+            excel_recorder(
+                row_data=quantitative_results[dataset_name.lower()][method_name],
+                dataset_name=dataset_name,
+                method_name=method_name,
+            )
         txt_recoder.add_method_results(data_dict=quantitative_results[dataset_name.lower()], method_name="")
 
     if cfg["save_npy"]:
@@ -226,7 +244,8 @@ if __name__ == "__main__":
         "dataset_info": data_info["dataset"],
         "drawing_info": data_info["method"]["drawing"],  # 包含所有待比较模型结果的信息和绘图配置的字典
         "selecting_info": data_info["method"]["selecting"],
-        "record_path": os.path.join(output_path, "output/all_record.txt"),  # 用来保存测试结果的文件的路径
+        "record_path": os.path.join(output_path, "all_record.txt"),  # 用来保存测试结果的文件的路径
+        "xlsx_path": os.path.join(output_path, "resutls.xlsx"),
         "save_npy": True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
         # 保存曲线指标数据的文件路径
         "qualitative_npy_path": os.path.join(output_path, data_type + "_" + "qualitative_results.npy"),

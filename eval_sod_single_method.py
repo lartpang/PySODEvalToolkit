@@ -8,11 +8,19 @@ from tqdm import tqdm
 from configs import total_info
 from configs.methods import rgbd_sod_methods
 from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
-from utils.recorder import MetricRecorder, TxtRecorder
+from utils.recorders import MetricExcelRecorder, MetricRecorder, TxtRecorder
 
 
 def cal_all_metrics():
     txt_recoder = TxtRecorder(txt_path=record_path, resume=resume_record)
+    excel_recorder = MetricExcelRecorder(
+        xlsx_path=xlsx_path,
+        sheet_name=data_type,
+        row_header=["methods"],
+        dataset_names=["pascals", "ecssd", "hkuis", "dutste", "dutomron"],
+        metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
+    )
+
     method_perf = {}
     for dataset_name, dataset_path in dataset_info.items():
         txt_recoder.add_row(row_name="Dataset", row_data=dataset_name)
@@ -74,11 +82,13 @@ def cal_all_metrics():
         perf_on_dataset = {k: v.round(bit_num) for k, v in perf_on_dataset.items()}
         print(perf_on_dataset)
         method_perf[dataset_name] = perf_on_dataset
-
+    excel_recorder(
+        row_data=method_perf[dataset_name],
+        dataset_name=dataset_name,
+        method_name=model_name,
+    )
     pprint(method_perf)
 
-
-# TODO: export to xlsx
 
 if __name__ == "__main__":
     data_type = "rgb_sod"
@@ -91,7 +101,7 @@ if __name__ == "__main__":
     record_path = os.path.join(output_path, "record.txt")  # 用来保存测试结果的文件的路径
     dataset_info = data_info["dataset"]
     export_xlsx = False  # 是否导出xlsx文件
-    xlsx_path = os.path.join(output_path, "rgbd_results.xlsx")  # xlsx文件的路径
+    xlsx_path = os.path.join(output_path, "resutls.xlsx")  # xlsx文件的路径
     bit_num = 3  # 评估结果保留的小数点后数据的位数
     resume_record = True  # 是否保留之前的评估记录（针对record_path文件有效）
     cal_all_metrics()

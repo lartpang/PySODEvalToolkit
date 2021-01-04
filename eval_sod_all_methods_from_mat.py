@@ -9,7 +9,7 @@ from matplotlib import colors
 
 from configs import total_info
 from utils.misc import get_target_key, make_dir
-from utils.recorder import CurveDrawer, TxtRecorder
+from utils.recorders import CurveDrawer, MetricExcelRecorder, TxtRecorder
 
 """
 This file can be used to plot curves with the 'mat' files from Fan's project:
@@ -53,6 +53,13 @@ def export_valid_npy():
     all_quantitative_results = defaultdict(dict)  # Six numerical metrics
 
     txt_recoder = TxtRecorder(txt_path=cfg["record_path"], resume=cfg["resume_record"])
+    excel_recorder = MetricExcelRecorder(
+        xlsx_path=cfg["xlsx_path"],
+        sheet_name=data_type,
+        row_header=["methods"],
+        dataset_names=["pascals", "ecssd", "hkuis", "dutste", "dutomron"],
+        metric_names=["sm", "wfm", "mae", "adpfm", "avgfm", "maxfm", "adpem", "avgem", "maxem"],
+    )
 
     for dataset_name, _ in cfg["dataset_info"].items():
         # 使用dataset_name索引各个方法在不同数据集上的结果
@@ -103,7 +110,11 @@ def export_valid_npy():
                     }
                 }
             )
-
+            excel_recorder(
+                row_data=all_quantitative_results[dataset_name.lower()][method_name],
+                dataset_name=dataset_name,
+                method_name=method_name,
+            )
         txt_recoder.add_method_results(
             data_dict=all_quantitative_results[dataset_name.lower()],
             method_name="",
