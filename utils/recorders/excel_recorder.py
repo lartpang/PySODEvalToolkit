@@ -190,39 +190,3 @@ class MetricExcelRecorder(_BaseExcelRecorder):
         self.insert_row(sheet=sheet, row_data=row_data, row_id=method_row_id, min_col=dataset_col_start_id)
         # 4 写入新表
         wb.save(self.xlsx_path)
-
-
-if __name__ == "__main__":
-    # Model	Sm	wFm	mae	adpFm	meanFm	maxFm	adpEm	meanEm	maxEm
-    header_format = "{method},{sm},{wfm},{mae},{adpfm},{avgfm},{maxfm},{adpem},{avgem},{maxem}"
-    header = dict(
-        method="method",
-        sm="sm",
-        wfm="wfm",
-        mae="mae",
-        adpfm="adpfm",
-        avgfm="avgfm",
-        maxfm="maxfm",
-        adpem="adpem",
-        avgem="avgem",
-        maxem="maxem",
-    )
-    row_format = (
-        "{method},{sm:.3f},{wfm:.3f},{mae:.3f},{adpfm:.3f},{avgfm:.3f},{maxfm:.3f},{adpem:.3f},{avgem:.3f},{maxem:.3f}"
-    )
-    row_data = dict(
-        method="DGRL",
-        sm=0.809731196,
-        wfm=0.696937944,
-        mae=0.063244667,
-        adpfm=0.7091333,
-        avgfm=0.726486173,
-        maxfm=0.740706813,
-        adpem=0.849723233,
-        avgem=0.844683496,
-        maxem=0.853554943,
-    )
-    excel = MetricExcelRecorder(xlsx_path="./test.xlsx")
-    excel(row_data=row_data, dataset_name="pasc-al_s", method_name="test")
-    # excel.append_row(sheet_name="test", row_data=header, row_format=header_format)
-    # excel.insert_row(sheet_name="test", row_data=row_data, row_id=2, min_col=len(row_data) + 1)

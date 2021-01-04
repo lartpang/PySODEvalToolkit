@@ -16,7 +16,7 @@ A Python-based salient object detection and video object segmentation evaluation
   - max/mean/adaptive E-measure
 * 测试代码高度优化
   - 纯python实现，基于numpy和各种小trick计算各项指标，速度有保障
-  - ~~导出特定模型的结果到xlsx文件中（有待进一步优化）~~当前版本中的excel功能暂时不要使用，兼容性太差。之后会大改，甚至可能会使用其他的库。
+  - 导出特定模型的结果到xlsx文件中（2021年01月04日重新提供支持）
   - 导出测试结果到txt文件中
   - 评估所有指定的方法，根据评估结果绘制PR曲线和F-measure曲线
 * 针对**DAVIS 2016无监督视频目标分割**任务，提供`"J(M)", "J(O)", "J(D)", "F(M)", "F(O)", "F(D)"`等指标的评估（代码借鉴自davis官方的代码，建议使用前验证下）
