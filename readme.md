@@ -40,7 +40,12 @@ A Python-based salient object detection and video object segmentation evaluation
 
 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>，欢迎捉BUG！
 
-## Thanks
+## 编程参考
+
+- Python_Openpyxl: <https://www.cnblogs.com/programmer-tlh/p/10461353.html>
+- Python之re模块: <https://www.cnblogs.com/shenjianping/p/11647473.html>
+
+## 相关文献
 
 ```text
 @inproceedings{Fmeasure,

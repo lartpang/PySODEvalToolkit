@@ -11,6 +11,9 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.worksheet import Worksheet
 
 
+# Thanks:
+# - Python_Openpyxl: https://www.cnblogs.com/programmer-tlh/p/10461353.html
+# - Python之re模块: https://www.cnblogs.com/shenjianping/p/11647473.html
 class _BaseExcelRecorder(object):
     def __init__(self, xlsx_path: str):
         self.xlsx_path = xlsx_path
