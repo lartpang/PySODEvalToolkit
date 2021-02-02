@@ -6,6 +6,7 @@ from configs.misc import curve_info_generator, simple_info_generator
 
 # \s{4}"(.*?)": (os.*?),$
 # "$1": dict(path=$2, suffix='.png'),
+
 HDFNet_VGG16_root = "/home/lart/Coding/HDFFile/output/HDFNet/HDFNet_VGG16"
 HDFNet_VGG16 = {
     "LFSD": dict(path=os.path.join(HDFNet_VGG16_root, "lfsd"), suffix=".png"),

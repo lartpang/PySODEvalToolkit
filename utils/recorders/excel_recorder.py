@@ -45,16 +45,22 @@ class _BaseExcelRecorder(object):
         num_elements = len(row_data)
         row_data = iter(row_data)
         for row in sheet.iter_rows(
-            min_row=row_id, max_row=row_id, min_col=min_col, max_col=min_col + (interval + 1) * (num_elements - 1)
+            min_row=row_id,
+            max_row=row_id,
+            min_col=min_col,
+            max_col=min_col + (interval + 1) * (num_elements - 1),
         ):
             for i, cell in enumerate(row):
                 if i % (interval + 1) == 0:
                     sheet.cell(row=row_id, column=cell.column, value=next(row_data))
 
-    def merge_region(self, sheet: Worksheet, min_row, max_row, min_col, max_col):
+    @staticmethod
+    def merge_region(sheet: Worksheet, min_row, max_row, min_col, max_col):
         assert max_row >= min_row > 0 and max_col >= min_col > 0
 
-        merged_region = f"{get_column_letter(min_col)}{min_row}:{get_column_letter(max_col)}{max_row}"
+        merged_region = (
+            f"{get_column_letter(min_col)}{min_row}:{get_column_letter(max_col)}{max_row}"
+        )
         sheet.merge_cells(merged_region)
 
     @staticmethod
@@ -63,6 +69,7 @@ class _BaseExcelRecorder(object):
         从指定行中寻找特定的列名，并返回对应的列序号
         """
         assert isinstance(row_id, int) and row_id > 0
+
         for cell in sheet[row_id]:
             if cell.value == col_name:
                 return cell.column
@@ -133,13 +140,29 @@ class MetricExcelRecorder(_BaseExcelRecorder):
 
         if row_header is None:
             row_header = ["methods", "num_data"]
-        self.row_header = [self.format_string_with_config(s, self.repalce_config) for s in row_header]
+        self.row_header = [
+            self.format_string_with_config(s, self.repalce_config) for s in row_header
+        ]
         if dataset_names is None:
             dataset_names = ["pascals", "ecssd", "hkuis", "dutste", "dutomron"]
-        self.dataset_names = [self.format_string_with_config(s, self.repalce_config) for s in dataset_names]
+        self.dataset_names = [
+            self.format_string_with_config(s, self.repalce_config) for s in dataset_names
+        ]
         if metric_names is None:
-            metric_names = ["smeasure", "wfmeasure", "mae", "adpfm", "meanfm", "maxfm", "adpem", "meanem", "maxem"]
-        self.metric_names = [self.format_string_with_config(s, self.repalce_config) for s in metric_names]
+            metric_names = [
+                "smeasure",
+                "wfmeasure",
+                "mae",
+                "adpfm",
+                "meanfm",
+                "maxfm",
+                "adpem",
+                "meanem",
+                "maxem",
+            ]
+        self.metric_names = [
+            self.format_string_with_config(s, self.repalce_config) for s in metric_names
+        ]
 
         self.sheet_name = sheet_name
         self._initial_table()
@@ -151,7 +174,9 @@ class MetricExcelRecorder(_BaseExcelRecorder):
         self.insert_row(sheet=sheet, row_data=self.row_header, row_id=1, min_col=1)
         # 合并row_header的单元格
         for col_id in range(len(self.row_header)):
-            self.merge_region(sheet=sheet, min_row=1, max_row=2, min_col=col_id + 1, max_col=col_id + 1)
+            self.merge_region(
+                sheet=sheet, min_row=1, max_row=2, min_col=col_id + 1, max_col=col_id + 1
+            )
 
         # 插入数据集信息
         self.insert_row(
@@ -166,22 +191,31 @@ class MetricExcelRecorder(_BaseExcelRecorder):
         start_col = len(self.row_header) + 1
         for i in range(len(self.dataset_names)):
             self.insert_row(
-                sheet=sheet, row_data=self.metric_names, row_id=2, min_col=start_col + i * len(self.metric_names)
+                sheet=sheet,
+                row_data=self.metric_names,
+                row_id=2,
+                min_col=start_col + i * len(self.metric_names),
             )
         wb.save(self.xlsx_path)
 
     def _format_row_data(self, row_data: dict) -> list:
-        row_data = {self.format_string_with_config(k, self.repalce_config): v for k, v in row_data.items()}
+        row_data = {
+            self.format_string_with_config(k, self.repalce_config): v for k, v in row_data.items()
+        }
         return [row_data[n] for n in self.metric_names]
 
     def __call__(self, row_data: dict, dataset_name: str, method_name: str):
         dataset_name = self.format_string_with_config(dataset_name, self.repalce_config)
-        assert dataset_name in self.dataset_names, f"{dataset_name} is not contained in {self.dataset_names}"
+        assert (
+            dataset_name in self.dataset_names
+        ), f"{dataset_name} is not contained in {self.dataset_names}"
 
         # 1 载入数据表
         wb, sheet = self.load_sheet(sheet_name=self.sheet_name)
         # 2 搜索method_name是否存在，如果存在则直接寻找对应的行列坐标，如果不存在则直接使用新行
-        dataset_col_start_id = self.get_col_id_with_row_id(sheet=sheet, col_name=dataset_name, row_id=1)
+        dataset_col_start_id = self.get_col_id_with_row_id(
+            sheet=sheet, col_name=dataset_name, row_id=1
+        )
         (method_row_id, method_col_id), is_new_row = self.get_row_id_with_col_name(
             sheet=sheet, row_name=method_name, col_name="methods"
         )
@@ -190,6 +224,8 @@ class MetricExcelRecorder(_BaseExcelRecorder):
             sheet.cell(row=method_row_id, column=method_col_id, value=method_name)
         # 4 格式化指标数据部分为合理的格式，并插入表中
         row_data = self._format_row_data(row_data=row_data)
-        self.insert_row(sheet=sheet, row_data=row_data, row_id=method_row_id, min_col=dataset_col_start_id)
+        self.insert_row(
+            sheet=sheet, row_data=row_data, row_id=method_row_id, min_col=dataset_col_start_id
+        )
         # 4 写入新表
         wb.save(self.xlsx_path)

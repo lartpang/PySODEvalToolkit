@@ -82,7 +82,10 @@ def get_name_with_group_list(data_path: str, file_ext: str = None) -> list:
         print(f" ++>> {data_path} is a folder. <<++ ")
         group_names = sorted(os.listdir(data_path))
         for group_name in group_names:
-            image_names = ["/".join([group_name, x]) for x in sorted(os.listdir(os.path.join(data_path, group_name)))]
+            image_names = [
+                "/".join([group_name, x])
+                for x in sorted(os.listdir(os.path.join(data_path, group_name)))
+            ]
             if file_ext is not None:
                 name_list += [os.path.splitext(f)[0] for f in image_names if f.endswith(file_ext)]
             else:
@@ -104,7 +107,9 @@ def get_list_with_postfix(dataset_path: str, postfix: str):
                 line = file.readline()
     else:
         print(f" ++>> {dataset_path} is a folder. <<++ ")
-        name_list = [os.path.splitext(f)[0] for f in os.listdir(dataset_path) if f.endswith(postfix)]
+        name_list = [
+            os.path.splitext(f)[0] for f in os.listdir(dataset_path) if f.endswith(postfix)
+        ]
     name_list = list(set(name_list))
     return name_list
 
@@ -165,7 +170,12 @@ def imread_wich_checking(path, for_color: bool = True, with_cv2: bool = True) ->
 
 
 def get_gt_pre_with_name(
-    gt_root: str, pre_root: str, img_name: str, pre_ext: str, gt_ext: str = ".png", to_normalize: bool = False
+    gt_root: str,
+    pre_root: str,
+    img_name: str,
+    pre_ext: str,
+    gt_ext: str = ".png",
+    to_normalize: bool = False,
 ):
     img_path = os.path.join(pre_root, img_name + pre_ext)
     gt_path = os.path.join(gt_root, img_name + gt_ext)
@@ -174,7 +184,9 @@ def get_gt_pre_with_name(
     gt = imread_wich_checking(gt_path, for_color=False)
 
     if pre.shape != gt.shape:
-        pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=cv2.INTER_LINEAR).astype(np.uint8)
+        pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=cv2.INTER_LINEAR).astype(
+            np.uint8
+        )
 
     if to_normalize:
         gt = normalize_array(gt, to_binary=True, max_eq_255=True)
@@ -182,7 +194,9 @@ def get_gt_pre_with_name(
     return gt, pre
 
 
-def normalize_array(data: np.ndarray, to_binary: bool = False, max_eq_255: bool = True) -> np.ndarray:
+def normalize_array(
+    data: np.ndarray, to_binary: bool = False, max_eq_255: bool = True
+) -> np.ndarray:
     if max_eq_255:
         data = data / 255
     # else: data is in [0, 1]

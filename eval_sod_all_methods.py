@@ -49,11 +49,24 @@ def cal_all_metrics():
     quantitative_results = defaultdict(dict)  # Six numerical metrics
 
     txt_recoder = TxtRecorder(txt_path=cfg["record_path"], resume=cfg["resume_record"])
+    # TODO: A better method to choose different `dataset_names`
     excel_recorder = MetricExcelRecorder(
         xlsx_path=cfg["xlsx_path"],
         sheet_name=data_type,
         row_header=["methods"],
-        dataset_names=["pascals", "ecssd", "hkuis", "dutste", "dutomron"],
+        # dataset_names=["pascals", "ecssd", "hkuis", "dutste", "dutomron"],
+        # dataset_names=[
+        #     "lfsd",
+        #     "njud",
+        #     "nlpr",
+        #     "rgbd135",
+        #     "sip",
+        #     "ssd",
+        #     "stereo797",
+        #     "stereo1000",
+        #     "dutrgbd",
+        # ],
+        dataset_names=["camo", "chameleon", "cod10k"],
         metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
     )
 
@@ -98,7 +111,11 @@ def cal_all_metrics():
 
             metric_recoder = MetricRecorder()
             tqdm_bar = tqdm(
-                eval_name_list, total=len(eval_name_list), leave=False, ncols=119, desc=f"({dataset_name})"
+                eval_name_list,
+                total=len(eval_name_list),
+                leave=False,
+                ncols=119,
+                desc=f"({dataset_name})",
             )
             for img_name in tqdm_bar:
                 # tqdm_bar.set_description(f"({dataset_name})")
@@ -149,7 +166,9 @@ def cal_all_metrics():
                 dataset_name=dataset_name,
                 method_name=method_name,
             )
-        txt_recoder.add_method_results(data_dict=quantitative_results[dataset_name.lower()], method_name="")
+        txt_recoder.add_method_results(
+            data_dict=quantitative_results[dataset_name.lower()], method_name=""
+        )
 
     if cfg["save_npy"]:
         np.save(cfg["qualitative_npy_path"], qualitative_results)
@@ -170,7 +189,9 @@ def draw_pr_fm_curve(for_pr: bool = True):
     x_label, y_label = mode_axes_setting["x_label"], mode_axes_setting["y_label"]
     x_lim, y_lim = mode_axes_setting["x_lim"], mode_axes_setting["y_lim"]
 
-    qualitative_results = np.load(os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True).item()
+    qualitative_results = np.load(
+        os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True
+    ).item()
 
     curve_drawer = CurveDrawer(row_num=2, col_num=(len(cfg["dataset_info"].keys()) + 1) // 2)
 
@@ -207,20 +228,23 @@ def draw_pr_fm_curve(for_pr: bool = True):
 
 
 if __name__ == "__main__":
-    data_type = "rgb_sod"
+    data_type = "rgb_cod"
     data_info = total_info[data_type]
     output_path = "./output"  # 存放输出文件的文件夹
 
     cfg = {  # 针对多个模型评估比较的设置
         "dataset_info": data_info["dataset"],
         "drawing_info": data_info["method"]["drawing"],  # 包含所有待比较模型结果的信息和绘图配置的字典
-        "selecting_info": data_info["method"]["selecting"],
-        "record_path": os.path.join(output_path, "all_record.txt"),  # 用来保存测试结果的文件的路径
-        "xlsx_path": os.path.join(output_path, "resutls.xlsx"),
+        "record_path": os.path.join(output_path, f"{data_type}.txt"),  # 用来保存测试结果的文件的路径
+        "xlsx_path": os.path.join(output_path, f"{data_type}.xlsx"),
         "save_npy": True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
         # 保存曲线指标数据的文件路径
-        "qualitative_npy_path": os.path.join(output_path, data_type + "_" + "qualitative_results.npy"),
-        "quantitative_npy_path": os.path.join(output_path, data_type + "_" + "quantitative_results.npy"),
+        "qualitative_npy_path": os.path.join(
+            output_path, data_type + "_" + "qualitative_results.npy"
+        ),
+        "quantitative_npy_path": os.path.join(
+            output_path, data_type + "_" + "quantitative_results.npy"
+        ),
         "axes_setting": {  # 不同曲线的绘图配置
             "pr": {  # pr曲线的配置
                 "x_label": "Recall",  # 横坐标标签

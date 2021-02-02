@@ -8,7 +8,7 @@ filter_files = true
 supported_extensions = "py"
 
 [tool.black]
-line-length = 119
+line-length = 99
 include = '\.pyi?$'
 exclude = '''
 /(

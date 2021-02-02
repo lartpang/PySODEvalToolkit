@@ -121,12 +121,16 @@ def cal_all_metrics():
             )
 
             total_metric_recorder = {}
-            inter_group_bar = tqdm(grouped_name_list.items(), total=len(grouped_name_list), leave=False, ncols=79)
+            inter_group_bar = tqdm(
+                grouped_name_list.items(), total=len(grouped_name_list), leave=False, ncols=79
+            )
             for group_name, names_in_group in inter_group_bar:
                 inter_group_bar.set_description(f"({dataset_name}) group => {group_name}")
 
                 metric_recoder = MetricRecorder()
-                intra_group_bar = tqdm(names_in_group, total=len(names_in_group), leave=False, ncols=79)
+                intra_group_bar = tqdm(
+                    names_in_group, total=len(names_in_group), leave=False, ncols=79
+                )
                 for img_name in intra_group_bar:
                     intra_group_bar.set_description(f"processing => {img_name}")
                     img_name = "/".join([group_name, img_name])
@@ -139,19 +143,28 @@ def cal_all_metrics():
                         to_normalize=False,
                     )
                     metric_recoder.update(pre=pre, gt=gt)
-                total_metric_recorder[group_name] = metric_recoder.show(bit_num=None)  # 保留原始数据  每组的结果
+                total_metric_recorder[group_name] = metric_recoder.show(
+                    bit_num=None
+                )  # 保留原始数据  每组的结果
 
-            final_metric_recorder = mean_all_group_metrics(group_metric_recorder=total_metric_recorder)
+            final_metric_recorder = mean_all_group_metrics(
+                group_metric_recorder=total_metric_recorder
+            )
             final_metric_recorder["meanFm"] = final_metric_recorder["fm"].mean()
             final_metric_recorder["maxFm"] = final_metric_recorder["fm"].max()
             final_metric_recorder["meanEm"] = final_metric_recorder["em"].mean()
             final_metric_recorder["maxEm"] = final_metric_recorder["em"].max()
-            final_metric_recorder = {k: v.round(cfg["bit_num"]) for k, v in final_metric_recorder.items()}
+            final_metric_recorder = {
+                k: v.round(cfg["bit_num"]) for k, v in final_metric_recorder.items()
+            }
 
             qualitative_results[dataset_name.lower()].update(
                 {
                     method_name: {
-                        "prs": (np.flip(final_metric_recorder["p"]), np.flip(final_metric_recorder["r"])),
+                        "prs": (
+                            np.flip(final_metric_recorder["p"]),
+                            np.flip(final_metric_recorder["r"]),
+                        ),
                         "fm": np.flip(final_metric_recorder["fm"]),
                         "em": np.flip(final_metric_recorder["em"]),
                     }
@@ -178,7 +191,9 @@ def cal_all_metrics():
                 dataset_name=dataset_name,
                 method_name=method_name,
             )
-        txt_recoder.add_method_results(data_dict=quantitative_results[dataset_name.lower()], method_name="")
+        txt_recoder.add_method_results(
+            data_dict=quantitative_results[dataset_name.lower()], method_name=""
+        )
 
     if cfg["save_npy"]:
         np.save(cfg["qualitative_npy_path"], qualitative_results)
@@ -199,7 +214,9 @@ def draw_pr_fm_curve(for_pr: bool = True):
     x_label, y_label = mode_axes_setting["x_label"], mode_axes_setting["y_label"]
     x_lim, y_lim = mode_axes_setting["x_lim"], mode_axes_setting["y_lim"]
 
-    qualitative_results = np.load(os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True).item()
+    qualitative_results = np.load(
+        os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True
+    ).item()
 
     curve_drawer = CurveDrawer(row_num=2, col_num=(len(cfg["dataset_info"].keys()) + 1) // 2)
 
@@ -248,8 +265,12 @@ if __name__ == "__main__":
         "xlsx_path": os.path.join(output_path, "resutls.xlsx"),
         "save_npy": True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
         # 保存曲线指标数据的文件路径
-        "qualitative_npy_path": os.path.join(output_path, data_type + "_" + "qualitative_results.npy"),
-        "quantitative_npy_path": os.path.join(output_path, data_type + "_" + "quantitative_results.npy"),
+        "qualitative_npy_path": os.path.join(
+            output_path, data_type + "_" + "qualitative_results.npy"
+        ),
+        "quantitative_npy_path": os.path.join(
+            output_path, data_type + "_" + "quantitative_results.npy"
+        ),
         "axes_setting": {  # 不同曲线的绘图配置
             "pr": {  # pr曲线的配置
                 "x_label": "Recall",  # 横坐标标签

@@ -4,9 +4,7 @@ from collections import OrderedDict
 
 from configs.misc import curve_info_generator, simple_info_generator
 
-_COD_METHODS_MAT_ROOT = (
-    "/home/lart/Coding/GIT/CODToolbox/Onekey_Evaluation_Code/OnekeyEvaluationCode/Results/Result-COD10K-test"
-)
+_COD_METHODS_MAT_ROOT = "/home/lart/Coding/GIT/CODToolbox/Onekey_Evaluation_Code/OnekeyEvaluationCode/Results/Result-COD10K-test"
 _COD_METHODS_PRED_ROOT = "/home/lart/Datasets/Saliency/PaperResults/COD"
 _COD_DATASETS = ["CAMO-mat", "CHAMELEON-mat", "COD10K-mat"]
 _COD_METHODS = {
@@ -35,17 +33,17 @@ _COD_METHODS = {
 # $1 = {\n\t$2{\n\t\t'path':"",\n\t\t'suffix':"",\n\t\t'mat': $3},\n\t$4{\n\t\t'path':"",\n\t\t'suffix':"",\n\t\t'mat': $5},\n\t$6{\n\t\t'path':"",\n\t\t'suffix':"",\n\t\t'mat': $7}}
 
 FPN = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-FPN", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["FPN"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-FPN", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["FPN"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-FPN", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["FPN"]),
@@ -53,17 +51,17 @@ FPN = {
 }
 
 MaskRCNN = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-MaskRCNN", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["MaskRCNN"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-MaskRCNN", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["MaskRCNN"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-MaskRCNN", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["MaskRCNN"]),
@@ -71,17 +69,17 @@ MaskRCNN = {
 }
 
 PSPNet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-PSPNet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["PSPNet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-PSPNet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["PSPNet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2017-CVPR-PSPNet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["PSPNet"]),
@@ -89,17 +87,17 @@ PSPNet = {
 }
 
 PiCANet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2018-CVPR-PiCANet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["PiCANet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2018-CVPR-PiCANet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["PiCANet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2018-CVPR-PiCANet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["PiCANet"]),
@@ -107,17 +105,17 @@ PiCANet = {
 }
 
 UNetPP = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2018-DLMIA-UNet++", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["UNet++"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2018-DLMIA-UNet++", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["UNet++"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2018-DLMIA-UNet++", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["UNet++"]),
@@ -125,7 +123,7 @@ UNetPP = {
 }
 
 ANet_SRM = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVIU-ANet_SRM", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["ANet_SRM"]),
@@ -135,17 +133,17 @@ ANet_SRM = {
 }
 
 BASNet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-BASNet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["BASNet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-BASNet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["BASNet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-BASNet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["BASNet"]),
@@ -153,17 +151,17 @@ BASNet = {
 }
 
 CPD = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-CPD_ResNet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["CPD_ResNet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-CPD_ResNet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["CPD_ResNet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-CPD_ResNet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["CPD_ResNet"]),
@@ -171,17 +169,17 @@ CPD = {
 }
 
 HTC = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-HTC", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["HTC"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-HTC", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["HTC"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-HTC", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["HTC"]),
@@ -189,17 +187,17 @@ HTC = {
 }
 
 MSRCNN = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-MSRCNN", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["MSRCNN"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-MSRCNN", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["MSRCNN"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-MSRCNN", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["MSRCNN"]),
@@ -207,17 +205,17 @@ MSRCNN = {
 }
 
 PFANet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-PFANet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["PFANet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-PFANet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["PFANet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-PFANet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["PFANet"]),
@@ -225,17 +223,17 @@ PFANet = {
 }
 
 PoolNet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-PoolNet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["PoolNet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-PoolNet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["PoolNet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-CVPR-PoolNet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["PoolNet"]),
@@ -243,17 +241,17 @@ PoolNet = {
 }
 
 EGNet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-ICCV-EGNet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["EGNet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-ICCV-EGNet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["EGNet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2019-ICCV-EGNet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["EGNet"]),
@@ -261,17 +259,17 @@ EGNet = {
 }
 
 F3Net = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "F3Net", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["F3Net"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "F3Net", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["F3Net"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "F3Net", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["F3Net"]),
@@ -279,17 +277,17 @@ F3Net = {
 }
 
 MINet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "MINet_Res50_COD", "camo"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["MINet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "MINet_Res50_COD", "chameleon"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["MINet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "MINet_Res50_COD", "cod10k"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["MINet"]),
@@ -297,17 +295,17 @@ MINet = {
 }
 
 GateNet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "GateNet_Res50_COD", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["GateNet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "GateNet_Res50_COD", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["GateNet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "GateNet_Res50_COD", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["GateNet"]),
@@ -315,17 +313,17 @@ GateNet = {
 }
 
 ITSD = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "ITSD_CVPR2020_COD", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["ITSD"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "ITSD_CVPR2020_COD", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["ITSD"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "ITSD_CVPR2020_COD", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["ITSD"]),
@@ -333,17 +331,17 @@ ITSD = {
 }
 
 SINet = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2020-CVPR-SINet", "CAMO"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["SINet"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2020-CVPR-SINet", "CHAMELEON"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["SINet"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "2020-CVPR-SINet", "COD10K"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["SINet"]),
@@ -351,22 +349,23 @@ SINet = {
 }
 
 Ours = {
-    "camo": {
+    "CAMO": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "Ours", "camo"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[0], _COD_METHODS["Ours"]),
     },
-    "chameleon": {
+    "CHAMELEON": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "Ours", "chameleon"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[1], _COD_METHODS["Ours"]),
     },
-    "cod10k": {
+    "COD10K": {
         "path": os.path.join(_COD_METHODS_PRED_ROOT, "Ours", "cod10k"),
         "suffix": ".png",
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["Ours"]),
     },
 }
+
 
 curve_info = curve_info_generator()
 methods_info_for_drawing = OrderedDict(

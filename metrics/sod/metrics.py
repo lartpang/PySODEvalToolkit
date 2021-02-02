@@ -200,7 +200,9 @@ class Smeasure(object):
         w4 = 1 - w1 - w2 - w3
 
         return dict(
-            gt=(gt_LT, gt_RT, gt_LB, gt_RB), pred=(pred_LT, pred_RT, pred_LB, pred_RB), weight=(w1, w2, w3, w4)
+            gt=(gt_LT, gt_RT, gt_LB, gt_RB),
+            pred=(pred_LT, pred_RT, pred_LB, pred_RB),
+            weight=(w1, w2, w3, w4),
         )
 
     def ssim(self, pred: np.ndarray, gt: np.ndarray) -> float:
@@ -282,7 +284,9 @@ class Emeasure(object):
             results_parts = []
             for i, (part_numel, combination) in enumerate(zip(parts_numel, combinations)):
                 align_matrix_value = (
-                    2 * (combination[0] * combination[1]) / (combination[0] ** 2 + combination[1] ** 2 + _EPS)
+                    2
+                    * (combination[0] * combination[1])
+                    / (combination[0] ** 2 + combination[1] ** 2 + _EPS)
                 )
                 enhanced_matrix_value = (align_matrix_value + 1) ** 2 / 4
                 results_parts.append(enhanced_matrix_value * part_numel)
@@ -322,7 +326,9 @@ class Emeasure(object):
             results_parts = np.empty(shape=(4, 256), dtype=np.float64)
             for i, (part_numel, combination) in enumerate(zip(parts_numel_w_thrs, combinations)):
                 align_matrix_value = (
-                    2 * (combination[0] * combination[1]) / (combination[0] ** 2 + combination[1] ** 2 + _EPS)
+                    2
+                    * (combination[0] * combination[1])
+                    / (combination[0] ** 2 + combination[1] ** 2 + _EPS)
                 )
                 enhanced_matrix_value = (align_matrix_value + 1) ** 2 / 4
                 results_parts[i] = enhanced_matrix_value * part_numel
@@ -331,7 +337,9 @@ class Emeasure(object):
         em = enhanced_matrix_sum / (self.gt_size - 1 + _EPS)
         return em
 
-    def generate_parts_numel_combinations(self, fg_fg_numel, fg_bg_numel, pred_fg_numel, pred_bg_numel):
+    def generate_parts_numel_combinations(
+        self, fg_fg_numel, fg_bg_numel, pred_fg_numel, pred_bg_numel
+    ):
         bg_fg_numel = self.gt_fg_numel - fg_fg_numel
         bg_bg_numel = pred_bg_numel - bg_fg_numel
 

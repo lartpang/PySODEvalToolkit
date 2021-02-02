@@ -94,7 +94,9 @@ def export_valid_npy():
             mae = method_result["mae"].reshape(-1).round(cfg["bit_num"]).item()
             sm = method_result["Sm"].reshape(-1).round(cfg["bit_num"]).item()
 
-            all_qualitative_results[dataset_name.lower()].update({method_name: {"prs": (ps, rs), "fs": fs}})
+            all_qualitative_results[dataset_name.lower()].update(
+                {method_name: {"prs": (ps, rs), "fs": fs}}
+            )
             all_quantitative_results[dataset_name.lower()].update(
                 {
                     method_name: {
@@ -139,10 +141,14 @@ def draw_pr_fm_curve(for_pr: bool = False):
     x_label, y_label = mode_axes_setting["x_label"], mode_axes_setting["y_label"]
     x_lim, y_lim = mode_axes_setting["x_lim"], mode_axes_setting["y_lim"]
 
-    all_qualitative_results = np.load(os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True).item()
+    all_qualitative_results = np.load(
+        os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True
+    ).item()
 
     row_num = 1
-    curve_drawer = CurveDrawer(row_num=row_num, col_num=(len(cfg["dataset_info"].keys())) // row_num)
+    curve_drawer = CurveDrawer(
+        row_num=row_num, col_num=(len(cfg["dataset_info"].keys())) // row_num
+    )
 
     for i, (method_name, method_info) in enumerate(cfg["drawing_info"].items()):
         if not (line_color := method_info["curve_setting"].get("line_color")):
@@ -190,8 +196,12 @@ if __name__ == "__main__":
         "record_path": os.path.join(output_path, "output/all_record.txt"),  # 用来保存测试结果的文件的路径
         "save_npy": True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
         # 保存曲线指标数据的文件路径
-        "qualitative_npy_path": os.path.join(output_path, data_type + "_" + "qualitative_results.npy"),
-        "quantitative_npy_path": os.path.join(output_path, data_type + "_" + "quantitative_results.npy"),
+        "qualitative_npy_path": os.path.join(
+            output_path, data_type + "_" + "qualitative_results.npy"
+        ),
+        "quantitative_npy_path": os.path.join(
+            output_path, data_type + "_" + "quantitative_results.npy"
+        ),
         "axes_setting": {  # 不同曲线的绘图配置
             "pr": {  # pr曲线的配置
                 "x_label": "Recall",  # 横坐标标签

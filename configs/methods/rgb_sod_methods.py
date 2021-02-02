@@ -35,23 +35,33 @@ _METHODS_DIR_NAMES = {
 
 DGRL_2018 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["DGRL_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["DGRL_2018"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["DGRL_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["DGRL_2018"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["DGRL_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["DGRL_2018"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["DGRL_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["DGRL_2018"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["DGRL_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["DGRL_2018"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -59,23 +69,33 @@ DGRL_2018 = {
 
 PAGRN_2018 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PAGRN_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PAGRN_2018"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PAGRN_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PAGRN_2018"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PAGRN_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PAGRN_2018"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PAGRN_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PAGRN_2018"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PAGRN_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PAGRN_2018"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -83,23 +103,33 @@ PAGRN_2018 = {
 
 PiCANet_R_2018 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PiCANet_R_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PiCANet_R_2018"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PiCANet_R_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PiCANet_R_2018"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PiCANet_R_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PiCANet_R_2018"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PiCANet_R_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PiCANet_R_2018"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PiCANet_R_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PiCANet_R_2018"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -107,23 +137,33 @@ PiCANet_R_2018 = {
 
 RAS_2018 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["RAS_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["RAS_2018"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["RAS_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["RAS_2018"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["RAS_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["RAS_2018"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["RAS_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["RAS_2018"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["RAS_2018"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["RAS_2018"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -131,23 +171,33 @@ RAS_2018 = {
 
 AFNet_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["AFNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["AFNet_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["AFNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["AFNet_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["AFNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["AFNet_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["AFNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["AFNet_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["AFNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["AFNet_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -155,23 +205,33 @@ AFNet_2019 = {
 
 BASNet_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["BASNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["BASNet_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["BASNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["BASNet_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["BASNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["BASNet_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["BASNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["BASNet_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["BASNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["BASNet_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -179,23 +239,33 @@ BASNet_2019 = {
 
 CPD_R_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["CPD_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["CPD_R_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["CPD_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["CPD_R_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["CPD_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["CPD_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["CPD_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["CPD_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["CPD_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["CPD_R_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -203,23 +273,33 @@ CPD_R_2019 = {
 
 PoolNet_R_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PoolNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PoolNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PoolNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PoolNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PoolNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PoolNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PoolNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PoolNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PoolNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PoolNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -227,23 +307,33 @@ PoolNet_R_2019 = {
 
 EGNet_R_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["EGNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["EGNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["EGNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["EGNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["EGNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["EGNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["EGNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["EGNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["EGNet_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["EGNet_R_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -251,23 +341,33 @@ EGNet_R_2019 = {
 
 HRS_D_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["HRS_D_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["HRS_D_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["HRS_D_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["HRS_D_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["HRS_D_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["HRS_D_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["HRS_D_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["HRS_D_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["HRS_D_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["HRS_D_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -275,23 +375,33 @@ HRS_D_2019 = {
 
 ICNet_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["ICNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["ICNet_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["ICNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["ICNet_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["ICNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["ICNet_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["ICNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["ICNet_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["ICNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["ICNet_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -299,23 +409,33 @@ ICNet_2019 = {
 
 MLMSNet_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["MLMSNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["MLMSNet_2019"]
+        ),
         suffix=".jpg",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["MLMSNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["MLMSNet_2019"]
+        ),
         suffix=".jpg",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["MLMSNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["MLMSNet_2019"]
+        ),
         suffix=".jpg",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["MLMSNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["MLMSNet_2019"]
+        ),
         suffix=".jpg",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["MLMSNet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["MLMSNet_2019"]
+        ),
         suffix=".jpg",
     ),
     "SOC": None,
@@ -323,23 +443,33 @@ MLMSNet_2019 = {
 
 PAGENet_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PAGENet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["PAGENet_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PAGENet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["PAGENet_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PAGENet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["PAGENet_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PAGENet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["PAGENet_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PAGENet_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["PAGENet_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -347,23 +477,33 @@ PAGENet_2019 = {
 
 SCRN_R_2019 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["SCRN_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["SCRN_R_2019"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["SCRN_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["SCRN_R_2019"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["SCRN_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["SCRN_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["SCRN_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["SCRN_R_2019"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["SCRN_R_2019"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["SCRN_R_2019"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -371,23 +511,33 @@ SCRN_R_2019 = {
 
 F3Net_R_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["F3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["F3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["F3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["F3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["F3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["F3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["F3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["F3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["F3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["F3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -395,23 +545,33 @@ F3Net_R_2020 = {
 
 R3Net_R_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["R3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["R3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["R3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["R3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["R3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["R3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["R3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["R3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["R3Net_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["R3Net_R_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -419,23 +579,33 @@ R3Net_R_2020 = {
 
 GCPANet_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["GCPANet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["GCPANet_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["GCPANet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["GCPANet_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["GCPANet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["GCPANet_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["GCPANet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["GCPANet_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["GCPANet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["GCPANet_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -443,23 +613,33 @@ GCPANet_2020 = {
 
 LDF_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["LDF_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["LDF_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["LDF_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["LDF_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["LDF_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["LDF_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["LDF_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["LDF_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["LDF_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["LDF_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -467,23 +647,33 @@ LDF_2020 = {
 
 DFI_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["DFI_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["DFI_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["DFI_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["DFI_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["DFI_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["DFI_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["DFI_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["DFI_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["DFI_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["DFI_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -491,23 +681,33 @@ DFI_2020 = {
 
 GateNet_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["GateNet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["GateNet_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["GateNet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["GateNet_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["GateNet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["GateNet_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["GateNet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["GateNet_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["GateNet_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["GateNet_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -515,23 +715,33 @@ GateNet_2020 = {
 
 ITSD_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["ITSD_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["ITSD_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["ITSD_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["ITSD_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["ITSD_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["ITSD_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["ITSD_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["ITSD_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["ITSD_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["ITSD_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,
@@ -539,23 +749,33 @@ ITSD_2020 = {
 
 MINet_R_2020 = {
     "PASCAL-S": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["MINet_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[0], _METHODS_DIR_NAMES["MINet_R_2020"]
+        ),
         suffix=".png",
     ),
     "ECSSD": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["MINet_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[1], _METHODS_DIR_NAMES["MINet_R_2020"]
+        ),
         suffix=".png",
     ),
     "HKU-IS": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["MINet_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[2], _METHODS_DIR_NAMES["MINet_R_2020"]
+        ),
         suffix=".png",
     ),
     "DUT-OMRON": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["MINet_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[3], _METHODS_DIR_NAMES["MINet_R_2020"]
+        ),
         suffix=".png",
     ),
     "DUTS-TE": dict(
-        path=os.path.join(_RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["MINet_R_2020"]),
+        path=os.path.join(
+            _RGBSOD_METHODS_ROOT, _RGBSOD_DATASET_NAMES[4], _METHODS_DIR_NAMES["MINet_R_2020"]
+        ),
         suffix=".png",
     ),
     "SOC": None,

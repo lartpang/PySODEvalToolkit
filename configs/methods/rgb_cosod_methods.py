@@ -6,12 +6,22 @@ from configs.misc import curve_info_generator, simple_info_generator
 
 _CoSOD_METHODS_ROOT = "/home/lart/Datasets/Saliency/PaperResults/CoSOD"
 ICNet = {
-    "CoCA": dict(path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "CoCA"), suffix=".png"),
-    "CoSal2015": dict(path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "CoSal2015"), suffix=".png"),
-    "CoSOD3k": dict(path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "CoSOD3k"), suffix=".png"),
-    "iCoSeg": dict(path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "iCoSeg"), suffix=".png"),
+    "CoCA": dict(
+        path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "CoCA"), suffix=".png"
+    ),
+    "CoSal2015": dict(
+        path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "CoSal2015"), suffix=".png"
+    ),
+    "CoSOD3k": dict(
+        path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "CoSOD3k"), suffix=".png"
+    ),
+    "iCoSeg": dict(
+        path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "iCoSeg"), suffix=".png"
+    ),
     "ImagePair": None,
-    "MSRC": dict(path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "MSRC"), suffix=".png"),
+    "MSRC": dict(
+        path=os.path.join(_CoSOD_METHODS_ROOT, "NIPS2020_ICNet_os", "MSRC"), suffix=".png"
+    ),
     "WICOS": None,
 }
 

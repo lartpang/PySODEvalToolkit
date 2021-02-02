@@ -4,8 +4,8 @@ better_visual_collect.py
 output/all_record.txt
 
 # Big files
-# output/
-datasets/
+output/
+my_methods/
 **/*.png
 **/*.zip
 **/*.7z

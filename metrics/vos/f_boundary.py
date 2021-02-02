@@ -31,7 +31,9 @@ def db_eval_boundary(foreground_mask, gt_mask, bound_th=0.008):
     """
     assert np.atleast_3d(foreground_mask).shape[2] == 1
 
-    bound_pix = bound_th if bound_th >= 1 else np.ceil(bound_th * np.linalg.norm(foreground_mask.shape))
+    bound_pix = (
+        bound_th if bound_th >= 1 else np.ceil(bound_th * np.linalg.norm(foreground_mask.shape))
+    )
 
     # Get the pixel boundaries of both masks
     fg_boundary = seg2bmap(foreground_mask)
@@ -102,7 +104,9 @@ def seg2bmap(seg, width=None, height=None):
     ar1 = float(width) / float(height)
     ar2 = float(w) / float(h)
 
-    assert not (width > w | height > h | abs(ar1 - ar2) > 0.01), "Can" "t convert %dx%d seg to %dx%d bmap." % (
+    assert not (
+        width > w | height > h | abs(ar1 - ar2) > 0.01
+    ), "Can" "t convert %dx%d seg to %dx%d bmap." % (
         w,
         h,
         width,

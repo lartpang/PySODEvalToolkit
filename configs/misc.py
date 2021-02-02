@@ -2,7 +2,9 @@
 def curve_info_generator():
     line_style_flag = True
 
-    def _template_generator(method_info: dict, method_name: str, line_color: str = None, line_width: int = 2) -> dict:
+    def _template_generator(
+        method_info: dict, method_name: str, line_color: str = None, line_width: int = 2
+    ) -> dict:
         nonlocal line_style_flag
         template_info = dict(
             path_dict=method_info,

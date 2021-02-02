@@ -130,7 +130,9 @@ def _read_and_eval_file(mask_video_path: str, pred_video_path: str, frame_name: 
     binary_frame_mask = (frame_mask > 0).astype(np.float32)
     binary_frame_pred = (frame_pred > 0).astype(np.float32)
     J_score = jaccard.db_eval_iou(annotation=binary_frame_mask, segmentation=binary_frame_pred)
-    F_score = f_boundary.db_eval_boundary(foreground_mask=binary_frame_pred, gt_mask=binary_frame_mask)
+    F_score = f_boundary.db_eval_boundary(
+        foreground_mask=binary_frame_pred, gt_mask=binary_frame_mask
+    )
     return J_score, F_score
 
 
@@ -166,7 +168,10 @@ def _eval_video_sequence(
         frame_score_list += [[np.nan, np.nan]]
     frame_score_array = np.asarray(frame_score_list)
     M, O, D = zip(
-        *[get_mean_recall_decay_for_video(frame_score_array[:, i]) for i in range(frame_score_array.shape[1])]
+        *[
+            get_mean_recall_decay_for_video(frame_score_array[:, i])
+            for i in range(frame_score_array.shape[1])
+        ]
     )
     return {
         video_name: {
@@ -238,7 +243,11 @@ def convert_data_dict_to_table(data_dict: dict, video_name_list: list):
     for video_name in video_name_list:
         table.add_row(
             [video_name]
-            + [f"{data_dict[video_name][x][y]: .3f}" for y in range(2) for x in ["mean", "recall", "decay"]]
+            + [
+                f"{data_dict[video_name][x][y]: .3f}"
+                for y in range(2)
+                for x in ["mean", "recall", "decay"]
+            ]
         )
     return "\n" + str(table) + "\n"
 
@@ -274,7 +283,9 @@ def eval_method_from_data(
     """
     if name_list_path.endswith(".yml") or name_list_path.endswith(".yaml"):
         # read yaml and get the list  that will be used to eval the model
-        eval_video_name_list = get_eval_video_name_list_from_yml(path=name_list_path, data_set="test")
+        eval_video_name_list = get_eval_video_name_list_from_yml(
+            path=name_list_path, data_set="test"
+        )
     elif name_list_path.endswith(".txt"):
         eval_video_name_list = get_eval_video_name_list_from_txt(path=name_list_path)
     else:
@@ -297,7 +308,9 @@ def eval_method_from_data(
 
     # show the results
     eval_video_name_list += ["Average"]
-    table_str = convert_data_dict_to_table(data_dict=average_score_dict, video_name_list=eval_video_name_list)
+    table_str = convert_data_dict_to_table(
+        data_dict=average_score_dict, video_name_list=eval_video_name_list
+    )
     print(table_str)
 
 
@@ -314,7 +327,9 @@ def show_results_from_data_file(file_path: str = "./output/average.pkl"):
         eval_video_name_list[0],
     )
     # show the results
-    table_str = convert_data_dict_to_table(data_dict=average_score_dict, video_name_list=eval_video_name_list)
+    table_str = convert_data_dict_to_table(
+        data_dict=average_score_dict, video_name_list=eval_video_name_list
+    )
     print(table_str)
 
 

@@ -30,4 +30,6 @@ def db_eval_iou(annotation, segmentation):
     if np.isclose(np.sum(annotation), 0) and np.isclose(np.sum(segmentation), 0):
         return 1
     else:
-        return np.sum((annotation & segmentation)) / np.sum((annotation | segmentation), dtype=np.float32)
+        return np.sum((annotation & segmentation)) / np.sum(
+            (annotation | segmentation), dtype=np.float32
+        )
