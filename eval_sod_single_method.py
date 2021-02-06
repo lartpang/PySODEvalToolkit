@@ -8,22 +8,23 @@ from tqdm import tqdm
 from configs import total_info
 from configs.methods import rgbd_sod_methods
 from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
-from utils.recorders import MetricExcelRecorder, MetricRecorder, TxtRecorder
+from utils.recorders import MetricExcelRecorder, MetricRecorder
 
 
 def cal_all_metrics():
-    txt_recoder = TxtRecorder(txt_path=record_path, resume=resume_record)
     excel_recorder = MetricExcelRecorder(
         xlsx_path=xlsx_path,
         sheet_name=data_type,
         row_header=["methods"],
-        dataset_names=["pascals", "ecssd", "hkuis", "dutste", "dutomron"],
+        dataset_names=sorted(list(dataset_info.keys())),
         metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
     )
 
     method_perf = {}
     for dataset_name, dataset_path in dataset_info.items():
-        txt_recoder.add_row(row_name="Dataset", row_data=dataset_name)
+        if dataset_name in skipped_names:
+            print(f" ++>> {dataset_name} will be skipped.")
+            continue
 
         # 获取真值图片信息
         gt_info = dataset_path["mask"]
@@ -104,10 +105,9 @@ if __name__ == "__main__":
 
     pred_path = rgbd_sod_methods.CoNet  # 待评估的预测结果的路径
     model_name = "CoNet"  # 待评估的模型名字
-    record_path = os.path.join(output_path, "record.txt")  # 用来保存测试结果的文件的路径
     dataset_info = data_info["dataset"]
     export_xlsx = False  # 是否导出xlsx文件
     xlsx_path = os.path.join(output_path, "resutls.xlsx")  # xlsx文件的路径
     bit_num = 3  # 评估结果保留的小数点后数据的位数
-    resume_record = True  # 是否保留之前的评估记录（针对record_path文件有效）
+    skipped_names = []  # 可以跳过指定的数据集
     cal_all_metrics()

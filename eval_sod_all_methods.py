@@ -22,8 +22,6 @@ Include: Fm Curve/PR Curves/MAE/(max/mean/weighted) Fmeasure/Smeasure/Emeasure
 NOTE:
 * Our method automatically calculates the intersection of `pre` and `gt`.
     But it needs to have uniform naming rules for `pre` and `gt`.
-* The method to be tested needs to be given in the `config.py` file according to the format of the
-    example, and the `user_setting` should be properly configured.
 """
 
 
@@ -48,30 +46,26 @@ def cal_all_metrics():
     qualitative_results = defaultdict(dict)  # Two curve metrics
     quantitative_results = defaultdict(dict)  # Six numerical metrics
 
-    txt_recoder = TxtRecorder(txt_path=cfg["record_path"], resume=cfg["resume_record"])
-    # TODO: A better method to choose different `dataset_names`
+    txt_recoder = TxtRecorder(
+        txt_path=cfg["record_path"],
+        resume=cfg["resume_record"],
+        max_method_name_width=max([len(x) for x in cfg["drawing_info"].keys()]),  # 显示完整名字
+        # max_method_name_width=10,  # 指定长度
+    )
     excel_recorder = MetricExcelRecorder(
         xlsx_path=cfg["xlsx_path"],
         sheet_name=data_type,
         row_header=["methods"],
-        # dataset_names=["pascals", "ecssd", "hkuis", "dutste", "dutomron"],
-        # dataset_names=[
-        #     "lfsd",
-        #     "njud",
-        #     "nlpr",
-        #     "rgbd135",
-        #     "sip",
-        #     "ssd",
-        #     "stereo797",
-        #     "stereo1000",
-        #     "dutrgbd",
-        # ],
-        dataset_names=["camo", "chameleon", "cod10k"],
+        dataset_names=sorted(list(cfg["dataset_info"].keys())),
         metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
     )
 
     for dataset_name, dataset_path in cfg["dataset_info"].items():
-        txt_recoder.add_row(row_name="Dataset", row_data=dataset_name)
+        if dataset_name in cfg["skipped_names"]:
+            print(f" ++>> {dataset_name} will be skipped.")
+            continue
+
+        txt_recoder.add_row(row_name="Dataset", row_data=dataset_name, row_start_str="\n")
 
         # 获取真值图片信息
         gt_info = dataset_path["mask"]
@@ -135,40 +129,29 @@ def cal_all_metrics():
             all_results["maxEm"] = all_results["em"].max()
             all_results = {k: v.round(cfg["bit_num"]) for k, v in all_results.items()}
 
-            qualitative_results[dataset_name.lower()].update(
-                {
-                    method_name: {
-                        "prs": (np.flip(all_results["p"]), np.flip(all_results["r"])),
-                        "fm": np.flip(all_results["fm"]),
-                        "em": np.flip(all_results["em"]),
-                    }
-                }
-            )
-
-            quantitative_results[dataset_name.lower()].update(
-                {
-                    method_name: {
-                        "maxF": all_results["maxFm"].item(),
-                        "avgF": all_results["meanFm"].item(),
-                        "adpF": all_results["adpFm"].item(),
-                        "maxE": all_results["maxEm"].item(),
-                        "avgE": all_results["meanEm"].item(),
-                        "adpE": all_results["adpEm"].item(),
-                        "wFm": all_results["wFm"].item(),
-                        "MAE": all_results["MAE"].item(),
-                        "SM": all_results["Sm"].item(),
-                    }
-                }
-            )
+            method_curve = {
+                "prs": (np.flip(all_results["p"]), np.flip(all_results["r"])),
+                "fm": np.flip(all_results["fm"]),
+                "em": np.flip(all_results["em"]),
+            }
+            method_metric = {
+                "maxF": all_results["maxFm"].item(),
+                "avgF": all_results["meanFm"].item(),
+                "adpF": all_results["adpFm"].item(),
+                "maxE": all_results["maxEm"].item(),
+                "avgE": all_results["meanEm"].item(),
+                "adpE": all_results["adpEm"].item(),
+                "wFm": all_results["wFm"].item(),
+                "MAE": all_results["MAE"].item(),
+                "SM": all_results["Sm"].item(),
+            }
+            qualitative_results[dataset_name.lower()][method_name] = method_curve
+            quantitative_results[dataset_name.lower()][method_name] = method_metric
 
             excel_recorder(
-                row_data=quantitative_results[dataset_name.lower()][method_name],
-                dataset_name=dataset_name,
-                method_name=method_name,
+                row_data=method_metric, dataset_name=dataset_name, method_name=method_name
             )
-        txt_recoder.add_method_results(
-            data_dict=quantitative_results[dataset_name.lower()], method_name=""
-        )
+            txt_recoder(method_results=method_metric, method_name=method_name)
 
     if cfg["save_npy"]:
         np.save(cfg["qualitative_npy_path"], qualitative_results)
@@ -212,7 +195,7 @@ def draw_pr_fm_curve(for_pr: bool = True):
                 assert isinstance(method_results["prs"], (list, tuple))
                 y_data, x_data = method_results["prs"]
             else:
-                y_data, x_data = method_results["fs"], np.linspace(1, 0, 255)
+                y_data, x_data = method_results["fm"], np.linspace(1, 0, 255)
 
             curve_drawer.draw_method_curve(
                 dataset_name=dataset_name,
@@ -228,7 +211,7 @@ def draw_pr_fm_curve(for_pr: bool = True):
 
 
 if __name__ == "__main__":
-    data_type = "rgb_cod"
+    data_type = "rgbd_sod"
     data_info = total_info[data_type]
     output_path = "./output"  # 存放输出文件的文件夹
 
@@ -268,6 +251,7 @@ if __name__ == "__main__":
         ),
         "bit_num": 3,  # 评估结果保留的小数点后数据的位数
         "resume_record": True,  # 是否保留之前的评估记录（针对record_path文件有效）
+        "skipped_names": [],
     }
 
     make_dir(output_path)

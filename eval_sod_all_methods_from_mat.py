@@ -26,8 +26,6 @@ Include:
 NOTE:
 * Our method automatically calculates the intersection of `pre` and `gt`.
     But it needs to have uniform naming rules for `pre` and `gt`.
-* The method to be tested needs to be given in the `config.py` file according to the format of the
-    example, and the `cfg` should be properly configured.
 """
 
 
@@ -52,12 +50,17 @@ def export_valid_npy():
     all_qualitative_results = defaultdict(dict)  # Two curve metrics
     all_quantitative_results = defaultdict(dict)  # Six numerical metrics
 
-    txt_recoder = TxtRecorder(txt_path=cfg["record_path"], resume=cfg["resume_record"])
+    txt_recoder = TxtRecorder(
+        txt_path=cfg["record_path"],
+        resume=cfg["resume_record"],
+        max_method_name_width=max([len(x) for x in cfg["drawing_info"].keys()]),  # 显示完整名字
+        # max_method_name_width=10,  # 指定长度
+    )
     excel_recorder = MetricExcelRecorder(
         xlsx_path=cfg["xlsx_path"],
         sheet_name=data_type,
         row_header=["methods"],
-        dataset_names=["pascals", "ecssd", "hkuis", "dutste", "dutomron"],
+        dataset_names=sorted(list(cfg["dataset_info"].keys())),
         metric_names=["sm", "wfm", "mae", "adpfm", "avgfm", "maxfm", "adpem", "avgem", "maxem"],
     )
 
@@ -82,7 +85,7 @@ def export_valid_npy():
 
             ps = method_result["column_Pr"].reshape(-1).round(cfg["bit_num"]).tolist()
             rs = method_result["column_Rec"].reshape(-1).round(cfg["bit_num"]).tolist()
-            fs = method_result["column_F"].reshape(-1).round(cfg["bit_num"]).tolist()
+            fm = method_result["column_F"].reshape(-1).round(cfg["bit_num"]).tolist()
 
             maxf = method_result["maxFm"].reshape(-1).round(cfg["bit_num"]).item()
             meanf = method_result["meanFm"].reshape(-1).round(cfg["bit_num"]).item()
@@ -94,33 +97,24 @@ def export_valid_npy():
             mae = method_result["mae"].reshape(-1).round(cfg["bit_num"]).item()
             sm = method_result["Sm"].reshape(-1).round(cfg["bit_num"]).item()
 
-            all_qualitative_results[dataset_name.lower()].update(
-                {method_name: {"prs": (ps, rs), "fs": fs}}
-            )
-            all_quantitative_results[dataset_name.lower()].update(
-                {
-                    method_name: {
-                        "maxFm": maxf,
-                        "meanFm": meanf,
-                        "adpFm": adpf,
-                        "maxEm": maxe,
-                        "meanEm": meane,
-                        "adpEm": adpe,
-                        "wFm": wfm,
-                        "MAE": mae,
-                        "Sm": sm,
-                    }
-                }
-            )
+            method_curve = {"prs": (ps, rs), "fm": fm}
+            method_metric = {
+                "maxFm": maxf,
+                "meanFm": meanf,
+                "adpFm": adpf,
+                "maxEm": maxe,
+                "meanEm": meane,
+                "adpEm": adpe,
+                "wFm": wfm,
+                "MAE": mae,
+                "Sm": sm,
+            }
+            all_qualitative_results[dataset_name.lower()][method_name] = method_curve
+            all_quantitative_results[dataset_name.lower()][method_name] = method_metric
             excel_recorder(
-                row_data=all_quantitative_results[dataset_name.lower()][method_name],
-                dataset_name=dataset_name,
-                method_name=method_name,
+                row_data=method_metric, dataset_name=dataset_name, method_name=method_name
             )
-        txt_recoder.add_method_results(
-            data_dict=all_quantitative_results[dataset_name.lower()],
-            method_name="",
-        )
+            txt_recoder(method_results=method_metric, method_name=method_name)
 
     if cfg["save_npy"]:
         np.save(cfg["qualitative_npy_path"], all_qualitative_results)
@@ -169,7 +163,7 @@ def draw_pr_fm_curve(for_pr: bool = False):
                 assert isinstance(method_results["prs"], (list, tuple))
                 y_data, x_data = method_results["prs"]
             else:
-                y_data, x_data = method_results["fs"], np.linspace(1, 0, 256)
+                y_data, x_data = method_results["fm"], np.linspace(1, 0, 256)
 
             curve_drawer.draw_method_curve(
                 dataset_name=dataset_name.upper(),

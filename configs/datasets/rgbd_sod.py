@@ -13,13 +13,15 @@ NLPR = dict(
     root=os.path.join(_RGBD_SOD_ROOT, "NLPR_FULL"),
     image=dict(path=os.path.join(_RGBD_SOD_ROOT, "NLPR_FULL", "Image"), suffix=".jpg"),
     mask=dict(path=os.path.join(_RGBD_SOD_ROOT, "NLPR_FULL", "Mask"), suffix=".png"),
-    index_file=os.path.join(_RGBD_SOD_ROOT, "nlpr_test_jw_name_list.lst"),
+    # index_file=os.path.join(_RGBD_SOD_ROOT, "nlpr_test_jw_name_list.lst"),
+    # 测试的时候应该使用全部数据来和方法的预测结果计算交集，这样才会测到所有的预测结果，所以就不使用index_file了。
 )
 NJUD = dict(
     root=os.path.join(_RGBD_SOD_ROOT, "NJUD_FULL"),
     image=dict(path=os.path.join(_RGBD_SOD_ROOT, "NJUD_FULL", "Image"), suffix=".jpg"),
     mask=dict(path=os.path.join(_RGBD_SOD_ROOT, "NJUD_FULL", "Mask"), suffix=".png"),
-    index_file=os.path.join(_RGBD_SOD_ROOT, "njud_test_jw_name_list.lst"),
+    # index_file=os.path.join(_RGBD_SOD_ROOT, "njud_test_jw_name_list.lst"),
+    # 同上
 )
 RGBD135 = dict(
     root=os.path.join(_RGBD_SOD_ROOT, "RGBD135"),
