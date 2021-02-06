@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
+import math
 import os
 from collections import defaultdict
 from pprint import pprint
 
 import numpy as np
 import scipy.io as scio
-from matplotlib import colors
 
 from configs import total_info
-from utils.misc import get_target_key, make_dir
+from utils.misc import make_dir
 from utils.recorders import CurveDrawer, MetricExcelRecorder, TxtRecorder
 
 """
@@ -47,8 +47,8 @@ def export_valid_npy():
       ....
     }
     """
-    all_qualitative_results = defaultdict(dict)  # Two curve metrics
-    all_quantitative_results = defaultdict(dict)  # Six numerical metrics
+    qualitative_results = defaultdict(dict)  # Two curve metrics
+    quantitative_results = defaultdict(dict)  # Six numerical metrics
 
     txt_recoder = TxtRecorder(
         txt_path=cfg["record_path"],
@@ -64,15 +64,14 @@ def export_valid_npy():
         metric_names=["sm", "wfm", "mae", "adpfm", "avgfm", "maxfm", "adpem", "avgem", "maxem"],
     )
 
-    for dataset_name, _ in cfg["dataset_info"].items():
+    for dataset_name in cfg["dataset_info"].keys():
         # 使用dataset_name索引各个方法在不同数据集上的结果
         for method_name, method_info in cfg["drawing_info"].items():
             method_result_path = method_info["path_dict"]
 
-            dataset_name = get_target_key(target_dict=method_result_path, key=dataset_name)
+            # if dataset_name is None, `.get(dataset_name, other_value)` will return `other_value`.
             info_for_dataset = method_result_path.get(dataset_name, None)
             if info_for_dataset is None:
-                # if dataset_name is None, `.get(dataset_name, other_value)` will return `other_value`.
                 print(f" ==>> {method_name} does not have results on {dataset_name} <<== ")
                 continue
 
@@ -109,53 +108,49 @@ def export_valid_npy():
                 "MAE": mae,
                 "Sm": sm,
             }
-            all_qualitative_results[dataset_name.lower()][method_name] = method_curve
-            all_quantitative_results[dataset_name.lower()][method_name] = method_metric
+            qualitative_results[dataset_name][method_name] = method_curve
+            quantitative_results[dataset_name][method_name] = method_metric
+
             excel_recorder(
                 row_data=method_metric, dataset_name=dataset_name, method_name=method_name
             )
             txt_recoder(method_results=method_metric, method_name=method_name)
 
     if cfg["save_npy"]:
-        np.save(cfg["qualitative_npy_path"], all_qualitative_results)
-        np.save(cfg["quantitative_npy_path"], all_quantitative_results)
+        np.save(cfg["qualitative_npy_path"], qualitative_results)
+        np.save(cfg["quantitative_npy_path"], quantitative_results)
         print(
             f" ==>> all methods have been saved in {cfg['qualitative_npy_path']} and "
             f"{cfg['quantitative_npy_path']} <<== "
         )
 
     print(f" ==>> all methods have been tested:")
-    pprint(all_quantitative_results)
+    pprint(quantitative_results, indent=2, width=119)
 
 
-def draw_pr_fm_curve(for_pr: bool = False):
+def draw_pr_fm_curve(for_pr: bool = True):
     mode = "pr" if for_pr else "fm"
     mode_axes_setting = cfg["axes_setting"][mode]
 
     x_label, y_label = mode_axes_setting["x_label"], mode_axes_setting["y_label"]
     x_lim, y_lim = mode_axes_setting["x_lim"], mode_axes_setting["y_lim"]
 
-    all_qualitative_results = np.load(
+    qualitative_results = np.load(
         os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True
     ).item()
 
     row_num = 1
     curve_drawer = CurveDrawer(
-        row_num=row_num, col_num=(len(cfg["dataset_info"].keys())) // row_num
+        row_num=row_num, col_num=math.ceil(len(cfg["dataset_info"].keys()) / row_num)
     )
 
-    for i, (method_name, method_info) in enumerate(cfg["drawing_info"].items()):
-        if not (line_color := method_info["curve_setting"].get("line_color")):
-            method_info["curve_setting"]["line_color"] = cfg["colors"][i]
-
-    for idx, (dataset_name, dataset_path) in enumerate(cfg["dataset_info"].items()):
-        dataset_name = get_target_key(target_dict=all_qualitative_results, key=dataset_name)
-        dataset_results = all_qualitative_results[dataset_name]
-
+    for idx, dataset_name in enumerate(cfg["dataset_info"].keys()):
+        # 与cfg[dataset_info]中的key保持一致
+        dataset_results = qualitative_results[dataset_name]
         for method_name, method_info in cfg["drawing_info"].items():
-            if method_results := dataset_results.get(method_name):
-                curve_drawer.add_subplot(idx + 1)
-            else:
+            # 与cfg[drawing_info]中的key保持一致
+            method_results = dataset_results.get(method_name, None)
+            if method_results is None:
                 print(f" ==>> {method_name} does not have results on {dataset_name} <<== ")
                 continue
 
@@ -166,6 +161,7 @@ def draw_pr_fm_curve(for_pr: bool = False):
                 y_data, x_data = method_results["fm"], np.linspace(1, 0, 256)
 
             curve_drawer.draw_method_curve(
+                curr_idx=idx,
                 dataset_name=dataset_name.upper(),
                 method_curve_setting=method_info["curve_setting"],
                 x_label=x_label,
@@ -186,8 +182,8 @@ if __name__ == "__main__":
     cfg = {  # 针对多个模型评估比较的设置
         "dataset_info": data_info["dataset"],
         "drawing_info": data_info["method"]["drawing"],  # 包含所有待比较模型结果的信息和绘图配置的字典
-        "selecting_info": data_info["method"]["selecting"],
-        "record_path": os.path.join(output_path, "output/all_record.txt"),  # 用来保存测试结果的文件的路径
+        "record_path": os.path.join(output_path, f"{data_type}.txt"),  # 用来保存测试结果的文件的路径
+        "xlsx_path": os.path.join(output_path, f"{data_type}.xlsx"),
         "save_npy": True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
         # 保存曲线指标数据的文件路径
         "qualitative_npy_path": os.path.join(
@@ -210,15 +206,9 @@ if __name__ == "__main__":
                 "y_lim": (0, 0.9),  # 纵坐标显示范围
             },
         },
-        "colors": sorted(
-            [
-                color
-                for name, color in colors.cnames.items()
-                if name not in ["red", "white"] or not name.startswith("light") or "gray" in name
-            ]
-        ),
         "bit_num": 3,  # 评估结果保留的小数点后数据的位数
         "resume_record": False,  # 是否保留之前的评估记录（针对record_path文件有效）
+        "skipped_names": [],
     }
 
     make_dir(output_path)

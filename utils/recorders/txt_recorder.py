@@ -3,7 +3,6 @@
 # @Author  : Lart Pang
 # @GitHub  : https://github.com/lartpang
 
-import warnings
 from datetime import datetime
 
 
@@ -18,15 +17,6 @@ class TxtRecorder:
     def add_row(self, row_name, row_data, row_start_str="", row_end_str="\n"):
         with open(self.txt_path, mode="a", encoding="utf-8") as f:
             f.write(f"{row_start_str} ========>> {row_name}: {row_data} <<======== {row_end_str}")
-
-    def add_method_results(self, data_dict: dict, method_name: str = ""):
-        warnings.warn(message="This method will be deprecated in future versions.")
-        # save the results under testing
-        msg = method_name
-        for k, v in data_dict.items():
-            msg += f" {k} {v}\n"
-        with open(self.txt_path, mode="a", encoding="utf-8") as f:
-            f.write(msg + "\n")
 
     def __call__(
         self,

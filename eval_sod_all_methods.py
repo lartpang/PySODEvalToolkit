@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
+import math
 import os
 from collections import defaultdict
 from pprint import pprint
 
 import numpy as np
-from matplotlib import colors
 from tqdm import tqdm
 
 from configs import total_info
-from utils.misc import get_gt_pre_with_name, get_name_list, get_valid_key_name, make_dir
+from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
 from utils.recorders import (
     CurveDrawer,
     MetricExcelRecorder,
@@ -145,8 +145,8 @@ def cal_all_metrics():
                 "MAE": all_results["MAE"].item(),
                 "SM": all_results["Sm"].item(),
             }
-            qualitative_results[dataset_name.lower()][method_name] = method_curve
-            quantitative_results[dataset_name.lower()][method_name] = method_metric
+            qualitative_results[dataset_name][method_name] = method_curve
+            quantitative_results[dataset_name][method_name] = method_metric
 
             excel_recorder(
                 row_data=method_metric, dataset_name=dataset_name, method_name=method_name
@@ -176,18 +176,18 @@ def draw_pr_fm_curve(for_pr: bool = True):
         os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True
     ).item()
 
-    curve_drawer = CurveDrawer(row_num=2, col_num=(len(cfg["dataset_info"].keys()) + 1) // 2)
+    row_num = 2
+    curve_drawer = CurveDrawer(
+        row_num=row_num, col_num=math.ceil(len(cfg["dataset_info"].keys()) / row_num)
+    )
 
-    for idx, (dataset_name, dataset_path) in enumerate(cfg["dataset_info"].items()):
-        dataset_name = get_valid_key_name(data_dict=qualitative_results, key_name=dataset_name)
+    for idx, dataset_name in enumerate(cfg["dataset_info"].keys()):
+        # 与cfg[dataset_info]中的key保持一致
         dataset_results = qualitative_results[dataset_name]
-
         for method_name, method_info in cfg["drawing_info"].items():
-            method_name = get_valid_key_name(data_dict=dataset_results, key_name=method_name)
+            # 与cfg[drawing_info]中的key保持一致
             method_results = dataset_results.get(method_name, None)
-            if method_results:
-                curve_drawer.add_subplot(idx + 1)
-            else:
+            if method_results is None:
                 print(f" ==>> {method_name} does not have results on {dataset_name} <<== ")
                 continue
 
@@ -195,10 +195,11 @@ def draw_pr_fm_curve(for_pr: bool = True):
                 assert isinstance(method_results["prs"], (list, tuple))
                 y_data, x_data = method_results["prs"]
             else:
-                y_data, x_data = method_results["fm"], np.linspace(1, 0, 255)
+                y_data, x_data = method_results["fm"], np.linspace(1, 0, 256)
 
             curve_drawer.draw_method_curve(
-                dataset_name=dataset_name,
+                curr_idx=idx,
+                dataset_name=dataset_name.upper(),
                 method_curve_setting=method_info["curve_setting"],
                 x_label=x_label,
                 y_label=y_label,
@@ -242,13 +243,6 @@ if __name__ == "__main__":
                 "y_lim": (0, 0.9),  # 纵坐标显示范围
             },
         },
-        "colors": sorted(
-            [
-                color
-                for name, color in colors.cnames.items()
-                if name not in ["red", "white"] or not name.startswith("light") or "gray" in name
-            ]
-        ),
         "bit_num": 3,  # 评估结果保留的小数点后数据的位数
         "resume_record": True,  # 是否保留之前的评估记录（针对record_path文件有效）
         "skipped_names": [],

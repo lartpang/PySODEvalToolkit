@@ -1,4 +1,18 @@
 # -*- coding: utf-8 -*-
+
+from matplotlib import colors
+
+_COLOR_Genarator = iter(
+    sorted(
+        [
+            color
+            for name, color in colors.cnames.items()
+            if name not in ["red", "white"] or not name.startswith("light") or "gray" in name
+        ]
+    )
+)
+
+
 def curve_info_generator():
     line_style_flag = True
 
@@ -16,6 +30,8 @@ def curve_info_generator():
         )
         if line_color is not None:
             template_info["curve_setting"]["line_color"] = line_color
+        else:
+            template_info["curve_setting"]["line_color"] = next(_COLOR_Genarator)
 
         line_style_flag = not line_style_flag
         return template_info

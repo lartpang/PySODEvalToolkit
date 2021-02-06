@@ -7,11 +7,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-class CurveDrawer:
+class CurveDrawer(object):
     def __init__(self, row_num, col_num):
-        self.fig = plt.figure()
-        self.row_num = row_num
-        self.col_num = col_num
+        fig, axes = plt.subplots(nrows=row_num, ncols=col_num)
+        self.fig = fig
+        self.axes = axes.flatten()
+
+        self.num_subplots = row_num * col_num
         self.font_cfg = {
             "title": {
                 "fontsize": 12,
@@ -35,13 +37,17 @@ class CurveDrawer:
             },
         }
 
-    def add_subplot(self, curr_idx):
-        assert isinstance(curr_idx, int) and curr_idx > 0
-        self.ax = self.fig.add_subplot(self.row_num, self.col_num, curr_idx)
-        self.ax.grid(True)
+        self.init_subplots()
+
+    def init_subplots(self):
+        plt.style.use("default")
+        for ax in self.axes:
+            ax.grid(False)
+            ax.set_axis_off()
 
     def draw_method_curve(
         self,
+        curr_idx,
         dataset_name,
         method_curve_setting,
         x_label,
@@ -59,25 +65,30 @@ class CurveDrawer:
                 "line_width": width(int),
             }
         """
+        assert isinstance(curr_idx, int) and 0 <= curr_idx < self.num_subplots
+        ax = self.axes[curr_idx]
+        ax.grid(True)
+        ax.set_axis_on()
+
         # give plot a title
-        self.ax.set_title(dataset_name, fontdict=self.font_cfg["title"])
+        ax.set_title(dataset_name, fontdict=self.font_cfg["title"])
 
         # make axis labels
-        self.ax.set_xlabel(x_label, fontdict=self.font_cfg["label"])
-        self.ax.set_ylabel(y_label, fontdict=self.font_cfg["label"])
+        ax.set_xlabel(x_label, fontdict=self.font_cfg["label"])
+        ax.set_ylabel(y_label, fontdict=self.font_cfg["label"])
 
         # 对坐标刻度的设置
         label = [f"{x:.2f}" for x in np.linspace(0, 1, 11)]
-        self.ax.set_xticks(np.linspace(0, 1, 11))
-        self.ax.set_yticks(np.linspace(0, 1, 11))
-        self.ax.set_xticklabels(labels=label, fontdict=self.font_cfg["ticks"])
-        self.ax.set_yticklabels(labels=label, fontdict=self.font_cfg["ticks"])
+        ax.set_xticks(np.linspace(0, 1, 11))
+        ax.set_yticks(np.linspace(0, 1, 11))
+        ax.set_xticklabels(labels=label, fontdict=self.font_cfg["ticks"])
+        ax.set_yticklabels(labels=label, fontdict=self.font_cfg["ticks"])
 
-        self.ax.set_xlim(x_lim)
-        self.ax.set_ylim(y_lim)
+        ax.set_xlim(x_lim)
+        ax.set_ylim(y_lim)
 
         # [CPFP, "red", "-", "OURS", 3],
-        self.ax.plot(
+        ax.plot(
             x_data,
             y_data,
             linewidth=method_curve_setting["line_width"],
@@ -87,13 +98,17 @@ class CurveDrawer:
         )
 
         # loc=0，自动将位置放在最合适的
-        self.ax.legend(loc=3, prop=self.font_cfg["legend"])
+        ax.legend(loc=3, prop=self.font_cfg["legend"])
 
         # 对坐标轴的框线进行设置, 设置轴
-        self.ax.spines["top"].set_linewidth(1)
-        self.ax.spines["bottom"].set_linewidth(1)
-        self.ax.spines["left"].set_linewidth(1)
-        self.ax.spines["right"].set_linewidth(1)
+        ax.spines["top"].set_linewidth(1)
+        ax.spines["bottom"].set_linewidth(1)
+        ax.spines["left"].set_linewidth(1)
+        ax.spines["right"].set_linewidth(1)
 
     def show(self):
         plt.show()
+
+
+if __name__ == "__main__":
+    drawer = OldCurveDrawer(4, 4)

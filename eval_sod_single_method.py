@@ -6,7 +6,6 @@ from pprint import pprint
 from tqdm import tqdm
 
 from configs import total_info
-from configs.methods import rgbd_sod_methods
 from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
 from utils.recorders import MetricExcelRecorder, MetricRecorder
 
@@ -102,9 +101,8 @@ if __name__ == "__main__":
     data_info = total_info[data_type]
     output_path = "./output"  # 存放输出文件的文件夹
     make_dir(output_path)
-
-    pred_path = rgbd_sod_methods.CoNet  # 待评估的预测结果的路径
     model_name = "CoNet"  # 待评估的模型名字
+    pred_path = data_info["method"]["selecting"][model_name]  # 待评估的预测结果的路径
     dataset_info = data_info["dataset"]
     export_xlsx = False  # 是否导出xlsx文件
     xlsx_path = os.path.join(output_path, "resutls.xlsx")  # xlsx文件的路径
