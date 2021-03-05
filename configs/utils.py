@@ -2,6 +2,7 @@
 
 from matplotlib import colors
 
+# max = 148
 _COLOR_Genarator = iter(
     sorted(
         [

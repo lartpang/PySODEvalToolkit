@@ -2,7 +2,7 @@
 import os
 from collections import OrderedDict
 
-from configs.misc import curve_info_generator, simple_info_generator
+from configs.utils import curve_info_generator, simple_info_generator
 
 _CoSOD_METHODS_ROOT = "/home/lart/Datasets/Saliency/PaperResults/CoSOD"
 ICNet = {

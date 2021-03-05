@@ -2,13 +2,13 @@
 import math
 import os
 from collections import defaultdict
-from pprint import pprint
 
 import numpy as np
 from tqdm import tqdm
 
 from configs import total_info
 from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
+from utils.print_formatter import print_formatter
 from utils.recorders import (
     CurveDrawer,
     MetricExcelRecorder,
@@ -61,7 +61,7 @@ def cal_all_metrics():
     )
 
     for dataset_name, dataset_path in cfg["dataset_info"].items():
-        if dataset_name in cfg["skipped_names"]:
+        if dataset_name in cfg["skipped_datasets"]:
             print(f" ++>> {dataset_name} will be skipped.")
             continue
 
@@ -161,8 +161,8 @@ def cal_all_metrics():
             f"{cfg['quantitative_npy_path']} <<== "
         )
 
-    print(f" ==>> all methods have been tested:")
-    pprint(quantitative_results, indent=2, width=119)
+    formatted_string = print_formatter(quantitative_results)
+    print(f" ==>> all methods have been tested:\n{formatted_string}")
 
 
 def draw_pr_fm_curve(for_pr: bool = True):
@@ -212,7 +212,7 @@ def draw_pr_fm_curve(for_pr: bool = True):
 
 
 if __name__ == "__main__":
-    data_type = "rgbd_sod"
+    data_type = "rgb_cod"
     data_info = total_info[data_type]
     output_path = "./output"  # 存放输出文件的文件夹
 
@@ -220,7 +220,7 @@ if __name__ == "__main__":
         "dataset_info": data_info["dataset"],
         "drawing_info": data_info["method"]["drawing"],  # 包含所有待比较模型结果的信息和绘图配置的字典
         "record_path": os.path.join(output_path, f"{data_type}.txt"),  # 用来保存测试结果的文件的路径
-        "xlsx_path": os.path.join(output_path, f"{data_type}.xlsx"),
+        "xlsx_path": os.path.join(output_path, f"updated_{data_type}.xlsx"),
         "save_npy": True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
         # 保存曲线指标数据的文件路径
         "qualitative_npy_path": os.path.join(
@@ -245,7 +245,14 @@ if __name__ == "__main__":
         },
         "bit_num": 3,  # 评估结果保留的小数点后数据的位数
         "resume_record": True,  # 是否保留之前的评估记录（针对record_path文件有效）
-        "skipped_names": [],
+        "skipped_datasets": [
+            # "NJUD",
+            # "NLPR",
+            # "SIP",
+            # "STEREO797",
+            # "STEREO1000",
+            # "DUTRGBD",
+        ],
     }
 
     make_dir(output_path)

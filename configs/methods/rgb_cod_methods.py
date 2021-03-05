@@ -2,7 +2,7 @@
 import os
 from collections import OrderedDict
 
-from configs.misc import curve_info_generator, simple_info_generator
+from configs.utils import curve_info_generator, simple_info_generator
 
 _COD_METHODS_MAT_ROOT = "/home/lart/Coding/GIT/CODToolbox/Onekey_Evaluation_Code/OnekeyEvaluationCode/Results/Result-COD10K-test"
 _COD_METHODS_PRED_ROOT = "/home/lart/Datasets/Saliency/PaperResults/COD"
@@ -28,9 +28,6 @@ _COD_METHODS = {
     "SINet": "2020-CVPR-SINet.mat",
     "Ours": "Ours",
 }
-
-# ^(.*?)_mat = \{\n\s{4}('.*?':)(.*?)$\n\s{4}('.*?':)(.*?)$\n\s{4}('.*?':)(.*?)$\n\}
-# $1 = {\n\t$2{\n\t\t'path':"",\n\t\t'suffix':"",\n\t\t'mat': $3},\n\t$4{\n\t\t'path':"",\n\t\t'suffix':"",\n\t\t'mat': $5},\n\t$6{\n\t\t'path':"",\n\t\t'suffix':"",\n\t\t'mat': $7}}
 
 FPN = {
     "CAMO": {
@@ -365,7 +362,6 @@ Ours = {
         "mat": os.path.join(_COD_METHODS_MAT_ROOT, _COD_DATASETS[2], _COD_METHODS["Ours"]),
     },
 }
-
 
 curve_info = curve_info_generator()
 methods_info_for_drawing = OrderedDict(

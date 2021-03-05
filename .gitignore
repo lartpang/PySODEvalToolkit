@@ -1,11 +1,8 @@
-/waiting/
+# private files
 /output/
-better_visual_collect.py
-output/all_record.txt
+/untracked/
 
 # Big files
-output/
-my_methods/
 **/*.png
 **/*.zip
 **/*.7z

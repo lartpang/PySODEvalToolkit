@@ -2,10 +2,7 @@
 import os
 from collections import OrderedDict
 
-from configs.misc import curve_info_generator, simple_info_generator
-
-# \s{4}"(.*?)": (os.*?),$
-# "$1": dict(path=$2, suffix='.png'),
+from configs.utils import curve_info_generator, simple_info_generator
 
 HDFNet_VGG16_root = "/home/lart/Coding/HDFFile/output/HDFNet/HDFNet_VGG16"
 HDFNet_VGG16 = {
@@ -225,30 +222,17 @@ PGAR = {
     "DUTRGBD": dict(path=os.path.join(PGAR_root, "DUT-RGBD"), suffix=".png"),
 }
 
-DenseFuse_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/2020-TIP-DisenFuse_VGG16"
-DenseFuse = {
-    "LFSD": dict(path=os.path.join(DenseFuse_root, "LFSD"), suffix=".png"),
-    "NJUD": dict(path=os.path.join(DenseFuse_root, "NJUD"), suffix=".png"),
-    "NLPR": dict(path=os.path.join(DenseFuse_root, "NLPR"), suffix=".png"),
-    "RGBD135": dict(path=os.path.join(DenseFuse_root, "DES"), suffix=".png"),
-    "SIP": dict(path=os.path.join(DenseFuse_root, "SIP"), suffix=".png"),
+DisenFuse_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/2020-TIP-DisenFuse_VGG16"
+DisenFuse = {
+    "LFSD": dict(path=os.path.join(DisenFuse_root, "LFSD"), suffix=".png"),
+    "NJUD": dict(path=os.path.join(DisenFuse_root, "NJUD"), suffix=".png"),
+    "NLPR": dict(path=os.path.join(DisenFuse_root, "NLPR"), suffix=".jpg"),
+    "RGBD135": dict(path=os.path.join(DisenFuse_root, "DES"), suffix=".bmp"),
+    "SIP": dict(path=os.path.join(DisenFuse_root, "SIP"), suffix=".png"),
     "SSD": None,
     "STEREO797": None,
-    "STEREO1000": dict(path=os.path.join(DenseFuse_root, "STEREO1000"), suffix=".png"),
-    "DUTRGBD": dict(path=os.path.join(DenseFuse_root, "DUT"), suffix=".png"),
-}
-
-DenseFuse_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/2020-TIP-DisenFuse_VGG16"
-DenseFuse = {
-    "LFSD": dict(path=os.path.join(DenseFuse_root, "LFSD"), suffix=".png"),
-    "NJUD": dict(path=os.path.join(DenseFuse_root, "NJUD"), suffix=".png"),
-    "NLPR": dict(path=os.path.join(DenseFuse_root, "NLPR"), suffix=".png"),
-    "RGBD135": dict(path=os.path.join(DenseFuse_root, "DES"), suffix=".png"),
-    "SIP": dict(path=os.path.join(DenseFuse_root, "SIP"), suffix=".png"),
-    "SSD": None,
-    "STEREO797": None,
-    "STEREO1000": dict(path=os.path.join(DenseFuse_root, "STEREO1000"), suffix=".png"),
-    "DUTRGBD": dict(path=os.path.join(DenseFuse_root, "DUT"), suffix=".png"),
+    "STEREO1000": dict(path=os.path.join(DisenFuse_root, "STEREO1000"), suffix=".png"),
+    "DUTRGBD": dict(path=os.path.join(DisenFuse_root, "DUT"), suffix=".png"),
 }
 
 DPANet_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/2020-TIP-DPANet"
@@ -310,7 +294,7 @@ AFNet = {
     "NLPR": dict(path=os.path.join(AFNet_root, "NLPR-TEST"), suffix=".png"),
     "RGBD135": dict(path=os.path.join(AFNet_root, "DES"), suffix=".png"),
     "SIP": dict(path=os.path.join(AFNet_root, "SIP"), suffix=".png"),
-    "SSD": None,
+    "SSD": dict(path=os.path.join(AFNet_root, "SSD"), suffix=".png"),
     "STEREO797": dict(path=os.path.join(AFNet_root, "STEREO"), suffix=".png"),
     "STEREO1000": dict(path=os.path.join(AFNet_root, "STERE"), suffix=".png"),
     "DUTRGBD": None,
@@ -346,8 +330,8 @@ CTMF_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/CTMF"
 CTMF = {
     "LFSD": dict(path=os.path.join(CTMF_root, "LFSD"), suffix=".png"),
     "NJUD": dict(path=os.path.join(CTMF_root, "NJUD"), suffix=".png"),
-    "NLPR": dict(path=os.path.join(CTMF_root, "NLPR"), suffix=".png"),
-    "RGBD135": dict(path=os.path.join(CTMF_root, "RGBD135"), suffix=".png"),
+    "NLPR": dict(path=os.path.join(CTMF_root, "NLPR"), suffix=".jpg"),
+    "RGBD135": dict(path=os.path.join(CTMF_root, "RGBD135"), suffix=".bmp"),
     "SIP": dict(path=os.path.join(CTMF_root, "SIP"), suffix=".png"),
     "SSD": dict(path=os.path.join(CTMF_root, "SSD"), suffix=".png"),
     "STEREO797": None,
@@ -387,7 +371,7 @@ DF = {
     "NJUD": dict(path=os.path.join(DF_root, "NJUD"), suffix=".png"),
     "NLPR": dict(path=os.path.join(DF_root, "NLPR"), suffix=".png"),
     "RGBD135": dict(path=os.path.join(DF_root, "RGBD135"), suffix=".png"),
-    "SIP": dict(path=os.path.join(DF_root, "SIP"), suffix=".png"),
+    "SIP": dict(path=os.path.join(DF_root, "SIP/SIP"), suffix=".png"),
     "SSD": dict(path=os.path.join(DF_root, "SSD"), suffix=".png"),
     "STEREO797": dict(path=os.path.join(DF_root, "STEREO"), suffix=".png"),
     "STEREO1000": dict(path=os.path.join(DF_root, "STERE"), suffix=".png"),
@@ -424,8 +408,8 @@ MMCI_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/MMCI"
 MMCI = {
     "LFSD": dict(path=os.path.join(MMCI_root, "LFSD"), suffix=".png"),
     "NJUD": dict(path=os.path.join(MMCI_root, "NJUD"), suffix=".png"),
-    "NLPR": dict(path=os.path.join(MMCI_root, "NLPR"), suffix=".png"),
-    "RGBD135": dict(path=os.path.join(MMCI_root, "RGBD135"), suffix=".png"),
+    "NLPR": dict(path=os.path.join(MMCI_root, "NLPR"), suffix=".jpg"),
+    "RGBD135": dict(path=os.path.join(MMCI_root, "RGBD135"), suffix=".bmp"),
     "SIP": dict(path=os.path.join(MMCI_root, "SIP"), suffix=".png"),
     "SSD": dict(path=os.path.join(MMCI_root, "SSD"), suffix=".png"),
     "STEREO797": dict(path=os.path.join(MMCI_root, "STEREO"), suffix=".png"),
@@ -450,7 +434,7 @@ PCANet_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/PCANet"
 PCANet = {
     "LFSD": dict(path=os.path.join(PCANet_root, "LFSD"), suffix=".png"),
     "NJUD": dict(path=os.path.join(PCANet_root, "NJUD"), suffix=".png"),
-    "NLPR": dict(path=os.path.join(PCANet_root, "NLPR"), suffix=".png"),
+    "NLPR": dict(path=os.path.join(PCANet_root, "NLPR"), suffix=".jpg"),
     "RGBD135": dict(path=os.path.join(PCANet_root, "RGBD135"), suffix=".png"),
     "SIP": dict(path=os.path.join(PCANet_root, "SIP"), suffix=".png"),
     "SSD": dict(path=os.path.join(PCANet_root, "SSD"), suffix=".png"),
@@ -459,6 +443,7 @@ PCANet = {
     "DUTRGBD": dict(path=os.path.join(PCANet_root, "DUT-RGBD"), suffix=".png"),
 }
 
+# 当前数据有问题暂时不测
 PDNet_root = "/home/lart/Datasets/Saliency/PaperResults/RGBDSOD/PDNet"
 PDNet = {
     "LFSD": dict(path=os.path.join(PDNet_root, "LFSD"), suffix=".png"),
@@ -488,40 +473,39 @@ TANet = {
 curve_info = curve_info_generator()
 methods_info_for_drawing = OrderedDict(
     {
-        "HDFNet_VGG16": curve_info(HDFNet_VGG16, "HDFNet_VGG16"),
-        "HDFNet_VGG19": curve_info(HDFNet_VGG19, "HDFNet_VGG19"),
-        "HDFNet_Res50": curve_info(HDFNet_Res50, "HDFNet_Res50"),
-        "JLDCF": curve_info(JLDCF, "JLDCF"),
-        "CoNet": curve_info(CoNet, "CoNet"),
-        "BBSNet": curve_info(BBSNet, "BBSNet"),
-        "CMWNet": curve_info(CMWNet, "CMWNet"),
-        "FRDT": curve_info(FRDT, "FRDT"),
-        "S2MA": curve_info(S2MA, "S2MA"),
-        "UCNet": curve_info(UCNet, "UCNet"),
-        "UCNet_ABP": curve_info(UCNet_ABP, "UCNet_ABP"),
-        "UCNet_CVAE": curve_info(UCNet_CVAE, "UCNet_CVAE"),
-        "CasGNN": curve_info(CasGNN, "CasGNN"),
-        "DANet_VGG16": curve_info(DANet_VGG16, "DANet_VGG16"),
-        "DANet_VGG19": curve_info(DANet_VGG19, "DANet_VGG19"),
-        "PGAR": curve_info(PGAR, "PGAR"),
-        "DenseFuse": curve_info(DenseFuse, "DenseFuse"),
-        "DPANet": curve_info(DPANet, "DPANet"),
-        "ICNet": curve_info(ICNet, "ICNet"),
-        "D3Net": curve_info(D3Net, "D3Net"),
-        "RD3D": curve_info(RD3D, "RD3D"),
-        "AFNet": curve_info(AFNet, "AFNet"),
-        "CDCP": curve_info(CDCP, "CDCP"),
-        "CTMF": curve_info(CTMF, "CTMF"),
-        "DCMC": curve_info(DCMC, "DCMC"),
-        "DES": curve_info(DES, "DES"),
-        "DF": curve_info(DF, "DF"),
-        "DMRA": curve_info(DMRA, "DMRA"),
-        "MB": curve_info(MB, "MB"),
-        "MMCI": curve_info(MMCI, "MMCI"),
-        "NLPR": curve_info(NLPR, "NLPR"),
-        "PCANet": curve_info(PCANet, "PCANet"),
-        "PDNet": curve_info(PDNet, "PDNet"),
-        "TANet": curve_info(TANet, "TANet"),
+        # "HDFNet_VGG16": curve_info(HDFNet_VGG16, "HDFNet_VGG16"),
+        # "HDFNet_VGG19": curve_info(HDFNet_VGG19, "HDFNet_VGG19"),
+        # "HDFNet_Res50": curve_info(HDFNet_Res50, "HDFNet_Res50"),
+        # "JLDCF": curve_info(JLDCF, "JLDCF"),
+        # "CoNet": curve_info(CoNet, "CoNet"),
+        # "BBSNet": curve_info(BBSNet, "BBSNet"),
+        # "CMWNet": curve_info(CMWNet, "CMWNet"),
+        # "FRDT": curve_info(FRDT, "FRDT"),
+        # "S2MA": curve_info(S2MA, "S2MA"),
+        # "UCNet": curve_info(UCNet, "UCNet"),
+        # "UCNet_ABP": curve_info(UCNet_ABP, "UCNet_ABP"),
+        # "UCNet_CVAE": curve_info(UCNet_CVAE, "UCNet_CVAE"),
+        # "CasGNN": curve_info(CasGNN, "CasGNN"),
+        # "DANet_VGG16": curve_info(DANet_VGG16, "DANet_VGG16"),
+        # "DANet_VGG19": curve_info(DANet_VGG19, "DANet_VGG19"),
+        # "PGAR": curve_info(PGAR, "PGAR"),
+        # "DisenFuse": curve_info(DisenFuse, "DisenFuse"),
+        # "DPANet": curve_info(DPANet, "DPANet"),
+        # "ICNet": curve_info(ICNet, "ICNet"),
+        # "D3Net": curve_info(D3Net, "D3Net"),
+        # "RD3D": curve_info(RD3D, "RD3D"),
+        # "AFNet": curve_info(AFNet, "AFNet"),
+        # "CDCP": curve_info(CDCP, "CDCP"),
+        # "CTMF": curve_info(CTMF, "CTMF"),
+        # "DCMC": curve_info(DCMC, "DCMC"),
+        # "DES": curve_info(DES, "DES"),
+        # "DF": curve_info(DF, "DF"),
+        # "DMRA": curve_info(DMRA, "DMRA"),
+        # "MB": curve_info(MB, "MB"),
+        # "MMCI": curve_info(MMCI, "MMCI"),
+        # "NLPR": curve_info(NLPR, "NLPR"),
+        # "PCANet": curve_info(PCANet, "PCANet"),
+        # "TANet": curve_info(TANet, "TANet"),
     }
 )
 
@@ -544,7 +528,7 @@ methods_info_for_selecting = OrderedDict(
         "DANet_VGG16": simple_info(DANet_VGG16, "DANet_VGG16"),
         "DANet_VGG19": simple_info(DANet_VGG19, "DANet_VGG19"),
         "PGAR": simple_info(PGAR, "PGAR"),
-        "DenseFuse": simple_info(DenseFuse, "DenseFuse"),
+        "DisenFuse": simple_info(DisenFuse, "DisenFuse"),
         "DPANet": simple_info(DPANet, "DPANet"),
         "ICNet": simple_info(ICNet, "ICNet"),
         "D3Net": simple_info(D3Net, "D3Net"),
@@ -560,7 +544,6 @@ methods_info_for_selecting = OrderedDict(
         "MMCI": simple_info(MMCI, "MMCI"),
         "NLPR": simple_info(NLPR, "NLPR"),
         "PCANet": simple_info(PCANet, "PCANet"),
-        "PDNet": simple_info(PDNet, "PDNet"),
         "TANet": simple_info(TANet, "TANet"),
     }
 )
