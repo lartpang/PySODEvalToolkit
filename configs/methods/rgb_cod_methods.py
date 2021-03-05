@@ -2,7 +2,7 @@
 import os
 from collections import OrderedDict
 
-from configs.utils import curve_info_generator, simple_info_generator
+from configs.utils.config_generator import curve_info_generator, simple_info_generator
 
 _COD_METHODS_MAT_ROOT = "/home/lart/Coding/GIT/CODToolbox/Onekey_Evaluation_Code/OnekeyEvaluationCode/Results/Result-COD10K-test"
 _COD_METHODS_PRED_ROOT = "/home/lart/Datasets/Saliency/PaperResults/COD"

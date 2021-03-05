@@ -2,7 +2,7 @@
 import os
 from collections import OrderedDict
 
-from configs.utils import curve_info_generator, simple_info_generator
+from configs.utils.config_generator import curve_info_generator, simple_info_generator
 
 _RGBSOD_METHODS_ROOT = "/home/lart/Datasets/Saliency/PaperResults/RGBSOD"
 _RGBSOD_DATASET_NAMES = ["PASCAL-S", "ECSSD", "HKU-IS", "DUT-OMRON", "DUTS-TE"]

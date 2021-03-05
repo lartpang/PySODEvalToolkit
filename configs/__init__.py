@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from untracked import rgb_cod_methods
-
 from .datasets.rgb_cod import rgb_cod_data
 from .datasets.rgb_cosod import rgb_cosod_data
 from .datasets.rgb_sod import rgb_sod_data
 from .datasets.rgbd_sod import rgbd_sod_data
-from .methods import rgb_cosod_methods, rgb_sod_methods, rgbd_sod_methods
+from .methods import (
+    rgb_cod_methods,
+    rgb_cosod_methods,
+    rgb_sod_methods,
+    rgbd_sod_methods,
+)
 
 total_info = dict(
     rgb_cosod=dict(

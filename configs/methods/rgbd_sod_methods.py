@@ -2,7 +2,7 @@
 import os
 from collections import OrderedDict
 
-from configs.utils import curve_info_generator, simple_info_generator
+from configs.utils.config_generator import curve_info_generator, simple_info_generator
 
 HDFNet_VGG16_root = "/home/lart/Coding/HDFFile/output/HDFNet/HDFNet_VGG16"
 HDFNet_VGG16 = {
@@ -473,39 +473,39 @@ TANet = {
 curve_info = curve_info_generator()
 methods_info_for_drawing = OrderedDict(
     {
-        # "HDFNet_VGG16": curve_info(HDFNet_VGG16, "HDFNet_VGG16"),
-        # "HDFNet_VGG19": curve_info(HDFNet_VGG19, "HDFNet_VGG19"),
-        # "HDFNet_Res50": curve_info(HDFNet_Res50, "HDFNet_Res50"),
-        # "JLDCF": curve_info(JLDCF, "JLDCF"),
-        # "CoNet": curve_info(CoNet, "CoNet"),
-        # "BBSNet": curve_info(BBSNet, "BBSNet"),
-        # "CMWNet": curve_info(CMWNet, "CMWNet"),
-        # "FRDT": curve_info(FRDT, "FRDT"),
-        # "S2MA": curve_info(S2MA, "S2MA"),
-        # "UCNet": curve_info(UCNet, "UCNet"),
-        # "UCNet_ABP": curve_info(UCNet_ABP, "UCNet_ABP"),
-        # "UCNet_CVAE": curve_info(UCNet_CVAE, "UCNet_CVAE"),
-        # "CasGNN": curve_info(CasGNN, "CasGNN"),
-        # "DANet_VGG16": curve_info(DANet_VGG16, "DANet_VGG16"),
-        # "DANet_VGG19": curve_info(DANet_VGG19, "DANet_VGG19"),
-        # "PGAR": curve_info(PGAR, "PGAR"),
-        # "DisenFuse": curve_info(DisenFuse, "DisenFuse"),
-        # "DPANet": curve_info(DPANet, "DPANet"),
-        # "ICNet": curve_info(ICNet, "ICNet"),
-        # "D3Net": curve_info(D3Net, "D3Net"),
-        # "RD3D": curve_info(RD3D, "RD3D"),
-        # "AFNet": curve_info(AFNet, "AFNet"),
-        # "CDCP": curve_info(CDCP, "CDCP"),
-        # "CTMF": curve_info(CTMF, "CTMF"),
-        # "DCMC": curve_info(DCMC, "DCMC"),
-        # "DES": curve_info(DES, "DES"),
-        # "DF": curve_info(DF, "DF"),
-        # "DMRA": curve_info(DMRA, "DMRA"),
-        # "MB": curve_info(MB, "MB"),
-        # "MMCI": curve_info(MMCI, "MMCI"),
-        # "NLPR": curve_info(NLPR, "NLPR"),
-        # "PCANet": curve_info(PCANet, "PCANet"),
-        # "TANet": curve_info(TANet, "TANet"),
+        "HDFNet_VGG16": curve_info(HDFNet_VGG16, "HDFNet_VGG16"),
+        "HDFNet_VGG19": curve_info(HDFNet_VGG19, "HDFNet_VGG19"),
+        "HDFNet_Res50": curve_info(HDFNet_Res50, "HDFNet_Res50"),
+        "JLDCF": curve_info(JLDCF, "JLDCF"),
+        "CoNet": curve_info(CoNet, "CoNet"),
+        "BBSNet": curve_info(BBSNet, "BBSNet"),
+        "CMWNet": curve_info(CMWNet, "CMWNet"),
+        "FRDT": curve_info(FRDT, "FRDT"),
+        "S2MA": curve_info(S2MA, "S2MA"),
+        "UCNet": curve_info(UCNet, "UCNet"),
+        "UCNet_ABP": curve_info(UCNet_ABP, "UCNet_ABP"),
+        "UCNet_CVAE": curve_info(UCNet_CVAE, "UCNet_CVAE"),
+        "CasGNN": curve_info(CasGNN, "CasGNN"),
+        "DANet_VGG16": curve_info(DANet_VGG16, "DANet_VGG16"),
+        "DANet_VGG19": curve_info(DANet_VGG19, "DANet_VGG19"),
+        "PGAR": curve_info(PGAR, "PGAR"),
+        "DisenFuse": curve_info(DisenFuse, "DisenFuse"),
+        "DPANet": curve_info(DPANet, "DPANet"),
+        "ICNet": curve_info(ICNet, "ICNet"),
+        "D3Net": curve_info(D3Net, "D3Net"),
+        "RD3D": curve_info(RD3D, "RD3D"),
+        "AFNet": curve_info(AFNet, "AFNet"),
+        "CDCP": curve_info(CDCP, "CDCP"),
+        "CTMF": curve_info(CTMF, "CTMF"),
+        "DCMC": curve_info(DCMC, "DCMC"),
+        "DES": curve_info(DES, "DES"),
+        "DF": curve_info(DF, "DF"),
+        "DMRA": curve_info(DMRA, "DMRA"),
+        "MB": curve_info(MB, "MB"),
+        "MMCI": curve_info(MMCI, "MMCI"),
+        "NLPR": curve_info(NLPR, "NLPR"),
+        "PCANet": curve_info(PCANet, "PCANet"),
+        "TANet": curve_info(TANet, "TANet"),
     }
 )
 
