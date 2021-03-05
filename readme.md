@@ -25,7 +25,7 @@ A Python-based salient object detection and video object segmentation evaluation
 
 ## 使用方法
 
-### General/Co - RGB/RGBD - SOD
+### General/Co-RGB/RGBD-SOD
 
 可见各自文件中的配置项。
 
