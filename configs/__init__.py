@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .datasets.rgb_cod import rgb_cod_data
 from .datasets.rgb_cosod import rgb_cosod_data
-from .datasets.rgb_sod import rgb_sod_data
+from .datasets.rgb_sod import rgb_sod_data, rgb_sod_info_for_drawing
 from .datasets.rgbd_sod import rgbd_sod_data
 from .methods import (
     rgb_cod_methods,
@@ -19,7 +19,10 @@ total_info = dict(
         ),
     ),
     rgb_sod=dict(
-        dataset=rgb_sod_data,
+        dataset=dict(
+            basic=rgb_sod_data,
+            drawing=rgb_sod_info_for_drawing,
+        ),
         method=dict(
             drawing=rgb_sod_methods.methods_info_for_drawing,
             selecting=rgb_sod_methods.methods_info_for_selecting,

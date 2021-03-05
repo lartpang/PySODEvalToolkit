@@ -51,3 +51,34 @@ rgb_sod_data = OrderedDict(
         "SOC": SOC_TE,
     }
 )
+
+
+def make_ax_info(pr_x_lim = None, pr_y_lim = None, fm_x_lim = None, fm_y_lim = None):
+    default_info = {
+        "pr": {  # pr曲线的配置
+            "x_label": "Recall",  # 横坐标标签
+            "y_label": "Precision",  # 纵坐标标签
+            "x_lim": pr_x_lim or (0.1, 1),  # 横坐标显示范围
+            "y_lim": pr_y_lim or (0.1, 1),  # 纵坐标显示范围
+            },
+        "fm": {  # fm曲线的配置
+            "x_label": "Threshold",  # 横坐标标签
+            "y_label": r"F$_{\beta}$",  # 纵坐标标签
+            "x_lim": fm_x_lim or (0, 1),  # 横坐标显示范围
+            "y_lim": fm_y_lim or (0, 1),  # 纵坐标显示范围
+        },
+    }
+    return default_info
+    
+
+rgb_sod_info_for_drawing = OrderedDict(
+    {
+        # "DUTS-TR": DUTS_TR,
+        "DUTS_TE": make_ax_info(fm_y_lim=(0.2, 0.9)),
+        "PASCAL-S": make_ax_info(fm_y_lim=(0.3, 0.9)),
+        "ECSSD": make_ax_info(fm_y_lim=(0.3, 1)),
+        "HKU-IS": make_ax_info(fm_y_lim=(0.2, 1)),
+        "DUT-OMRON": make_ax_info(fm_y_lim=(0.2, 0.8)),
+        "SOC": make_ax_info(),
+    }
+)

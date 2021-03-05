@@ -167,16 +167,12 @@ def cal_all_metrics():
 
 def draw_pr_fm_curve(for_pr: bool = True):
     mode = "pr" if for_pr else "fm"
-    mode_axes_setting = cfg["axes_setting"][mode]
-
-    x_label, y_label = mode_axes_setting["x_label"], mode_axes_setting["y_label"]
-    x_lim, y_lim = mode_axes_setting["x_lim"], mode_axes_setting["y_lim"]
-
+    
     qualitative_results = np.load(
         os.path.join(cfg["qualitative_npy_path"]), allow_pickle=True
     ).item()
 
-    row_num = 2
+    row_num = 1
     curve_drawer = CurveDrawer(
         row_num=row_num, col_num=math.ceil(len(cfg["dataset_info"].keys()) / row_num)
     )
@@ -184,6 +180,9 @@ def draw_pr_fm_curve(for_pr: bool = True):
     for idx, dataset_name in enumerate(cfg["dataset_info"].keys()):
         # 与cfg[dataset_info]中的key保持一致
         dataset_results = qualitative_results[dataset_name]
+        mode_axes_setting = cfg["axes_setting"][dataset_name][mode]
+        x_label, y_label = mode_axes_setting["x_label"], mode_axes_setting["y_label"]
+        x_lim, y_lim = mode_axes_setting["x_lim"], mode_axes_setting["y_lim"]
         for method_name, method_info in cfg["drawing_info"].items():
             # 与cfg[drawing_info]中的key保持一致
             method_results = dataset_results.get(method_name, None)
@@ -208,16 +207,20 @@ def draw_pr_fm_curve(for_pr: bool = True):
                 x_lim=x_lim,
                 y_lim=y_lim,
             )
-    curve_drawer.show()
+    # curve_drawer.show() 
+    curve_drawer.save_fig(os.path.join(output_path, 'curve.png'))
+
 
 
 if __name__ == "__main__":
-    data_type = "rgbd_sod"
+    # data_type = "rgbd_sod"
+    data_type = "rgb_sod"
     data_info = total_info[data_type]
     output_path = "./output"  # 存放输出文件的文件夹
 
+
     cfg = {  # 针对多个模型评估比较的设置
-        "dataset_info": data_info["dataset"],
+        "dataset_info": data_info["dataset"]["basic"],
         "drawing_info": data_info["method"]["drawing"],  # 包含所有待比较模型结果的信息和绘图配置的字典
         "record_path": os.path.join(output_path, f"{data_type}.txt"),  # 用来保存测试结果的文件的路径
         "xlsx_path": os.path.join(output_path, f"{data_type}.xlsx"),
@@ -229,25 +232,12 @@ if __name__ == "__main__":
         "quantitative_npy_path": os.path.join(
             output_path, data_type + "_" + "quantitative_results.npy"
         ),
-        "axes_setting": {  # 不同曲线的绘图配置
-            "pr": {  # pr曲线的配置
-                "x_label": "Recall",  # 横坐标标签
-                "y_label": "Precision",  # 纵坐标标签
-                "x_lim": (0.1, 1),  # 横坐标显示范围
-                "y_lim": (0.1, 1),  # 纵坐标显示范围
-            },
-            "fm": {  # fm曲线的配置
-                "x_label": "Threshold",  # 横坐标标签
-                "y_label": r"F$_{\beta}$",  # 纵坐标标签
-                "x_lim": (0, 1),  # 横坐标显示范围
-                "y_lim": (0, 0.9),  # 纵坐标显示范围
-            },
-        },
+        "axes_setting": data_info["dataset"]["drawing"],# 不同曲线的绘图配置, 不同数据集应该有不同的设定
         "bit_num": 3,  # 评估结果保留的小数点后数据的位数
         "resume_record": True,  # 是否保留之前的评估记录（针对record_path文件有效）
         "skipped_names": [],
     }
 
     make_dir(output_path)
-    cal_all_metrics()
-    # draw_pr_fm_curve(for_pr=True)
+    # cal_all_metrics()
+    draw_pr_fm_curve(for_pr=False)
