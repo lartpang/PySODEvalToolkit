@@ -8,8 +8,8 @@ import numpy as np
 
 
 class CurveDrawer(object):
-    def __init__(self, row_num, col_num):
-        fig, axes = plt.subplots(nrows=row_num, ncols=col_num)
+    def __init__(self, row_num, col_num, ax_w = 3, ax_h = 3):
+        fig, axes = plt.subplots(nrows=row_num, ncols=col_num, figsize=( ax_w * col_num, ax_h * row_num))
         self.fig = fig
         self.axes = axes.flatten()
 
@@ -78,7 +78,7 @@ class CurveDrawer(object):
         ax.set_ylabel(y_label, fontdict=self.font_cfg["label"])
 
         # 对坐标刻度的设置
-        label = [f"{x:.2f}" for x in np.linspace(0, 1, 11)]
+        label = [f"{x:.1f}" for x in np.linspace(0, 1, 11)]
         ax.set_xticks(np.linspace(0, 1, 11))
         ax.set_yticks(np.linspace(0, 1, 11))
         ax.set_xticklabels(labels=label, fontdict=self.font_cfg["ticks"])
@@ -108,6 +108,10 @@ class CurveDrawer(object):
 
     def show(self):
         plt.show()
+    
+    def save_fig(self, file_name):
+        plt.tight_layout()
+        self.fig.savefig(file_name)
 
 
 if __name__ == "__main__":
