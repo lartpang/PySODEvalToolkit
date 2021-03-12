@@ -16,6 +16,11 @@ from openpyxl.worksheet.worksheet import Worksheet
 # - Python之re模块: https://www.cnblogs.com/shenjianping/p/11647473.html
 class _BaseExcelRecorder(object):
     def __init__(self, xlsx_path: str):
+        """
+        提供写xlsx文档功能的基础类。主要基于openpyxl实现了一层更方便的封装。
+
+        :param xlsx_path: xlsx文档的路径。
+        """
         self.xlsx_path = xlsx_path
         if not os.path.exists(self.xlsx_path):
             print("We have created a new excel file!!!")
@@ -129,6 +134,20 @@ class MetricExcelRecorder(_BaseExcelRecorder):
         dataset_names=None,
         metric_names=None,
     ):
+        """
+        向xlsx文档写数据的类
+
+        :param xlsx_path: 对应的xlsx文档路径
+        :param sheet_name: 要写入数据对应的sheet名字
+            默认为 `results`
+        :param repalce_config: 用于替换对应数据字典的键的模式，会被用于re.sub来进行替换
+            默认为 dict(lower=True, replace=(r"[_-]", ""))
+        :param row_header: 用于指定表格工作表左上角的内容，这里默认为 `["methods", "num_data"]`
+        :param dataset_names: 对应的数据集名称列表
+            默认为rgb sod的数据集合 ["pascals", "ecssd", "hkuis", "dutste", "dutomron"]
+        :param metric_names: 对应指标名称列表
+            默认为 ["smeasure","wfmeasure","mae","adpfm","meanfm","maxfm","adpem","meanem","maxem"]
+        """
         super().__init__(xlsx_path=xlsx_path)
         if sheet_name is None:
             sheet_name = "results"

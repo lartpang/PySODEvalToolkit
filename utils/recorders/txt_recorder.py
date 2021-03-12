@@ -8,6 +8,13 @@ from datetime import datetime
 
 class TxtRecorder:
     def __init__(self, txt_path, resume=True, max_method_name_width=10):
+        """
+        用于向txt文档写数据的类。
+
+        :param txt_path: txt文档路径
+        :param resume: 是否要继续使用之前的文档，如果没有就重新创建
+        :param max_method_name_width: 方法字符串的最大长度
+        """
         self.txt_path = txt_path
         self.max_method_name_width = max_method_name_width
         mode = "a" if resume else "w"

@@ -4,6 +4,26 @@ A Python-based salient object detection and video object segmentation evaluation
 
 > **重要提示**，最近基于Fan的matlab代码，实现了一份更加快速和准确的指标代码<https://github.com/lartpang/PySODMetrics>，已经整合到该代码中。
 
+## TODO
+
+- [ ] 添加更详细的注释
+- [ ] 优化xlsx导出的代码
+- [ ] 剥离USVOS部分的代码，让本仓库更专注一些
+
+## 重要提示
+
+- 2021年03月12日
+  - 这一版本正式将sod的评估、绘图代码与配置分离，主要考虑如下
+    - 用户的配置是需要调整的，这部分不适宜被git严格的监视，也便于提交后续更新的时候，直接忽略关于配置的更改，即后续更新时，
+      用户配置部分会不再更新，若是添加新功能，直接调整原始的函数，其参数默认关闭新功能，保证用户不会受到影响。
+    - sod和cosod评估方式有差异，但是绘图方式一致，所以现将评估绘图拆分成独立部分，置于metrics/sod文件夹下，之后或许或调整位置，
+      但这种拆分策略不变。
+  - 优化了cosod的评估代码，对sod和cosod的指标recorder部分进行了简化。
+  - 不再使用独立的sod_metrics代码，由于我已经将PySODMetrics发布到了PyPI上，所以可以直接通过pip安装。
+  - 使用添加了对于print的一个彩色增强的封装，可见`./utils/misc.py`中的`colored_print`。
+  - git不再跟踪方法配置文件和数据集配置文件，这部分现有的作为示例，仅供使用者独立补充和参考。
+  - 修复了之前绘制Fm曲线时x的问题，之前取反了。详见<https://github.com/lartpang/Py-SOD-VOS-EvalToolkit/issues/2>。
+
 ## 特性
 
 * 提供11项显著性目标检测指标的评估
@@ -26,6 +46,12 @@ A Python-based salient object detection and video object segmentation evaluation
 ## 使用方法
 
 ### General/Co-RGB/RGBD-SOD
+
+先安装指标代码库：
+
+```python
+pip install pysodmetrics
+```
 
 可见各自文件中的配置项。
 

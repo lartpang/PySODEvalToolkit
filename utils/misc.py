@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from collections import namedtuple
 
 import cv2
 import numpy as np
@@ -224,3 +225,22 @@ def get_target_key(target_dict: dict, key: str) -> str:
     """
     target_keys = {k.lower(): k for k in target_dict.keys()}
     return target_keys.get(key.lower(), None)
+
+
+def colored_print(msg: str, mode: str = "general"):
+    """
+    为不同类型的字符串消息的打印提供一些显示格式的定制
+
+    :param msg: 要输出的字符串消息
+    :param mode: 对应的字符串打印模式，目前支持 general/warning/error
+    :return:
+    """
+    if mode == "general":
+        msg = msg
+    elif mode == "warning":
+        msg = f"\033[5;31m{msg}\033[0m"
+    elif mode == "error":
+        msg = f"\033[1;31m{msg}\033[0m"
+    else:
+        raise ValueError(f"{mode} is invalid mode.")
+    print(msg)

@@ -1,7 +1,3 @@
-# private files
-/output/
-/untracked/
-
 # Big files
 **/*.png
 **/*.zip
@@ -273,4 +269,9 @@ cython_debug/
 *.iml
 out
 gen
+
+# private files
 /output/
+/untracked/
+/configs/methods/
+/configs/datasets/

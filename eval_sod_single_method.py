@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-import copy
+
 import os
-from pprint import pprint
 
 from tqdm import tqdm
 
 from configs import total_info
-from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
+from utils.misc import colored_print, get_gt_pre_with_name, get_name_list, make_dir
+from utils.print_formatter import print_formatter
 from utils.recorders import MetricExcelRecorder, MetricRecorder
 
 
@@ -19,10 +19,10 @@ def cal_all_metrics():
         metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
     )
 
-    method_perf = {}
+    metrics = {}
     for dataset_name, dataset_path in dataset_info.items():
         if dataset_name in skipped_names:
-            print(f" ++>> {dataset_name} will be skipped.")
+            colored_print(msg=f"{dataset_name} will be skipped.", mode="warning")
             continue
 
         # 获取真值图片信息
@@ -40,7 +40,9 @@ def cal_all_metrics():
         # ==>> test the intersection between pre and gt for each method <<==
         method_dataset_info = pred_path.get(dataset_name, None)
         if method_dataset_info is None:
-            print(f" ==>> {model_name} does not have results on {dataset_name} <<== ")
+            colored_print(
+                msg=f"{model_name} does not have results on {dataset_name}", mode="warning"
+            )
             continue
 
         # 预测结果存放路径下的图片文件名字列表和扩展名称
@@ -50,18 +52,22 @@ def cal_all_metrics():
 
         # get the intersection
         eval_name_list = sorted(list(set(gt_name_list).intersection(set(pre_name_list))))
-        print(
-            f" ==>> It is evaluating {model_name} with {len(eval_name_list)} images"
-            f" (G:{len(gt_name_list)},P:{len(pre_name_list)}) images on dataset {dataset_name} <<== "
+        num_names = len(eval_name_list)
+
+        if num_names == 0:
+            colored_print(
+                msg=f"{model_name} does not have results on {dataset_name}", mode="warning"
+            )
+            continue
+
+        colored_print(
+            f"Evaluating {model_name} with {len(eval_name_list)} images"
+            f" (G:{len(gt_name_list)},P:{len(pre_name_list)}) images on dataset {dataset_name}"
         )
 
         metric_recoder = MetricRecorder()
         tqdm_bar = tqdm(
-            eval_name_list,
-            total=len(eval_name_list),
-            leave=False,
-            ncols=119,
-            desc=f"({dataset_name})",
+            eval_name_list, total=num_names, leave=False, ncols=119, desc=f"({dataset_name})"
         )
         for img_name in tqdm_bar:
             gt, pre = get_gt_pre_with_name(
@@ -73,27 +79,16 @@ def cal_all_metrics():
                 to_normalize=False,
             )
             metric_recoder.update(pre=pre, gt=gt)
-        metric_results = metric_recoder.show(bit_num=None)  # 保留原始数据
+        method_results = metric_recoder.show(num_bits=num_bits, return_ndarray=False)
+        method_metrics = method_results["numerical"]
+        metrics[dataset_name] = method_metrics
 
-        perf_on_dataset = copy.deepcopy(metric_results)
-        del perf_on_dataset["fm"]
-        del perf_on_dataset["em"]
-        del perf_on_dataset["p"]
-        del perf_on_dataset["r"]
+        excel_recorder(row_data=method_metrics, dataset_name=dataset_name, method_name=model_name)
 
-        perf_on_dataset["meanFm"] = metric_results["fm"].mean()
-        perf_on_dataset["maxFm"] = metric_results["fm"].max()
-        perf_on_dataset["meanEm"] = metric_results["em"].mean()
-        perf_on_dataset["maxEm"] = metric_results["em"].max()
-        perf_on_dataset = {k: v.round(bit_num) for k, v in perf_on_dataset.items()}
-        print(perf_on_dataset)
-        method_perf[dataset_name] = perf_on_dataset
-    excel_recorder(
-        row_data=method_perf[dataset_name],
-        dataset_name=dataset_name,
-        method_name=model_name,
-    )
-    pprint(method_perf)
+        print(method_metrics)
+
+    formatted_string = print_formatter(metrics)
+    colored_print(f"all methods have been tested:\n{formatted_string}")
 
 
 if __name__ == "__main__":
@@ -106,6 +101,6 @@ if __name__ == "__main__":
     dataset_info = data_info["dataset"]
     export_xlsx = False  # 是否导出xlsx文件
     xlsx_path = os.path.join(output_path, "resutls.xlsx")  # xlsx文件的路径
-    bit_num = 3  # 评估结果保留的小数点后数据的位数
+    num_bits = 3  # 评估结果保留的小数点后数据的位数
     skipped_names = []  # 可以跳过指定的数据集
     cal_all_metrics()
