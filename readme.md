@@ -12,6 +12,9 @@ A Python-based salient object detection and video object segmentation evaluation
 
 ## 重要提示
 
+- 2021年03月14日
+  - 这一版本将数据集和方法的配置方法转换为基于json文件的配置。
+  - 一些配套的更改与简化。
 - 2021年03月12日
   - 这一版本正式将sod的评估、绘图代码与配置分离，主要考虑如下
     - 用户的配置是需要调整的，这部分不适宜被git严格的监视，也便于提交后续更新的时候，直接忽略关于配置的更改，即后续更新时，

@@ -5,8 +5,8 @@ from collections import defaultdict
 import numpy as np
 import scipy.io as scio
 
-from configs import total_info
 from metrics.sod import draw_curves
+from utils.generate_info import get_datasets_info, get_methods_info
 from utils.misc import colored_print, make_dir
 from utils.print_formatter import print_formatter
 from utils.recorders import MetricExcelRecorder, TxtRecorder
@@ -27,6 +27,25 @@ NOTE:
 * Our method automatically calculates the intersection of `pre` and `gt`.
     But it needs to have uniform naming rules for `pre` and `gt`.
 """
+
+total_info = dict(
+    rgb_cosod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_cosod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_cosod_methods.json",
+    ),
+    rgb_sod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_sod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_sod_methods.json",
+    ),
+    rgb_cod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_cod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_cod_methods.json",
+    ),
+    rgbd_sod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgbd_sod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgbd_sod_methods.json",
+    ),
+)
 
 
 def export_valid_npy():
@@ -127,8 +146,11 @@ if __name__ == "__main__":
     output_path = "./output"
 
     # 包含所有待比较模型结果的信息和绘图配置的字典
-    dataset_info = data_info["dataset"]
-    drawing_info = data_info["method"]["drawing"]
+    # 包含所有待比较模型结果的信息和绘图配置的字典
+    dataset_info = get_datasets_info(datastes_info_json=data_info["dataset"])
+    drawing_info = get_methods_info(
+        methods_info_json=data_info["method"], for_drawing=True, our_name="SINet"
+    )
 
     # 用来保存测试结果的文件的路径
     txt_path = os.path.join(output_path, f"{data_type}.txt")

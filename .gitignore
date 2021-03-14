@@ -273,5 +273,4 @@ gen
 # private files
 /output/
 /untracked/
-/configs/methods/
-/configs/datasets/
+/configs/

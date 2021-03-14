@@ -4,10 +4,25 @@ import os
 
 from tqdm import tqdm
 
-from configs import total_info
+from utils.generate_info import get_datasets_info
 from utils.misc import colored_print, get_gt_pre_with_name, get_name_list, make_dir
 from utils.print_formatter import print_formatter
 from utils.recorders import MetricExcelRecorder, MetricRecorder
+
+total_info = dict(
+    rgb_sod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_sod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_sod_methods.json",
+    ),
+    rgb_cod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_cod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_cod_methods.json",
+    ),
+    rgbd_sod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgbd_sod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgbd_sod_methods.json",
+    ),
+)
 
 
 def cal_all_metrics():
@@ -98,7 +113,8 @@ if __name__ == "__main__":
     make_dir(output_path)
     model_name = "CoNet"  # 待评估的模型名字
     pred_path = data_info["method"]["selecting"][model_name]  # 待评估的预测结果的路径
-    dataset_info = data_info["dataset"]
+    # 包含所有待比较模型结果的信息和绘图配置的字典
+    dataset_info = get_datasets_info(datastes_info_json=data_info["dataset"])
     export_xlsx = False  # 是否导出xlsx文件
     xlsx_path = os.path.join(output_path, "resutls.xlsx")  # xlsx文件的路径
     num_bits = 3  # 评估结果保留的小数点后数据的位数

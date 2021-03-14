@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 
-from configs import total_info
 from metrics.sod import cal_cosod_matrics, draw_curves
+from utils.generate_info import get_datasets_info, get_methods_info
 
 """
 Include: Fm Curve/PR Curves/MAE/(max/mean/weighted) Fmeasure/Smeasure/Emeasure
@@ -11,6 +11,13 @@ NOTE:
 * Our method automatically calculates the intersection of `pre` and `gt`.
     But it needs to have uniform naming rules for `pre` and `gt`.
 """
+
+total_info = dict(
+    rgb_cosod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_cosod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_cosod_methods.json",
+    ),
+)
 
 for_pr = True  # 是否绘制pr曲线
 
@@ -21,10 +28,11 @@ data_info = total_info[data_type]
 # 存放输出文件的文件夹
 output_path = "./output"
 
-# 针对多个模型评估比较的设置
-dataset_info = data_info["dataset"]
 # 包含所有待比较模型结果的信息和绘图配置的字典
-drawing_info = data_info["method"]["drawing"]
+dataset_info = get_datasets_info(datastes_info_json=data_info["dataset"])
+drawing_info = get_methods_info(
+    methods_info_json=data_info["method"], for_drawing=True, our_name="SINet"
+)
 
 # 用来保存测试结果的文件的路径
 txt_path = os.path.join(output_path, f"{data_type}.txt")
@@ -66,7 +74,7 @@ axes_setting = {
 # 评估结果保留的小数点后数据的位数
 num_bits = 3
 
-# 是否保留之前的评估记录（针对record_path文件有效）
+# 是否保留之前的评估记录（针对txt_path文件有效）
 resume_record = True
 
 # 在计算指标的时候要跳过的数据集

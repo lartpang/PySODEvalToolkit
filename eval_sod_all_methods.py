@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+
 import os
 
-from configs import total_info
 from metrics.sod import cal_sod_matrics, draw_curves
+from utils.generate_info import get_datasets_info, get_methods_info
 
 """
 Include: Fm Curve/PR Curves/MAE/(max/mean/weighted) Fmeasure/Smeasure/Emeasure
@@ -11,6 +12,21 @@ NOTE:
 * Our method automatically calculates the intersection of `pre` and `gt`.
     But it needs to have uniform naming rules for `pre` and `gt`.
 """
+
+total_info = dict(
+    rgb_sod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_sod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_sod_methods.json",
+    ),
+    rgb_cod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgb_cod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgb_cod_methods.json",
+    ),
+    rgbd_sod=dict(
+        dataset="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/json/rgbd_sod.json",
+        method="/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/methods/json/rgbd_sod_methods.json",
+    ),
+)
 
 for_pr = True  # 绘制pr曲线还是fm曲线
 
@@ -22,8 +38,10 @@ data_info = total_info[data_type]
 output_path = "./output"
 
 # 包含所有待比较模型结果的信息和绘图配置的字典
-dataset_info = data_info["dataset"]
-drawing_info = data_info["method"]["drawing"]
+dataset_info = get_datasets_info(datastes_info_json=data_info["dataset"])
+drawing_info = get_methods_info(
+    methods_info_json=data_info["method"], for_drawing=True, our_name="SINet"
+)
 
 # 用来保存测试结果的文件的路径
 txt_path = os.path.join(output_path, f"{data_type}.txt")
@@ -69,7 +87,7 @@ num_bits = 3
 resume_record = True
 
 # 在计算指标的时候要跳过的数据集
-skipped_datasets = ["COD10K"]
+skipped_datasets = []
 
 cal_sod_matrics(
     data_type=data_type,
