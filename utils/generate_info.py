@@ -55,7 +55,10 @@ def simple_info_generator():
 
 
 def get_methods_info(
-    methods_info_json: str, for_drawing: bool = False, *, our_name: str = "Ours"
+    methods_info_json: str,
+    for_drawing: bool = False,
+    our_name: str = "Ours",
+    specific_methods: list = None,
 ) -> OrderedDict:
     """
     在json文件中存储的对应方法的字典的键值会被直接用于绘图
@@ -63,6 +66,7 @@ def get_methods_info(
     :param methods_info_json: 保存方法信息的json文件
     :param for_drawing: 是否用于绘制曲线图，True会补充一些绘图信息
     :param our_name: 在绘图时，可以通过指定our_name来使用红色加粗实线强调特定方法的曲线
+    :param specific_methods: 仅返回列表中指定的方法的信息，为None时，返回所有
     :return: methods_full_info
     """
 
@@ -72,6 +76,11 @@ def get_methods_info(
 
     with open(methods_info_json, encoding="utf-8", mode="r") as f:
         methods_info = json.load(f, object_pairs_hook=OrderedDict)  # 有序载入
+
+    if specific_methods:
+        for method_name in specific_methods:
+            if method_name not in methods_info:
+                raise ValueError(f"The info of {method_name} is not in the methods_info_json.")
 
     if our_name:
         assert our_name in methods_info, f"{our_name} is not in json file."
@@ -83,6 +92,9 @@ def get_methods_info(
 
     methods_full_info = []
     for method_name, method_path in methods_info.items():
+        if specific_methods and (method_name not in specific_methods):
+            continue
+
         if for_drawing and our_name and our_name == method_name:
             method_info = info_generator(method_path, method_name, line_color="red", line_width=3)
         else:
@@ -91,11 +103,12 @@ def get_methods_info(
     return OrderedDict(methods_full_info)
 
 
-def get_datasets_info(datastes_info_json: str) -> OrderedDict:
+def get_datasets_info(datastes_info_json: str, specific_datasets: list = None) -> OrderedDict:
     """
     在json文件中存储的所有数据集的信息会被直接导出到一个字典中
 
     :param datastes_info_json: 保存方法信息的json文件
+    :param specific_datasets: 指定读取信息的数据集名字，为None时，读取所有
     :return: datastes_full_info
     """
 
@@ -105,4 +118,16 @@ def get_datasets_info(datastes_info_json: str) -> OrderedDict:
 
     with open(datastes_info_json, encoding="utf-8", mode="r") as f:
         datasets_info = json.load(f, object_pairs_hook=OrderedDict)  # 有序载入
-    return datasets_info
+
+    if specific_datasets:
+        for dataset_name in specific_datasets:
+            if dataset_name not in datasets_info:
+                raise ValueError(f"The info of {dataset_name} is not in the datasets_info_json.")
+
+    datasets_full_info = []
+    for dataset_name, data_path in datasets_info.items():
+        if specific_datasets and (dataset_name not in specific_datasets):
+            continue
+
+        datasets_full_info.append((dataset_name, data_path))
+    return OrderedDict(datasets_full_info)

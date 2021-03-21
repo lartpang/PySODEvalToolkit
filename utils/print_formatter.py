@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+from tabulate import tabulate
+
+
 def print_formatter(
     results: dict, method_name_length=10, metric_name_length=5, metric_value_length=5
 ):
@@ -37,7 +41,7 @@ def clip_string(string: str, max_length: int, padding_char: str = " ", mode: str
         padding_length = max_length - real_length
         if mode == "left":
             clipped_string = string + f"{padding_char}" * padding_length
-        elif mode == "middle":
+        elif mode == "center":
             left_padding_str = f"{padding_char}" * (padding_length // 2)
             right_padding_str = f"{padding_char}" * (padding_length - padding_length // 2)
             clipped_string = left_padding_str + string + right_padding_str
@@ -49,3 +53,47 @@ def clip_string(string: str, max_length: int, padding_char: str = " ", mode: str
         clipped_string = string[:max_length]
 
     return clipped_string
+
+
+def formatter_for_tabulate(
+    results: dict, method_name_length=10, metric_value_length=5, tablefmt="github"
+):
+    """
+    tabulate format:
+
+    >>> table = [["spam",42],["eggs",451],["bacon",0]]
+    >>> headers = ["item", "qty"]
+    >>> print(tabulate(table, headers, tablefmt="github"))
+    | item   | qty   |
+    |--------|-------|
+    | spam   | 42    |
+    | eggs   | 451   |
+    | bacon  | 0     |
+
+    本函数的作用：
+        针对不同的数据集各自构造符合tabulate格式的列表并使用换行符间隔串联起来返回
+    """
+    all_tables = []
+    for dataset_name, dataset_metrics in results.items():
+        all_tables.append(f"Dataset: {dataset_name}")
+
+        table = []
+        headers = ["methods"]
+        for method_name, metric_info in dataset_metrics.items():
+            showed_method_name = clip_string(
+                method_name, max_length=method_name_length, mode="left"
+            )
+            method_row = [showed_method_name]
+            # 保障顺序的一致性，虽然python3中已经实现了字典的有序性，但是为了确保万无一失，（毕竟可能设计到导出和导入）这里直接重新排序
+            for metric_name, metric_value in sorted(metric_info.items(), key=lambda item: item[0]):
+                showed_value_string = clip_string(
+                    str(metric_value), max_length=metric_value_length, mode="center"
+                )
+                if metric_name not in headers:
+                    headers.append(metric_name)
+                method_row.append(showed_value_string)
+            table.append(method_row)
+        all_tables.append(tabulate(table, headers, tablefmt=tablefmt))
+
+    formatted_string = "\n".join(all_tables)
+    return formatted_string

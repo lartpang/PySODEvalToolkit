@@ -12,7 +12,7 @@ from utils.misc import (
     get_name_with_group_list,
     make_dir,
 )
-from utils.print_formatter import print_formatter
+from utils.print_formatter import formatter_for_tabulate
 from utils.recorders import GroupedMetricRecorder, MetricExcelRecorder, TxtRecorder
 
 
@@ -31,7 +31,6 @@ def cal_cosod_matrics(
     xlsx_path: str = "",
     drawing_info: dict = None,
     dataset_info: dict = None,
-    skipped_datasets: list = None,
     save_npy: bool = True,
     curves_npy_path: str = "./curves.npy",
     metrics_npy_path: str = "./metrics.npy",
@@ -71,10 +70,6 @@ def cal_cosod_matrics(
     )
 
     for dataset_name, dataset_path in dataset_info.items():
-        if dataset_name in skipped_datasets:
-            colored_print(msg=f"{dataset_name} will be skipped.", mode="warning")
-            continue
-
         txt_recoder.add_row(row_name="Dataset", row_data=dataset_name, row_start_str="\n")
 
         # 获取真值图片信息
@@ -165,5 +160,5 @@ def cal_cosod_matrics(
         np.save(curves_npy_path, curves)
         np.save(metrics_npy_path, metrics)
         colored_print(f"all methods have been saved in {curves_npy_path} and {metrics_npy_path}")
-    formatted_string = print_formatter(metrics)
+    formatted_string = formatter_for_tabulate(metrics)
     colored_print(f"all methods have been tested:\n{formatted_string}")

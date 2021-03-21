@@ -274,3 +274,4 @@ gen
 /output/
 /untracked/
 /configs/
+*.py
