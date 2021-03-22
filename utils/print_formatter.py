@@ -56,7 +56,11 @@ def clip_string(string: str, max_length: int, padding_char: str = " ", mode: str
 
 
 def formatter_for_tabulate(
-    results: dict, method_name_length=10, metric_value_length=5, tablefmt="github"
+    results: dict,
+    dataset_titlefmt: str = "Dataset: {}",
+    method_name_length=None,
+    metric_value_length=None,
+    tablefmt="github",
 ):
     """
     tabulate format:
@@ -75,23 +79,23 @@ def formatter_for_tabulate(
     """
     all_tables = []
     for dataset_name, dataset_metrics in results.items():
-        all_tables.append(f"Dataset: {dataset_name}")
+        all_tables.append(dataset_titlefmt.format(dataset_name))
 
         table = []
         headers = ["methods"]
         for method_name, metric_info in dataset_metrics.items():
-            showed_method_name = clip_string(
-                method_name, max_length=method_name_length, mode="left"
-            )
-            method_row = [showed_method_name]
+            if method_name_length:
+                method_name = clip_string(method_name, max_length=method_name_length, mode="left")
+            method_row = [method_name]
             # 保障顺序的一致性，虽然python3中已经实现了字典的有序性，但是为了确保万无一失，（毕竟可能设计到导出和导入）这里直接重新排序
             for metric_name, metric_value in sorted(metric_info.items(), key=lambda item: item[0]):
-                showed_value_string = clip_string(
-                    str(metric_value), max_length=metric_value_length, mode="center"
-                )
+                if metric_value_length:
+                    metric_value = clip_string(
+                        str(metric_value), max_length=metric_value_length, mode="center"
+                    )
                 if metric_name not in headers:
                     headers.append(metric_name)
-                method_row.append(showed_value_string)
+                method_row.append(metric_value)
             table.append(method_row)
         all_tables.append(tabulate(table, headers, tablefmt=tablefmt))
 
