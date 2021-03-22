@@ -49,7 +49,7 @@ class TxtRecorder:
             else:
                 # 真实数据长度超过了限定，这时需要近似保留小数
                 # 保留指定位数，注意，这里由于数据都是0~1之间的数据，所以使用round的时候需要去掉前面的`0.`
-                msg += f"{round(metric_value, ndigits=value_width-2)}"
+                msg += f"{round(metric_value, ndigits=value_width - 2)}"
             msg += " "
         msg += row_end_str
         with open(self.txt_path, mode="a", encoding="utf-8") as f:
