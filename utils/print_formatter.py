@@ -65,14 +65,17 @@ def formatter_for_tabulate(
     """
     tabulate format:
 
-    >>> table = [["spam",42],["eggs",451],["bacon",0]]
-    >>> headers = ["item", "qty"]
-    >>> print(tabulate(table, headers, tablefmt="github"))
-    | item   | qty   |
-    |--------|-------|
-    | spam   | 42    |
-    | eggs   | 451   |
-    | bacon  | 0     |
+    ::
+
+        table = [["spam",42],["eggs",451],["bacon",0]]
+        headers = ["item", "qty"]
+        print(tabulate(table, headers, tablefmt="github"))
+
+        | item   | qty   |
+        |--------|-------|
+        | spam   | 42    |
+        | eggs   | 451   |
+        | bacon  | 0     |
 
     本函数的作用：
         针对不同的数据集各自构造符合tabulate格式的列表并使用换行符间隔串联起来返回
