@@ -275,3 +275,4 @@ gen
 /untracked/
 /configs/
 *.py
+./results/rgb_sod.md
