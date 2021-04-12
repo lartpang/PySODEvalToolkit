@@ -2,8 +2,6 @@
 
 A Python-based salient object detection evaluation toolbox.
 
-> **重要提示**，最近基于Fan的matlab代码，实现了一份更加快速和准确的指标代码<https://github.com/lartpang/PySODMetrics>，已经整合到该代码中。
-
 ## TODO
 
 - [ ] 添加更详细的注释
@@ -12,6 +10,8 @@ A Python-based salient object detection evaluation toolbox.
 - [ ] 提供对输出的结果基于某个指标进行排序的功能的支持（即，使表格更加直观）
 
 ## 重要提示
+
+> 最近基于Fan的matlab代码，实现了一份更加快速和准确的指标代码<https://github.com/lartpang/PySODMetrics>，已经整合到该代码中。
 
 - 2021年04月12日
     - 移除USVOS代码到独立的仓库。
