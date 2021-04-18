@@ -7,6 +7,7 @@ index_template = """<!DOCTYPE html>
 <html>
 
 <head>
+<<<<<<< HEAD
 <meta charset="UTF-8">
 <title>{html_title}</title>
 <link rel="stylesheet" href="./src/lixiaolai.css" type="text/css" >
@@ -19,6 +20,16 @@ index_template = """<!DOCTYPE html>
 <p>
 {html_body}
 </p>
+=======
+    <meta charset="UTF-8">
+    <title>{html_title}</title>
+    <link rel="stylesheet" href="./src/lixiaolai.css" type="text/css" >
+</head>
+
+<body>
+    <p>{html_urls}</p>
+    {html_body}
+>>>>>>> add the url list in all htmls and the index.html
 </body>
 
 </html>
@@ -27,6 +38,7 @@ html_template = """<!DOCTYPE html>
 <html>
 
 <head>
+<<<<<<< HEAD
 <meta charset="UTF-8">
 <title>{html_title}</title>
 <link rel="stylesheet" href="./src/lixiaolai.css" type="text/css" >
@@ -40,6 +52,17 @@ html_template = """<!DOCTYPE html>
 <p>
 {html_body}
 </p>
+=======
+    <meta charset="UTF-8">
+    <title>{html_title}</title>
+    <link rel="stylesheet" href="./src/lixiaolai.css" type="text/css" >
+    <script src="./src/sort_table.js"></script>
+</head>
+
+<body>
+    <p>{html_urls}</p>
+    {html_body}
+>>>>>>> add the url list in all htmls and the index.html
 </body>
 
 </html>
