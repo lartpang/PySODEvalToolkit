@@ -1,5 +1,7 @@
-import markdown2
+# -*- coding: utf-8 -*-
 import os
+
+import markdown2
 
 html_template = """<!DOCTYPE html>
 <html>
@@ -22,7 +24,9 @@ md_root = "../results"
 html_root = "../results/htmls"
 
 md_names = [
-    name[:-3] for name in os.listdir(md_root) if os.path.isfile(os.path.join(md_root, name)) and name.endswith(".md")
+    name[:-3]
+    for name in os.listdir(md_root)
+    if os.path.isfile(os.path.join(md_root, name)) and name.endswith(".md")
 ]
 
 for md_name in md_names:
