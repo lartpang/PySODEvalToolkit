@@ -274,5 +274,5 @@ gen
 /output/
 /untracked/
 /configs/
-*.py
+/*.py
 ./results/rgb_sod.md

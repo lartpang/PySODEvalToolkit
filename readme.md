@@ -7,7 +7,7 @@ A Python-based salient object detection evaluation toolbox.
 - [ ] 添加更详细的注释
 - [ ] 优化xlsx导出的代码
 - [X] 剥离USVOS部分的代码，让本仓库更专注一些，相关代码已转移到另一个仓库[PyDavis16EvalToolbox](https://github.com/lartpang/PyDavis16EvalToolbox)。
-- [ ] 提供对输出的结果基于某个指标进行排序的功能的支持（即，使表格更加直观）
+- [X] 提供对输出的结果基于某个指标进行排序的功能的支持（即，使表格更加直观）,将会在接下来的版本中添加github-page来展示动态页面。
 
 ## 重要提示
 
