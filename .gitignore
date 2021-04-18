@@ -275,4 +275,5 @@ gen
 /untracked/
 /configs/
 /*.py
-./results/rgb_sod.md
+/results/rgb_sod.md
+/results/htmls/*.html
