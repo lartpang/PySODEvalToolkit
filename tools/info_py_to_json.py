@@ -9,7 +9,7 @@ from importlib import import_module
 
 from mmcv import Config
 
-source_config_root = "/home/lart/Coding/Py-SOD-VOS-EvalToolkit/configs/datasets/py"
+source_config_root = "../configs/datasets/py"
 sys.path.insert(0, source_config_root)
 
 source_config_files = os.listdir(source_config_root)

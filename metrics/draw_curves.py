@@ -15,7 +15,11 @@ def draw_curves(
     row_num: int = 1,
     drawing_info: dict = None,
     dataset_info: dict = None,
+    dataset_alias: dict = None,
 ):
+    if dataset_alias is None:
+        dataset_alias = {}
+
     mode = "pr" if for_pr else "fm"
     mode_axes_setting = axes_setting[mode]
 
@@ -52,7 +56,7 @@ def draw_curves(
 
             curve_drawer.draw_method_curve(
                 curr_idx=idx,
-                dataset_name=dataset_name.upper(),
+                dataset_name=dataset_alias.get(dataset_name, dataset_name).upper(),
                 method_curve_setting=method_info["curve_setting"],
                 x_label=x_label,
                 y_label=y_label,

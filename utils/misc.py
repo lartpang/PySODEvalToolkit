@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-from collections import namedtuple
 
 import cv2
 import numpy as np
@@ -47,7 +46,7 @@ def get_name_list_and_suffix(data_path: str) -> tuple:
     return name_list, file_ext
 
 
-def get_name_list(data_path: str, file_ext: str = None) -> tuple:
+def get_name_list(data_path: str, file_ext: str = None) -> list:
     if os.path.isfile(data_path):
         assert data_path.endswith((".txt", ".lst"))
         data_list = []

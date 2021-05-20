@@ -122,7 +122,7 @@ def cal_cosod_matrics(
                 grouped_data.items(),
                 total=num_groups,
                 leave=False,
-                ncols=119,
+                ncols=79,
                 desc=f"[{dataset_name}]",
             )
             for group_name, names_in_group in inter_group_bar:
@@ -130,7 +130,7 @@ def cal_cosod_matrics(
                     names_in_group,
                     total=len(names_in_group),
                     leave=False,
-                    ncols=119,
+                    ncols=79,
                     desc=f"({group_name})",
                 )
                 for img_name in intra_group_bar:

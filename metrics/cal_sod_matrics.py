@@ -103,7 +103,7 @@ def cal_sod_matrics(
 
             metric_recoder = MetricRecorder()
             tqdm_bar = tqdm(
-                eval_name_list, total=num_names, leave=False, ncols=119, desc=f"[{dataset_name}]"
+                eval_name_list, total=num_names, leave=False, ncols=79, desc=f"[{dataset_name}]"
             )
             for img_name in tqdm_bar:
                 gt, pre = get_gt_pre_with_name(

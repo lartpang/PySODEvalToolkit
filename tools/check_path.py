@@ -4,29 +4,20 @@ import json
 import os
 from collections import OrderedDict
 
-"""
-Include: Fm Curve/PR Curves/MAE/(max/mean/weighted) Fmeasure/Smeasure/Emeasure
-
-NOTE:
-* Our method automatically calculates the intersection of `pre` and `gt`.
-    But it needs to have uniform naming rules for `pre` and `gt`.
-"""
-
 total_info = dict(
     rgb_sod=dict(
-        dataset="/home/lart/Coding/GIT/PySODEvalToolkit/configs/datasets/json/rgb_sod.json",
-        method="/home/lart/Coding/GIT/PySODEvalToolkit/configs/methods/json/rgb_sod_methods.json",
+        dataset="../configs/datasets/json/rgb_sod.json",
+        method="../configs/methods/json/rgb_sod_methods.json",
     ),
     rgb_cod=dict(
-        dataset="/home/lart/Coding/GIT/PySODEvalToolkit/configs/datasets/json/rgb_cod.json",
-        method="/home/lart/Coding/GIT/PySODEvalToolkit/configs/methods/json/rgb_cod_methods.json",
+        dataset="../configs/datasets/json/rgb_cod.json",
+        method="../configs/methods/json/rgb_cod_methods.json",
     ),
     rgbd_sod=dict(
-        dataset="/home/lart/Coding/GIT/PySODEvalToolkit/configs/datasets/json/rgbd_sod.json",
-        method="/home/lart/Coding/GIT/PySODEvalToolkit/configs/methods/json/rgbd_sod_methods.json",
+        dataset="../configs/datasets/json/rgbd_sod.json",
+        method="../configs/methods/json/rgbd_sod_methods.json",
     ),
 )
-
 
 exclude_json = ["rgb_sod", "rgb_cod"]
 exclude_dataset = []
