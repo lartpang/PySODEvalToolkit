@@ -2,20 +2,17 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<title>rgbd_sod</title>
-<link rel="stylesheet" href="./src/lixiaolai.css" type="text/css" >
-<script src="./src/sort_table.js"></script>
+    <meta charset="UTF-8">
+    <title>rgbd_sod</title>
+    <link rel="stylesheet" href="./src/lixiaolai.css" type="text/css" >
+    <script src="./src/sort_table.js"></script>
 </head>
 
 <body>
-<p>
-<ul>
+    <p><ul>
 <li><a href='./rgbd_sod.html'>RGBD_SOD</a></li>
-</ul>
-</p>
-<p>
-<h1>RGBD SOD评估结果</h1>
+</ul></p>
+    <h1>RGBD SOD评估结果</h1>
 
 <h2>LFSD</h2>
 
@@ -108,7 +105,19 @@
   <td>0.802</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>JLDCF_R101</td>
+  <td>0.073</td>
+  <td>0.862</td>
+  <td>0.899</td>
+  <td>0.862</td>
+  <td>0.886</td>
+  <td>0.851</td>
+  <td>0.894</td>
+  <td>0.861</td>
+  <td>0.821</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
   <td>0.071</td>
   <td>0.862</td>
   <td>0.901</td>
@@ -156,7 +165,7 @@
   <td>0.826</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.066</td>
   <td>0.876</td>
   <td>0.908</td>
@@ -168,7 +177,7 @@
   <td>0.834</td>
 </tr>
 <tr>
-  <td>FRDT</td>
+  <td>FRDT_V19</td>
   <td>0.074</td>
   <td>0.857</td>
   <td>0.899</td>
@@ -180,7 +189,7 @@
   <td>0.814</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.094</td>
   <td>0.837</td>
   <td>0.876</td>
@@ -192,7 +201,7 @@
   <td>0.772</td>
 </tr>
 <tr>
-  <td>UCNet</td>
+  <td>UCNet_V16</td>
   <td>0.066</td>
   <td>0.864</td>
   <td>0.906</td>
@@ -204,7 +213,31 @@
   <td>0.832</td>
 </tr>
 <tr>
-  <td>CasGNN</td>
+  <td>UCNet<em>ABP</em>R50</td>
+  <td>0.069</td>
+  <td>0.856</td>
+  <td>0.9</td>
+  <td>0.843</td>
+  <td>0.896</td>
+  <td>0.839</td>
+  <td>0.903</td>
+  <td>0.853</td>
+  <td>0.818</td>
+</tr>
+<tr>
+  <td>UCNet<em>CVAE</em>R50</td>
+  <td>0.064</td>
+  <td>0.864</td>
+  <td>0.908</td>
+  <td>0.859</td>
+  <td>0.904</td>
+  <td>0.856</td>
+  <td>0.907</td>
+  <td>0.863</td>
+  <td>0.836</td>
+</tr>
+<tr>
+  <td>CasGNN_V16</td>
   <td>0.073</td>
   <td>0.846</td>
   <td>0.877</td>
@@ -240,7 +273,7 @@
   <td>0.795</td>
 </tr>
 <tr>
-  <td>PGAR</td>
+  <td>PGAR_V16</td>
   <td>0.074</td>
   <td>0.853</td>
   <td>0.894</td>
@@ -264,7 +297,7 @@
   <td>0.705</td>
 </tr>
 <tr>
-  <td>DPANet</td>
+  <td>DPANet_R50</td>
   <td>0.072</td>
   <td>0.864</td>
   <td>0.899</td>
@@ -276,7 +309,7 @@
   <td>0.814</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.071</td>
   <td>0.868</td>
   <td>0.9</td>
@@ -288,7 +321,7 @@
   <td>0.822</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.095</td>
   <td>0.825</td>
   <td>0.863</td>
@@ -300,7 +333,7 @@
   <td>0.76</td>
 </tr>
 <tr>
-  <td>RD3D</td>
+  <td>RD3D_3DR50</td>
   <td>0.073</td>
   <td>0.858</td>
   <td>0.898</td>
@@ -312,7 +345,7 @@
   <td>0.816</td>
 </tr>
 <tr>
-  <td>AFNet</td>
+  <td>AFNet_V16</td>
   <td>0.133</td>
   <td>0.738</td>
   <td>0.81</td>
@@ -322,6 +355,102 @@
   <td>0.815</td>
   <td>0.744</td>
   <td>0.671</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.088</td>
+  <td>0.828</td>
+  <td>0.867</td>
+  <td>0.813</td>
+  <td>0.863</td>
+  <td>0.811</td>
+  <td>0.872</td>
+  <td>0.826</td>
+  <td>0.775</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.12</td>
+  <td>0.796</td>
+  <td>0.851</td>
+  <td>0.781</td>
+  <td>0.808</td>
+  <td>0.754</td>
+  <td>0.864</td>
+  <td>0.792</td>
+  <td>0.696</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.142</td>
+  <td>0.788</td>
+  <td>0.841</td>
+  <td>0.811</td>
+  <td>0.713</td>
+  <td>0.668</td>
+  <td>0.874</td>
+  <td>0.822</td>
+  <td>0.641</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.076</td>
+  <td>0.847</td>
+  <td>0.899</td>
+  <td>0.849</td>
+  <td>0.893</td>
+  <td>0.845</td>
+  <td>0.9</td>
+  <td>0.856</td>
+  <td>0.811</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.132</td>
+  <td>0.787</td>
+  <td>0.84</td>
+  <td>0.779</td>
+  <td>0.775</td>
+  <td>0.722</td>
+  <td>0.838</td>
+  <td>0.771</td>
+  <td>0.663</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.112</td>
+  <td>0.8</td>
+  <td>0.856</td>
+  <td>0.794</td>
+  <td>0.82</td>
+  <td>0.763</td>
+  <td>0.842</td>
+  <td>0.786</td>
+  <td>0.716</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.111</td>
+  <td>0.801</td>
+  <td>0.851</td>
+  <td>0.794</td>
+  <td>0.821</td>
+  <td>0.771</td>
+  <td>0.847</td>
+  <td>0.796</td>
+  <td>0.719</td>
+</tr>
+<tr>
+  <td>MB</td>
+  <td>0.218</td>
+  <td>0.539</td>
+  <td>0.634</td>
+  <td>0.545</td>
+  <td>0.579</td>
+  <td>0.476</td>
+  <td>0.706</td>
+  <td>0.592</td>
+  <td>0.392</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -334,30 +463,6 @@
   <td>0.731</td>
   <td>0.63</td>
   <td>0.516</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.088</td>
-  <td>0.828</td>
-  <td>0.867</td>
-  <td>0.813</td>
-  <td>0.863</td>
-  <td>0.811</td>
-  <td>0.872</td>
-  <td>0.826</td>
-  <td>0.775</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.12</td>
-  <td>0.796</td>
-  <td>0.851</td>
-  <td>0.781</td>
-  <td>0.808</td>
-  <td>0.754</td>
-  <td>0.864</td>
-  <td>0.792</td>
-  <td>0.696</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -384,54 +489,6 @@
   <td>0.273</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.142</td>
-  <td>0.788</td>
-  <td>0.841</td>
-  <td>0.811</td>
-  <td>0.713</td>
-  <td>0.668</td>
-  <td>0.874</td>
-  <td>0.822</td>
-  <td>0.641</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.076</td>
-  <td>0.847</td>
-  <td>0.899</td>
-  <td>0.849</td>
-  <td>0.893</td>
-  <td>0.845</td>
-  <td>0.9</td>
-  <td>0.856</td>
-  <td>0.811</td>
-</tr>
-<tr>
-  <td>MB</td>
-  <td>0.218</td>
-  <td>0.539</td>
-  <td>0.634</td>
-  <td>0.545</td>
-  <td>0.579</td>
-  <td>0.476</td>
-  <td>0.706</td>
-  <td>0.592</td>
-  <td>0.392</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.132</td>
-  <td>0.787</td>
-  <td>0.84</td>
-  <td>0.779</td>
-  <td>0.775</td>
-  <td>0.722</td>
-  <td>0.838</td>
-  <td>0.771</td>
-  <td>0.663</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.21</td>
   <td>0.56</td>
@@ -442,30 +499,6 @@
   <td>0.784</td>
   <td>0.712</td>
   <td>0.375</td>
-</tr>
-<tr>
-  <td>PCANet</td>
-  <td>0.112</td>
-  <td>0.8</td>
-  <td>0.856</td>
-  <td>0.794</td>
-  <td>0.82</td>
-  <td>0.763</td>
-  <td>0.842</td>
-  <td>0.786</td>
-  <td>0.716</td>
-</tr>
-<tr>
-  <td>TANet</td>
-  <td>0.111</td>
-  <td>0.801</td>
-  <td>0.851</td>
-  <td>0.794</td>
-  <td>0.821</td>
-  <td>0.771</td>
-  <td>0.847</td>
-  <td>0.796</td>
-  <td>0.719</td>
 </tr>
 </tbody>
 </table>
@@ -561,7 +594,19 @@
   <td>0.877</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>JLDCF_R101</td>
+  <td>0.037</td>
+  <td>0.917</td>
+  <td>0.945</td>
+  <td>0.905</td>
+  <td>0.941</td>
+  <td>0.904</td>
+  <td>0.95</td>
+  <td>0.919</td>
+  <td>0.887</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
   <td>0.046</td>
   <td>0.896</td>
   <td>0.924</td>
@@ -609,7 +654,7 @@
   <td>0.892</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.046</td>
   <td>0.903</td>
   <td>0.923</td>
@@ -621,7 +666,7 @@
   <td>0.857</td>
 </tr>
 <tr>
-  <td>FRDT</td>
+  <td>FRDT_V19</td>
   <td>0.048</td>
   <td>0.898</td>
   <td>0.919</td>
@@ -633,7 +678,7 @@
   <td>0.855</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.053</td>
   <td>0.894</td>
   <td>0.916</td>
@@ -645,7 +690,7 @@
   <td>0.842</td>
 </tr>
 <tr>
-  <td>UCNet</td>
+  <td>UCNet_V16</td>
   <td>0.043</td>
   <td>0.897</td>
   <td>0.934</td>
@@ -657,7 +702,31 @@
   <td>0.868</td>
 </tr>
 <tr>
-  <td>CasGNN</td>
+  <td>UCNet<em>ABP</em>R50</td>
+  <td>0.039</td>
+  <td>0.9</td>
+  <td>0.939</td>
+  <td>0.89</td>
+  <td>0.937</td>
+  <td>0.889</td>
+  <td>0.942</td>
+  <td>0.9</td>
+  <td>0.874</td>
+</tr>
+<tr>
+  <td>UCNet<em>CVAE</em>R50</td>
+  <td>0.038</td>
+  <td>0.904</td>
+  <td>0.943</td>
+  <td>0.901</td>
+  <td>0.941</td>
+  <td>0.899</td>
+  <td>0.944</td>
+  <td>0.907</td>
+  <td>0.886</td>
+</tr>
+<tr>
+  <td>CasGNN_V16</td>
   <td>0.035</td>
   <td>0.911</td>
   <td>0.922</td>
@@ -693,7 +762,7 @@
   <td>0.857</td>
 </tr>
 <tr>
-  <td>PGAR</td>
+  <td>PGAR_V16</td>
   <td>0.042</td>
   <td>0.909</td>
   <td>0.935</td>
@@ -717,7 +786,7 @@
   <td>0.831</td>
 </tr>
 <tr>
-  <td>DPANet</td>
+  <td>DPANet_R50</td>
   <td>0.035</td>
   <td>0.92</td>
   <td>0.933</td>
@@ -729,7 +798,7 @@
   <td>0.882</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.052</td>
   <td>0.894</td>
   <td>0.913</td>
@@ -741,7 +810,7 @@
   <td>0.843</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.046</td>
   <td>0.9</td>
   <td>0.916</td>
@@ -753,7 +822,7 @@
   <td>0.854</td>
 </tr>
 <tr>
-  <td>RD3D</td>
+  <td>RD3D_3DR50</td>
   <td>0.036</td>
   <td>0.916</td>
   <td>0.942</td>
@@ -765,7 +834,7 @@
   <td>0.886</td>
 </tr>
 <tr>
-  <td>AFNet</td>
+  <td>AFNet_V16</td>
   <td>0.1</td>
   <td>0.772</td>
   <td>0.847</td>
@@ -775,6 +844,102 @@
   <td>0.853</td>
   <td>0.775</td>
   <td>0.696</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.053</td>
+  <td>0.878</td>
+  <td>0.9</td>
+  <td>0.837</td>
+  <td>0.91</td>
+  <td>0.85</td>
+  <td>0.923</td>
+  <td>0.877</td>
+  <td>0.828</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.085</td>
+  <td>0.849</td>
+  <td>0.866</td>
+  <td>0.788</td>
+  <td>0.847</td>
+  <td>0.779</td>
+  <td>0.913</td>
+  <td>0.845</td>
+  <td>0.72</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.151</td>
+  <td>0.737</td>
+  <td>0.818</td>
+  <td>0.744</td>
+  <td>0.669</td>
+  <td>0.605</td>
+  <td>0.833</td>
+  <td>0.757</td>
+  <td>0.544</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.051</td>
+  <td>0.886</td>
+  <td>0.92</td>
+  <td>0.871</td>
+  <td>0.919</td>
+  <td>0.872</td>
+  <td>0.927</td>
+  <td>0.886</td>
+  <td>0.846</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.079</td>
+  <td>0.859</td>
+  <td>0.882</td>
+  <td>0.813</td>
+  <td>0.851</td>
+  <td>0.794</td>
+  <td>0.915</td>
+  <td>0.853</td>
+  <td>0.739</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.059</td>
+  <td>0.877</td>
+  <td>0.909</td>
+  <td>0.844</td>
+  <td>0.895</td>
+  <td>0.84</td>
+  <td>0.924</td>
+  <td>0.872</td>
+  <td>0.803</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.061</td>
+  <td>0.878</td>
+  <td>0.909</td>
+  <td>0.844</td>
+  <td>0.895</td>
+  <td>0.841</td>
+  <td>0.925</td>
+  <td>0.874</td>
+  <td>0.803</td>
+</tr>
+<tr>
+  <td>MB</td>
+  <td>0.203</td>
+  <td>0.536</td>
+  <td>0.647</td>
+  <td>0.494</td>
+  <td>0.591</td>
+  <td>0.439</td>
+  <td>0.706</td>
+  <td>0.548</td>
+  <td>0.353</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -787,30 +952,6 @@
   <td>0.747</td>
   <td>0.619</td>
   <td>0.508</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.053</td>
-  <td>0.878</td>
-  <td>0.9</td>
-  <td>0.837</td>
-  <td>0.91</td>
-  <td>0.85</td>
-  <td>0.923</td>
-  <td>0.877</td>
-  <td>0.828</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.085</td>
-  <td>0.849</td>
-  <td>0.866</td>
-  <td>0.788</td>
-  <td>0.847</td>
-  <td>0.779</td>
-  <td>0.913</td>
-  <td>0.845</td>
-  <td>0.72</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -837,54 +978,6 @@
   <td>0.233</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.151</td>
-  <td>0.737</td>
-  <td>0.818</td>
-  <td>0.744</td>
-  <td>0.669</td>
-  <td>0.605</td>
-  <td>0.833</td>
-  <td>0.757</td>
-  <td>0.544</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.051</td>
-  <td>0.886</td>
-  <td>0.92</td>
-  <td>0.871</td>
-  <td>0.919</td>
-  <td>0.872</td>
-  <td>0.927</td>
-  <td>0.886</td>
-  <td>0.846</td>
-</tr>
-<tr>
-  <td>MB</td>
-  <td>0.203</td>
-  <td>0.536</td>
-  <td>0.647</td>
-  <td>0.494</td>
-  <td>0.591</td>
-  <td>0.439</td>
-  <td>0.706</td>
-  <td>0.548</td>
-  <td>0.353</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.079</td>
-  <td>0.859</td>
-  <td>0.882</td>
-  <td>0.813</td>
-  <td>0.851</td>
-  <td>0.794</td>
-  <td>0.915</td>
-  <td>0.853</td>
-  <td>0.739</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.201</td>
   <td>0.532</td>
@@ -895,30 +988,6 @@
   <td>0.719</td>
   <td>0.61</td>
   <td>0.303</td>
-</tr>
-<tr>
-  <td>PCANet</td>
-  <td>0.059</td>
-  <td>0.877</td>
-  <td>0.909</td>
-  <td>0.844</td>
-  <td>0.895</td>
-  <td>0.84</td>
-  <td>0.924</td>
-  <td>0.872</td>
-  <td>0.803</td>
-</tr>
-<tr>
-  <td>TANet</td>
-  <td>0.061</td>
-  <td>0.878</td>
-  <td>0.909</td>
-  <td>0.844</td>
-  <td>0.895</td>
-  <td>0.841</td>
-  <td>0.925</td>
-  <td>0.874</td>
-  <td>0.803</td>
 </tr>
 </tbody>
 </table>
@@ -1014,7 +1083,19 @@
   <td>0.883</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>JLDCF_R101</td>
+  <td>0.022</td>
+  <td>0.931</td>
+  <td>0.958</td>
+  <td>0.889</td>
+  <td>0.956</td>
+  <td>0.902</td>
+  <td>0.964</td>
+  <td>0.92</td>
+  <td>0.888</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
   <td>0.031</td>
   <td>0.908</td>
   <td>0.933</td>
@@ -1062,7 +1143,7 @@
   <td>0.878</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.029</td>
   <td>0.917</td>
   <td>0.94</td>
@@ -1074,7 +1155,7 @@
   <td>0.856</td>
 </tr>
 <tr>
-  <td>FRDT</td>
+  <td>FRDT_V19</td>
   <td>0.029</td>
   <td>0.914</td>
   <td>0.946</td>
@@ -1086,7 +1167,7 @@
   <td>0.857</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.03</td>
   <td>0.915</td>
   <td>0.942</td>
@@ -1098,7 +1179,7 @@
   <td>0.852</td>
 </tr>
 <tr>
-  <td>UCNet</td>
+  <td>UCNet_V16</td>
   <td>0.025</td>
   <td>0.92</td>
   <td>0.955</td>
@@ -1110,7 +1191,31 @@
   <td>0.878</td>
 </tr>
 <tr>
-  <td>CasGNN</td>
+  <td>UCNet<em>ABP</em>R50</td>
+  <td>0.024</td>
+  <td>0.919</td>
+  <td>0.954</td>
+  <td>0.89</td>
+  <td>0.952</td>
+  <td>0.891</td>
+  <td>0.957</td>
+  <td>0.906</td>
+  <td>0.881</td>
+</tr>
+<tr>
+  <td>UCNet<em>CVAE</em>R50</td>
+  <td>0.023</td>
+  <td>0.922</td>
+  <td>0.956</td>
+  <td>0.899</td>
+  <td>0.953</td>
+  <td>0.899</td>
+  <td>0.957</td>
+  <td>0.909</td>
+  <td>0.889</td>
+</tr>
+<tr>
+  <td>CasGNN_V16</td>
   <td>0.025</td>
   <td>0.919</td>
   <td>0.952</td>
@@ -1146,7 +1251,7 @@
   <td>0.862</td>
 </tr>
 <tr>
-  <td>PGAR</td>
+  <td>PGAR_V16</td>
   <td>0.024</td>
   <td>0.93</td>
   <td>0.955</td>
@@ -1170,7 +1275,7 @@
   <td>0.828</td>
 </tr>
 <tr>
-  <td>DPANet</td>
+  <td>DPANet_R50</td>
   <td>0.024</td>
   <td>0.928</td>
   <td>0.955</td>
@@ -1182,7 +1287,7 @@
   <td>0.875</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.028</td>
   <td>0.923</td>
   <td>0.945</td>
@@ -1194,7 +1299,7 @@
   <td>0.864</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.03</td>
   <td>0.912</td>
   <td>0.945</td>
@@ -1206,7 +1311,7 @@
   <td>0.849</td>
 </tr>
 <tr>
-  <td>RD3D</td>
+  <td>RD3D_3DR50</td>
   <td>0.022</td>
   <td>0.93</td>
   <td>0.959</td>
@@ -1218,7 +1323,7 @@
   <td>0.889</td>
 </tr>
 <tr>
-  <td>AFNet</td>
+  <td>AFNet_V16</td>
   <td>0.058</td>
   <td>0.799</td>
   <td>0.884</td>
@@ -1228,6 +1333,102 @@
   <td>0.879</td>
   <td>0.771</td>
   <td>0.693</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.038</td>
+  <td>0.884</td>
+  <td>0.92</td>
+  <td>0.818</td>
+  <td>0.914</td>
+  <td>0.835</td>
+  <td>0.929</td>
+  <td>0.862</td>
+  <td>0.807</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.056</td>
+  <td>0.86</td>
+  <td>0.869</td>
+  <td>0.724</td>
+  <td>0.84</td>
+  <td>0.74</td>
+  <td>0.929</td>
+  <td>0.825</td>
+  <td>0.679</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.1</td>
+  <td>0.771</td>
+  <td>0.837</td>
+  <td>0.681</td>
+  <td>0.716</td>
+  <td>0.599</td>
+  <td>0.833</td>
+  <td>0.706</td>
+  <td>0.514</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.031</td>
+  <td>0.899</td>
+  <td>0.941</td>
+  <td>0.853</td>
+  <td>0.939</td>
+  <td>0.864</td>
+  <td>0.947</td>
+  <td>0.879</td>
+  <td>0.838</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.059</td>
+  <td>0.856</td>
+  <td>0.872</td>
+  <td>0.73</td>
+  <td>0.841</td>
+  <td>0.737</td>
+  <td>0.913</td>
+  <td>0.815</td>
+  <td>0.676</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.044</td>
+  <td>0.874</td>
+  <td>0.916</td>
+  <td>0.795</td>
+  <td>0.887</td>
+  <td>0.803</td>
+  <td>0.925</td>
+  <td>0.841</td>
+  <td>0.762</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.041</td>
+  <td>0.886</td>
+  <td>0.916</td>
+  <td>0.795</td>
+  <td>0.901</td>
+  <td>0.819</td>
+  <td>0.941</td>
+  <td>0.863</td>
+  <td>0.779</td>
+</tr>
+<tr>
+  <td>MB</td>
+  <td>0.09</td>
+  <td>0.716</td>
+  <td>0.816</td>
+  <td>0.636</td>
+  <td>0.793</td>
+  <td>0.622</td>
+  <td>0.806</td>
+  <td>0.631</td>
+  <td>0.557</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -1240,30 +1441,6 @@
   <td>0.817</td>
   <td>0.647</td>
   <td>0.5</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.038</td>
-  <td>0.884</td>
-  <td>0.92</td>
-  <td>0.818</td>
-  <td>0.914</td>
-  <td>0.835</td>
-  <td>0.929</td>
-  <td>0.862</td>
-  <td>0.807</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.056</td>
-  <td>0.86</td>
-  <td>0.869</td>
-  <td>0.724</td>
-  <td>0.84</td>
-  <td>0.74</td>
-  <td>0.929</td>
-  <td>0.825</td>
-  <td>0.679</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -1290,54 +1467,6 @@
   <td>0.253</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.1</td>
-  <td>0.771</td>
-  <td>0.837</td>
-  <td>0.681</td>
-  <td>0.716</td>
-  <td>0.599</td>
-  <td>0.833</td>
-  <td>0.706</td>
-  <td>0.514</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.031</td>
-  <td>0.899</td>
-  <td>0.941</td>
-  <td>0.853</td>
-  <td>0.939</td>
-  <td>0.864</td>
-  <td>0.947</td>
-  <td>0.879</td>
-  <td>0.838</td>
-</tr>
-<tr>
-  <td>MB</td>
-  <td>0.09</td>
-  <td>0.716</td>
-  <td>0.816</td>
-  <td>0.636</td>
-  <td>0.793</td>
-  <td>0.622</td>
-  <td>0.806</td>
-  <td>0.631</td>
-  <td>0.557</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.059</td>
-  <td>0.856</td>
-  <td>0.872</td>
-  <td>0.73</td>
-  <td>0.841</td>
-  <td>0.737</td>
-  <td>0.913</td>
-  <td>0.815</td>
-  <td>0.676</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.119</td>
   <td>0.592</td>
@@ -1348,30 +1477,6 @@
   <td>0.714</td>
   <td>0.493</td>
   <td>0.311</td>
-</tr>
-<tr>
-  <td>PCANet</td>
-  <td>0.044</td>
-  <td>0.874</td>
-  <td>0.916</td>
-  <td>0.795</td>
-  <td>0.887</td>
-  <td>0.803</td>
-  <td>0.925</td>
-  <td>0.841</td>
-  <td>0.762</td>
-</tr>
-<tr>
-  <td>TANet</td>
-  <td>0.041</td>
-  <td>0.886</td>
-  <td>0.916</td>
-  <td>0.795</td>
-  <td>0.901</td>
-  <td>0.819</td>
-  <td>0.941</td>
-  <td>0.863</td>
-  <td>0.779</td>
 </tr>
 </tbody>
 </table>
@@ -1467,7 +1572,19 @@
   <td>0.884</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>JLDCF_R101</td>
+  <td>0.02</td>
+  <td>0.934</td>
+  <td>0.969</td>
+  <td>0.91</td>
+  <td>0.956</td>
+  <td>0.913</td>
+  <td>0.967</td>
+  <td>0.928</td>
+  <td>0.897</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
   <td>0.028</td>
   <td>0.91</td>
   <td>0.945</td>
@@ -1515,7 +1632,7 @@
   <td>0.901</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.022</td>
   <td>0.934</td>
   <td>0.967</td>
@@ -1527,7 +1644,7 @@
   <td>0.888</td>
 </tr>
 <tr>
-  <td>FRDT</td>
+  <td>FRDT_V19</td>
   <td>0.03</td>
   <td>0.9</td>
   <td>0.94</td>
@@ -1539,7 +1656,7 @@
   <td>0.838</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.021</td>
   <td>0.941</td>
   <td>0.974</td>
@@ -1551,7 +1668,7 @@
   <td>0.892</td>
 </tr>
 <tr>
-  <td>UCNet</td>
+  <td>UCNet_V16</td>
   <td>0.018</td>
   <td>0.933</td>
   <td>0.974</td>
@@ -1563,7 +1680,31 @@
   <td>0.908</td>
 </tr>
 <tr>
-  <td>CasGNN</td>
+  <td>UCNet<em>ABP</em>R50</td>
+  <td>0.016</td>
+  <td>0.939</td>
+  <td>0.978</td>
+  <td>0.928</td>
+  <td>0.975</td>
+  <td>0.927</td>
+  <td>0.978</td>
+  <td>0.941</td>
+  <td>0.924</td>
+</tr>
+<tr>
+  <td>UCNet<em>CVAE</em>R50</td>
+  <td>0.017</td>
+  <td>0.931</td>
+  <td>0.97</td>
+  <td>0.922</td>
+  <td>0.966</td>
+  <td>0.921</td>
+  <td>0.97</td>
+  <td>0.931</td>
+  <td>0.914</td>
+</tr>
+<tr>
+  <td>CasGNN_V16</td>
   <td>0.028</td>
   <td>0.894</td>
   <td>0.937</td>
@@ -1599,7 +1740,7 @@
   <td>0.877</td>
 </tr>
 <tr>
-  <td>PGAR</td>
+  <td>PGAR_V16</td>
   <td>0.026</td>
   <td>0.913</td>
   <td>0.939</td>
@@ -1623,7 +1764,7 @@
   <td>0.779</td>
 </tr>
 <tr>
-  <td>DPANet</td>
+  <td>DPANet_R50</td>
   <td>0.023</td>
   <td>0.919</td>
   <td>0.963</td>
@@ -1635,7 +1776,7 @@
   <td>0.868</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.027</td>
   <td>0.92</td>
   <td>0.959</td>
@@ -1647,7 +1788,7 @@
   <td>0.867</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.031</td>
   <td>0.898</td>
   <td>0.951</td>
@@ -1659,7 +1800,7 @@
   <td>0.829</td>
 </tr>
 <tr>
-  <td>RD3D</td>
+  <td>RD3D_3DR50</td>
   <td>0.019</td>
   <td>0.935</td>
   <td>0.975</td>
@@ -1671,7 +1812,7 @@
   <td>0.904</td>
 </tr>
 <tr>
-  <td>AFNet</td>
+  <td>AFNet_V16</td>
   <td>0.068</td>
   <td>0.77</td>
   <td>0.874</td>
@@ -1681,6 +1822,102 @@
   <td>0.881</td>
   <td>0.729</td>
   <td>0.641</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.038</td>
+  <td>0.872</td>
+  <td>0.927</td>
+  <td>0.829</td>
+  <td>0.888</td>
+  <td>0.824</td>
+  <td>0.923</td>
+  <td>0.846</td>
+  <td>0.787</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.055</td>
+  <td>0.863</td>
+  <td>0.911</td>
+  <td>0.778</td>
+  <td>0.826</td>
+  <td>0.756</td>
+  <td>0.932</td>
+  <td>0.844</td>
+  <td>0.686</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.131</td>
+  <td>0.687</td>
+  <td>0.806</td>
+  <td>0.574</td>
+  <td>0.653</td>
+  <td>0.472</td>
+  <td>0.822</td>
+  <td>0.594</td>
+  <td>0.391</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.03</td>
+  <td>0.9</td>
+  <td>0.944</td>
+  <td>0.865</td>
+  <td>0.932</td>
+  <td>0.872</td>
+  <td>0.942</td>
+  <td>0.888</td>
+  <td>0.842</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.065</td>
+  <td>0.848</td>
+  <td>0.904</td>
+  <td>0.762</td>
+  <td>0.825</td>
+  <td>0.735</td>
+  <td>0.928</td>
+  <td>0.822</td>
+  <td>0.65</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.05</td>
+  <td>0.843</td>
+  <td>0.911</td>
+  <td>0.774</td>
+  <td>0.836</td>
+  <td>0.761</td>
+  <td>0.891</td>
+  <td>0.802</td>
+  <td>0.71</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.046</td>
+  <td>0.858</td>
+  <td>0.919</td>
+  <td>0.795</td>
+  <td>0.863</td>
+  <td>0.79</td>
+  <td>0.91</td>
+  <td>0.828</td>
+  <td>0.738</td>
+</tr>
+<tr>
+  <td>MB</td>
+  <td>0.104</td>
+  <td>0.663</td>
+  <td>0.798</td>
+  <td>0.597</td>
+  <td>0.769</td>
+  <td>0.575</td>
+  <td>0.788</td>
+  <td>0.6</td>
+  <td>0.501</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -1693,30 +1930,6 @@
   <td>0.82</td>
   <td>0.618</td>
   <td>0.476</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.038</td>
-  <td>0.872</td>
-  <td>0.927</td>
-  <td>0.829</td>
-  <td>0.888</td>
-  <td>0.824</td>
-  <td>0.923</td>
-  <td>0.846</td>
-  <td>0.787</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.055</td>
-  <td>0.863</td>
-  <td>0.911</td>
-  <td>0.778</td>
-  <td>0.826</td>
-  <td>0.756</td>
-  <td>0.932</td>
-  <td>0.844</td>
-  <td>0.686</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -1743,54 +1956,6 @@
   <td>0.301</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.131</td>
-  <td>0.687</td>
-  <td>0.806</td>
-  <td>0.574</td>
-  <td>0.653</td>
-  <td>0.472</td>
-  <td>0.822</td>
-  <td>0.594</td>
-  <td>0.391</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.03</td>
-  <td>0.9</td>
-  <td>0.944</td>
-  <td>0.865</td>
-  <td>0.932</td>
-  <td>0.872</td>
-  <td>0.942</td>
-  <td>0.888</td>
-  <td>0.842</td>
-</tr>
-<tr>
-  <td>MB</td>
-  <td>0.104</td>
-  <td>0.663</td>
-  <td>0.798</td>
-  <td>0.597</td>
-  <td>0.769</td>
-  <td>0.575</td>
-  <td>0.788</td>
-  <td>0.6</td>
-  <td>0.501</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.065</td>
-  <td>0.848</td>
-  <td>0.904</td>
-  <td>0.762</td>
-  <td>0.825</td>
-  <td>0.735</td>
-  <td>0.928</td>
-  <td>0.822</td>
-  <td>0.65</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.1</td>
   <td>0.573</td>
@@ -1801,30 +1966,6 @@
   <td>0.933</td>
   <td>0.92</td>
   <td>0.357</td>
-</tr>
-<tr>
-  <td>PCANet</td>
-  <td>0.05</td>
-  <td>0.843</td>
-  <td>0.911</td>
-  <td>0.774</td>
-  <td>0.836</td>
-  <td>0.761</td>
-  <td>0.891</td>
-  <td>0.802</td>
-  <td>0.71</td>
-</tr>
-<tr>
-  <td>TANet</td>
-  <td>0.046</td>
-  <td>0.858</td>
-  <td>0.919</td>
-  <td>0.795</td>
-  <td>0.863</td>
-  <td>0.79</td>
-  <td>0.91</td>
-  <td>0.828</td>
-  <td>0.738</td>
 </tr>
 </tbody>
 </table>
@@ -1920,7 +2061,19 @@
   <td>0.842</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>JLDCF_R101</td>
+  <td>0.05</td>
+  <td>0.879</td>
+  <td>0.923</td>
+  <td>0.874</td>
+  <td>0.917</td>
+  <td>0.875</td>
+  <td>0.925</td>
+  <td>0.889</td>
+  <td>0.842</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
   <td>0.063</td>
   <td>0.858</td>
   <td>0.909</td>
@@ -1968,7 +2121,7 @@
   <td>0.84</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.062</td>
   <td>0.867</td>
   <td>0.909</td>
@@ -1980,7 +2133,7 @@
   <td>0.811</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.057</td>
   <td>0.872</td>
   <td>0.913</td>
@@ -1992,7 +2145,7 @@
   <td>0.819</td>
 </tr>
 <tr>
-  <td>UCNet</td>
+  <td>UCNet_V16</td>
   <td>0.051</td>
   <td>0.875</td>
   <td>0.918</td>
@@ -2002,6 +2155,30 @@
   <td>0.919</td>
   <td>0.879</td>
   <td>0.836</td>
+</tr>
+<tr>
+  <td>UCNet<em>ABP</em>R50</td>
+  <td>0.048</td>
+  <td>0.876</td>
+  <td>0.923</td>
+  <td>0.863</td>
+  <td>0.921</td>
+  <td>0.863</td>
+  <td>0.925</td>
+  <td>0.879</td>
+  <td>0.838</td>
+</tr>
+<tr>
+  <td>UCNet<em>CVAE</em>R50</td>
+  <td>0.045</td>
+  <td>0.882</td>
+  <td>0.927</td>
+  <td>0.877</td>
+  <td>0.924</td>
+  <td>0.876</td>
+  <td>0.928</td>
+  <td>0.889</td>
+  <td>0.85</td>
 </tr>
 <tr>
   <td>DANet_V16</td>
@@ -2028,7 +2205,7 @@
   <td>0.822</td>
 </tr>
 <tr>
-  <td>PGAR</td>
+  <td>PGAR_V16</td>
   <td>0.055</td>
   <td>0.876</td>
   <td>0.912</td>
@@ -2052,7 +2229,7 @@
   <td>0.78</td>
 </tr>
 <tr>
-  <td>DPANet</td>
+  <td>DPANet_R50</td>
   <td>0.051</td>
   <td>0.883</td>
   <td>0.922</td>
@@ -2064,7 +2241,7 @@
   <td>0.833</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.069</td>
   <td>0.854</td>
   <td>0.9</td>
@@ -2076,7 +2253,7 @@
   <td>0.791</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.063</td>
   <td>0.86</td>
   <td>0.902</td>
@@ -2088,7 +2265,7 @@
   <td>0.799</td>
 </tr>
 <tr>
-  <td>RD3D</td>
+  <td>RD3D_3DR50</td>
   <td>0.048</td>
   <td>0.885</td>
   <td>0.924</td>
@@ -2100,7 +2277,7 @@
   <td>0.845</td>
 </tr>
 <tr>
-  <td>AFNet</td>
+  <td>AFNet_V16</td>
   <td>0.118</td>
   <td>0.72</td>
   <td>0.815</td>
@@ -2110,6 +2287,90 @@
   <td>0.819</td>
   <td>0.712</td>
   <td>0.617</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.064</td>
+  <td>0.85</td>
+  <td>0.899</td>
+  <td>0.819</td>
+  <td>0.893</td>
+  <td>0.821</td>
+  <td>0.903</td>
+  <td>0.851</td>
+  <td>0.788</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.139</td>
+  <td>0.716</td>
+  <td>0.824</td>
+  <td>0.684</td>
+  <td>0.704</td>
+  <td>0.608</td>
+  <td>0.829</td>
+  <td>0.694</td>
+  <td>0.535</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.185</td>
+  <td>0.653</td>
+  <td>0.794</td>
+  <td>0.673</td>
+  <td>0.565</td>
+  <td>0.465</td>
+  <td>0.759</td>
+  <td>0.657</td>
+  <td>0.406</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.086</td>
+  <td>0.806</td>
+  <td>0.863</td>
+  <td>0.818</td>
+  <td>0.843</td>
+  <td>0.81</td>
+  <td>0.874</td>
+  <td>0.821</td>
+  <td>0.739</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.086</td>
+  <td>0.833</td>
+  <td>0.886</td>
+  <td>0.795</td>
+  <td>0.845</td>
+  <td>0.771</td>
+  <td>0.897</td>
+  <td>0.818</td>
+  <td>0.712</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.071</td>
+  <td>0.842</td>
+  <td>0.9</td>
+  <td>0.825</td>
+  <td>0.878</td>
+  <td>0.814</td>
+  <td>0.901</td>
+  <td>0.838</td>
+  <td>0.768</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.075</td>
+  <td>0.835</td>
+  <td>0.894</td>
+  <td>0.809</td>
+  <td>0.87</td>
+  <td>0.803</td>
+  <td>0.895</td>
+  <td>0.83</td>
+  <td>0.748</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -2122,30 +2383,6 @@
   <td>0.721</td>
   <td>0.505</td>
   <td>0.397</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.064</td>
-  <td>0.85</td>
-  <td>0.899</td>
-  <td>0.819</td>
-  <td>0.893</td>
-  <td>0.821</td>
-  <td>0.903</td>
-  <td>0.851</td>
-  <td>0.788</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.139</td>
-  <td>0.716</td>
-  <td>0.824</td>
-  <td>0.684</td>
-  <td>0.704</td>
-  <td>0.608</td>
-  <td>0.829</td>
-  <td>0.694</td>
-  <td>0.535</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -2172,42 +2409,6 @@
   <td>0.342</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.185</td>
-  <td>0.653</td>
-  <td>0.794</td>
-  <td>0.673</td>
-  <td>0.565</td>
-  <td>0.465</td>
-  <td>0.759</td>
-  <td>0.657</td>
-  <td>0.406</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.086</td>
-  <td>0.806</td>
-  <td>0.863</td>
-  <td>0.818</td>
-  <td>0.843</td>
-  <td>0.81</td>
-  <td>0.874</td>
-  <td>0.821</td>
-  <td>0.739</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.086</td>
-  <td>0.833</td>
-  <td>0.886</td>
-  <td>0.795</td>
-  <td>0.845</td>
-  <td>0.771</td>
-  <td>0.897</td>
-  <td>0.818</td>
-  <td>0.712</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.184</td>
   <td>0.511</td>
@@ -2218,30 +2419,6 @@
   <td>0.716</td>
   <td>0.574</td>
   <td>0.256</td>
-</tr>
-<tr>
-  <td>PCANet</td>
-  <td>0.071</td>
-  <td>0.842</td>
-  <td>0.9</td>
-  <td>0.825</td>
-  <td>0.878</td>
-  <td>0.814</td>
-  <td>0.901</td>
-  <td>0.838</td>
-  <td>0.768</td>
-</tr>
-<tr>
-  <td>TANet</td>
-  <td>0.075</td>
-  <td>0.835</td>
-  <td>0.894</td>
-  <td>0.809</td>
-  <td>0.87</td>
-  <td>0.803</td>
-  <td>0.895</td>
-  <td>0.83</td>
-  <td>0.748</td>
 </tr>
 </tbody>
 </table>
@@ -2313,7 +2490,7 @@
   <td>0.821</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>CoNet_R101</td>
   <td>0.06</td>
   <td>0.853</td>
   <td>0.898</td>
@@ -2361,7 +2538,7 @@
   <td>0.789</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.051</td>
   <td>0.875</td>
   <td>0.902</td>
@@ -2373,7 +2550,7 @@
   <td>0.795</td>
 </tr>
 <tr>
-  <td>FRDT</td>
+  <td>FRDT_V19</td>
   <td>0.054</td>
   <td>0.872</td>
   <td>0.904</td>
@@ -2385,7 +2562,7 @@
   <td>0.801</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.052</td>
   <td>0.868</td>
   <td>0.898</td>
@@ -2397,7 +2574,7 @@
   <td>0.787</td>
 </tr>
 <tr>
-  <td>CasGNN</td>
+  <td>CasGNN_V16</td>
   <td>0.047</td>
   <td>0.872</td>
   <td>0.915</td>
@@ -2433,7 +2610,7 @@
   <td>0.795</td>
 </tr>
 <tr>
-  <td>DPANet</td>
+  <td>DPANet_R50</td>
   <td>0.042</td>
   <td>0.889</td>
   <td>0.924</td>
@@ -2445,7 +2622,7 @@
   <td>0.826</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.064</td>
   <td>0.848</td>
   <td>0.879</td>
@@ -2457,7 +2634,7 @@
   <td>0.772</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.058</td>
   <td>0.857</td>
   <td>0.904</td>
@@ -2469,7 +2646,7 @@
   <td>0.777</td>
 </tr>
 <tr>
-  <td>AFNet</td>
+  <td>AFNet_V16</td>
   <td>0.118</td>
   <td>0.714</td>
   <td>0.803</td>
@@ -2479,6 +2656,102 @@
   <td>0.807</td>
   <td>0.687</td>
   <td>0.589</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.082</td>
+  <td>0.807</td>
+  <td>0.832</td>
+  <td>0.726</td>
+  <td>0.839</td>
+  <td>0.747</td>
+  <td>0.852</td>
+  <td>0.766</td>
+  <td>0.708</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.1</td>
+  <td>0.776</td>
+  <td>0.838</td>
+  <td>0.709</td>
+  <td>0.793</td>
+  <td>0.687</td>
+  <td>0.864</td>
+  <td>0.729</td>
+  <td>0.621</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.151</td>
+  <td>0.743</td>
+  <td>0.801</td>
+  <td>0.708</td>
+  <td>0.68</td>
+  <td>0.613</td>
+  <td>0.814</td>
+  <td>0.731</td>
+  <td>0.533</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.059</td>
+  <td>0.857</td>
+  <td>0.898</td>
+  <td>0.82</td>
+  <td>0.897</td>
+  <td>0.827</td>
+  <td>0.906</td>
+  <td>0.844</td>
+  <td>0.784</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.082</td>
+  <td>0.814</td>
+  <td>0.86</td>
+  <td>0.748</td>
+  <td>0.796</td>
+  <td>0.722</td>
+  <td>0.883</td>
+  <td>0.782</td>
+  <td>0.661</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.063</td>
+  <td>0.843</td>
+  <td>0.889</td>
+  <td>0.785</td>
+  <td>0.854</td>
+  <td>0.774</td>
+  <td>0.899</td>
+  <td>0.811</td>
+  <td>0.731</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.063</td>
+  <td>0.839</td>
+  <td>0.886</td>
+  <td>0.766</td>
+  <td>0.86</td>
+  <td>0.773</td>
+  <td>0.897</td>
+  <td>0.81</td>
+  <td>0.726</td>
+</tr>
+<tr>
+  <td>MB</td>
+  <td>0.219</td>
+  <td>0.499</td>
+  <td>0.637</td>
+  <td>0.416</td>
+  <td>0.556</td>
+  <td>0.357</td>
+  <td>0.666</td>
+  <td>0.457</td>
+  <td>0.276</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -2491,30 +2764,6 @@
   <td>0.72</td>
   <td>0.543</td>
   <td>0.426</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.082</td>
-  <td>0.807</td>
-  <td>0.832</td>
-  <td>0.726</td>
-  <td>0.839</td>
-  <td>0.747</td>
-  <td>0.852</td>
-  <td>0.766</td>
-  <td>0.708</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.1</td>
-  <td>0.776</td>
-  <td>0.838</td>
-  <td>0.709</td>
-  <td>0.793</td>
-  <td>0.687</td>
-  <td>0.864</td>
-  <td>0.729</td>
-  <td>0.621</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -2541,54 +2790,6 @@
   <td>0.171</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.151</td>
-  <td>0.743</td>
-  <td>0.801</td>
-  <td>0.708</td>
-  <td>0.68</td>
-  <td>0.613</td>
-  <td>0.814</td>
-  <td>0.731</td>
-  <td>0.533</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.059</td>
-  <td>0.857</td>
-  <td>0.898</td>
-  <td>0.82</td>
-  <td>0.897</td>
-  <td>0.827</td>
-  <td>0.906</td>
-  <td>0.844</td>
-  <td>0.784</td>
-</tr>
-<tr>
-  <td>MB</td>
-  <td>0.219</td>
-  <td>0.499</td>
-  <td>0.637</td>
-  <td>0.416</td>
-  <td>0.556</td>
-  <td>0.357</td>
-  <td>0.666</td>
-  <td>0.457</td>
-  <td>0.276</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.082</td>
-  <td>0.814</td>
-  <td>0.86</td>
-  <td>0.748</td>
-  <td>0.796</td>
-  <td>0.722</td>
-  <td>0.883</td>
-  <td>0.782</td>
-  <td>0.661</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.2</td>
   <td>0.563</td>
@@ -2600,29 +2801,218 @@
   <td>0.535</td>
   <td>0.313</td>
 </tr>
+</tbody>
+</table>
+
+<h2>STEREO797</h2>
+
+<table class="sortable">
+<thead>
 <tr>
-  <td>PCANet</td>
-  <td>0.063</td>
-  <td>0.843</td>
-  <td>0.889</td>
-  <td>0.785</td>
-  <td>0.854</td>
-  <td>0.774</td>
-  <td>0.899</td>
-  <td>0.811</td>
-  <td>0.731</td>
+  <th>methods</th>
+  <th>MAE</th>
+  <th>SM</th>
+  <th>adpE</th>
+  <th>adpF</th>
+  <th>avgE</th>
+  <th>avgF</th>
+  <th>maxE</th>
+  <th>maxF</th>
+  <th>wFm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>DSA2F_V19</td>
+  <td>0.036</td>
+  <td>0.904</td>
+  <td>0.95</td>
+  <td>0.898</td>
+  <td>0.947</td>
+  <td>0.898</td>
+  <td>0.951</td>
+  <td>0.91</td>
+  <td>0.888</td>
 </tr>
 <tr>
-  <td>TANet</td>
-  <td>0.063</td>
+  <td>HDFNet_V16</td>
+  <td>0.052</td>
+  <td>0.879</td>
+  <td>0.922</td>
+  <td>0.856</td>
+  <td>0.91</td>
+  <td>0.848</td>
+  <td>0.92</td>
+  <td>0.868</td>
+  <td>0.831</td>
+</tr>
+<tr>
+  <td>HDFNet_V19</td>
+  <td>0.053</td>
+  <td>0.876</td>
+  <td>0.918</td>
+  <td>0.855</td>
+  <td>0.905</td>
+  <td>0.848</td>
+  <td>0.915</td>
+  <td>0.865</td>
+  <td>0.829</td>
+</tr>
+<tr>
+  <td>HDFNet_R50</td>
+  <td>0.053</td>
+  <td>0.882</td>
+  <td>0.92</td>
+  <td>0.855</td>
+  <td>0.916</td>
+  <td>0.854</td>
+  <td>0.93</td>
+  <td>0.879</td>
+  <td>0.837</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
+  <td>0.04</td>
+  <td>0.908</td>
+  <td>0.941</td>
+  <td>0.885</td>
+  <td>0.937</td>
+  <td>0.885</td>
+  <td>0.949</td>
+  <td>0.905</td>
+  <td>0.871</td>
+</tr>
+<tr>
+  <td>FRDT_V19</td>
+  <td>0.043</td>
+  <td>0.901</td>
+  <td>0.935</td>
+  <td>0.88</td>
+  <td>0.932</td>
+  <td>0.882</td>
+  <td>0.944</td>
+  <td>0.899</td>
+  <td>0.864</td>
+</tr>
+<tr>
+  <td>D3Net_V16</td>
+  <td>0.062</td>
+  <td>0.857</td>
+  <td>0.904</td>
+  <td>0.82</td>
+  <td>0.881</td>
+  <td>0.814</td>
+  <td>0.911</td>
   <td>0.839</td>
+  <td>0.785</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.142</td>
+  <td>0.763</td>
+  <td>0.844</td>
+  <td>0.761</td>
+  <td>0.695</td>
+  <td>0.626</td>
+  <td>0.857</td>
+  <td>0.777</td>
+  <td>0.576</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.047</td>
   <td>0.886</td>
-  <td>0.766</td>
-  <td>0.86</td>
-  <td>0.773</td>
-  <td>0.897</td>
+  <td>0.934</td>
+  <td>0.868</td>
+  <td>0.93</td>
+  <td>0.868</td>
+  <td>0.938</td>
+  <td>0.886</td>
+  <td>0.85</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.08</td>
+  <td>0.856</td>
+  <td>0.893</td>
+  <td>0.812</td>
+  <td>0.856</td>
+  <td>0.79</td>
+  <td>0.913</td>
+  <td>0.843</td>
+  <td>0.747</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.061</td>
+  <td>0.88</td>
+  <td>0.918</td>
+  <td>0.845</td>
+  <td>0.899</td>
+  <td>0.836</td>
+  <td>0.928</td>
+  <td>0.87</td>
   <td>0.81</td>
-  <td>0.726</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.059</td>
+  <td>0.877</td>
+  <td>0.922</td>
+  <td>0.849</td>
+  <td>0.901</td>
+  <td>0.84</td>
+  <td>0.927</td>
+  <td>0.87</td>
+  <td>0.811</td>
+</tr>
+<tr>
+  <td>MB</td>
+  <td>0.178</td>
+  <td>0.579</td>
+  <td>0.693</td>
+  <td>0.572</td>
+  <td>0.642</td>
+  <td>0.52</td>
+  <td>0.751</td>
+  <td>0.62</td>
+  <td>0.445</td>
+</tr>
+<tr>
+  <td>DCMC</td>
+  <td>0.15</td>
+  <td>0.745</td>
+  <td>0.838</td>
+  <td>0.761</td>
+  <td>0.669</td>
+  <td>0.614</td>
+  <td>0.84</td>
+  <td>0.768</td>
+  <td>0.551</td>
+</tr>
+<tr>
+  <td>DES</td>
+  <td>0.417</td>
+  <td>0.473</td>
+  <td>0.498</td>
+  <td>0.223</td>
+  <td>0.444</td>
+  <td>0.321</td>
+  <td>0.621</td>
+  <td>0.382</td>
+  <td>0.277</td>
+</tr>
+<tr>
+  <td>NLPR</td>
+  <td>0.179</td>
+  <td>0.567</td>
+  <td>0.781</td>
+  <td>0.716</td>
+  <td>0.494</td>
+  <td>0.39</td>
+  <td>0.785</td>
+  <td>0.698</td>
+  <td>0.369</td>
 </tr>
 </tbody>
 </table>
@@ -2718,7 +3108,19 @@
   <td>0.843</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>JLDCF_R101</td>
+  <td>0.04</td>
+  <td>0.906</td>
+  <td>0.937</td>
+  <td>0.876</td>
+  <td>0.935</td>
+  <td>0.88</td>
+  <td>0.946</td>
+  <td>0.903</td>
+  <td>0.859</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
   <td>0.038</td>
   <td>0.905</td>
   <td>0.941</td>
@@ -2766,7 +3168,7 @@
   <td>0.864</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.043</td>
   <td>0.905</td>
   <td>0.93</td>
@@ -2778,7 +3180,7 @@
   <td>0.847</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.051</td>
   <td>0.89</td>
   <td>0.926</td>
@@ -2790,7 +3192,7 @@
   <td>0.825</td>
 </tr>
 <tr>
-  <td>UCNet</td>
+  <td>UCNet_V16</td>
   <td>0.039</td>
   <td>0.903</td>
   <td>0.942</td>
@@ -2802,7 +3204,31 @@
   <td>0.867</td>
 </tr>
 <tr>
-  <td>CasGNN</td>
+  <td>UCNet<em>ABP</em>R50</td>
+  <td>0.037</td>
+  <td>0.902</td>
+  <td>0.941</td>
+  <td>0.883</td>
+  <td>0.939</td>
+  <td>0.882</td>
+  <td>0.944</td>
+  <td>0.897</td>
+  <td>0.868</td>
+</tr>
+<tr>
+  <td>UCNet<em>CVAE</em>R50</td>
+  <td>0.036</td>
+  <td>0.906</td>
+  <td>0.945</td>
+  <td>0.892</td>
+  <td>0.942</td>
+  <td>0.891</td>
+  <td>0.946</td>
+  <td>0.904</td>
+  <td>0.878</td>
+</tr>
+<tr>
+  <td>CasGNN_V16</td>
   <td>0.039</td>
   <td>0.899</td>
   <td>0.929</td>
@@ -2838,7 +3264,7 @@
   <td>0.846</td>
 </tr>
 <tr>
-  <td>PGAR</td>
+  <td>PGAR_V16</td>
   <td>0.041</td>
   <td>0.907</td>
   <td>0.937</td>
@@ -2862,7 +3288,7 @@
   <td>0.811</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.045</td>
   <td>0.903</td>
   <td>0.926</td>
@@ -2874,7 +3300,7 @@
   <td>0.844</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.046</td>
   <td>0.899</td>
   <td>0.924</td>
@@ -2886,7 +3312,7 @@
   <td>0.838</td>
 </tr>
 <tr>
-  <td>RD3D</td>
+  <td>RD3D_3DR50</td>
   <td>0.037</td>
   <td>0.911</td>
   <td>0.944</td>
@@ -2898,7 +3324,7 @@
   <td>0.871</td>
 </tr>
 <tr>
-  <td>AFNet</td>
+  <td>AFNet_V16</td>
   <td>0.075</td>
   <td>0.825</td>
   <td>0.887</td>
@@ -2908,6 +3334,90 @@
   <td>0.887</td>
   <td>0.823</td>
   <td>0.752</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.051</td>
+  <td>0.879</td>
+  <td>0.907</td>
+  <td>0.83</td>
+  <td>0.911</td>
+  <td>0.841</td>
+  <td>0.925</td>
+  <td>0.874</td>
+  <td>0.817</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.086</td>
+  <td>0.848</td>
+  <td>0.87</td>
+  <td>0.771</td>
+  <td>0.841</td>
+  <td>0.758</td>
+  <td>0.912</td>
+  <td>0.831</td>
+  <td>0.698</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.141</td>
+  <td>0.757</td>
+  <td>0.838</td>
+  <td>0.742</td>
+  <td>0.692</td>
+  <td>0.617</td>
+  <td>0.847</td>
+  <td>0.757</td>
+  <td>0.549</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.087</td>
+  <td>0.752</td>
+  <td>0.816</td>
+  <td>0.762</td>
+  <td>0.764</td>
+  <td>0.71</td>
+  <td>0.827</td>
+  <td>0.743</td>
+  <td>0.647</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.068</td>
+  <td>0.873</td>
+  <td>0.905</td>
+  <td>0.829</td>
+  <td>0.873</td>
+  <td>0.813</td>
+  <td>0.927</td>
+  <td>0.863</td>
+  <td>0.76</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.064</td>
+  <td>0.875</td>
+  <td>0.907</td>
+  <td>0.826</td>
+  <td>0.887</td>
+  <td>0.818</td>
+  <td>0.925</td>
+  <td>0.86</td>
+  <td>0.778</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.06</td>
+  <td>0.871</td>
+  <td>0.916</td>
+  <td>0.835</td>
+  <td>0.893</td>
+  <td>0.828</td>
+  <td>0.923</td>
+  <td>0.861</td>
+  <td>0.787</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -2920,30 +3430,6 @@
   <td>0.786</td>
   <td>0.664</td>
   <td>0.558</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.051</td>
-  <td>0.879</td>
-  <td>0.907</td>
-  <td>0.83</td>
-  <td>0.911</td>
-  <td>0.841</td>
-  <td>0.925</td>
-  <td>0.874</td>
-  <td>0.817</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.086</td>
-  <td>0.848</td>
-  <td>0.87</td>
-  <td>0.771</td>
-  <td>0.841</td>
-  <td>0.758</td>
-  <td>0.912</td>
-  <td>0.831</td>
-  <td>0.698</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -2970,42 +3456,6 @@
   <td>0.375</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.141</td>
-  <td>0.757</td>
-  <td>0.838</td>
-  <td>0.742</td>
-  <td>0.692</td>
-  <td>0.617</td>
-  <td>0.847</td>
-  <td>0.757</td>
-  <td>0.549</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.087</td>
-  <td>0.752</td>
-  <td>0.816</td>
-  <td>0.762</td>
-  <td>0.764</td>
-  <td>0.71</td>
-  <td>0.827</td>
-  <td>0.743</td>
-  <td>0.647</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.068</td>
-  <td>0.873</td>
-  <td>0.905</td>
-  <td>0.829</td>
-  <td>0.873</td>
-  <td>0.813</td>
-  <td>0.927</td>
-  <td>0.863</td>
-  <td>0.76</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.172</td>
   <td>0.562</td>
@@ -3016,30 +3466,6 @@
   <td>0.771</td>
   <td>0.683</td>
   <td>0.346</td>
-</tr>
-<tr>
-  <td>PCANet</td>
-  <td>0.064</td>
-  <td>0.875</td>
-  <td>0.907</td>
-  <td>0.826</td>
-  <td>0.887</td>
-  <td>0.818</td>
-  <td>0.925</td>
-  <td>0.86</td>
-  <td>0.778</td>
-</tr>
-<tr>
-  <td>TANet</td>
-  <td>0.06</td>
-  <td>0.871</td>
-  <td>0.916</td>
-  <td>0.835</td>
-  <td>0.893</td>
-  <td>0.828</td>
-  <td>0.923</td>
-  <td>0.861</td>
-  <td>0.787</td>
 </tr>
 </tbody>
 </table>
@@ -3135,7 +3561,19 @@
   <td>0.844</td>
 </tr>
 <tr>
-  <td>CoNet</td>
+  <td>JLDCF_R101</td>
+  <td>0.043</td>
+  <td>0.905</td>
+  <td>0.938</td>
+  <td>0.888</td>
+  <td>0.926</td>
+  <td>0.886</td>
+  <td>0.937</td>
+  <td>0.902</td>
+  <td>0.861</td>
+</tr>
+<tr>
+  <td>CoNet_R101</td>
   <td>0.034</td>
   <td>0.919</td>
   <td>0.952</td>
@@ -3159,7 +3597,7 @@
   <td>0.883</td>
 </tr>
 <tr>
-  <td>CMWNet</td>
+  <td>CMWNet_V16</td>
   <td>0.056</td>
   <td>0.887</td>
   <td>0.922</td>
@@ -3171,7 +3609,7 @@
   <td>0.831</td>
 </tr>
 <tr>
-  <td>FRDT</td>
+  <td>FRDT_V19</td>
   <td>0.039</td>
   <td>0.91</td>
   <td>0.941</td>
@@ -3183,7 +3621,7 @@
   <td>0.877</td>
 </tr>
 <tr>
-  <td>S2MA</td>
+  <td>S2MA_V16</td>
   <td>0.044</td>
   <td>0.903</td>
   <td>0.935</td>
@@ -3195,7 +3633,7 @@
   <td>0.862</td>
 </tr>
 <tr>
-  <td>UCNet</td>
+  <td>UCNet_V16</td>
   <td>0.057</td>
   <td>0.864</td>
   <td>0.906</td>
@@ -3207,7 +3645,7 @@
   <td>0.82</td>
 </tr>
 <tr>
-  <td>CasGNN</td>
+  <td>CasGNN_V16</td>
   <td>0.03</td>
   <td>0.921</td>
   <td>0.949</td>
@@ -3243,7 +3681,7 @@
   <td>0.86</td>
 </tr>
 <tr>
-  <td>PGAR</td>
+  <td>PGAR_V16</td>
   <td>0.035</td>
   <td>0.92</td>
   <td>0.95</td>
@@ -3267,7 +3705,7 @@
   <td>0.69</td>
 </tr>
 <tr>
-  <td>DPANet</td>
+  <td>DPANet_R50</td>
   <td>0.048</td>
   <td>0.899</td>
   <td>0.929</td>
@@ -3279,7 +3717,7 @@
   <td>0.852</td>
 </tr>
 <tr>
-  <td>ICNet</td>
+  <td>ICNet_V16</td>
   <td>0.072</td>
   <td>0.852</td>
   <td>0.901</td>
@@ -3291,7 +3729,7 @@
   <td>0.784</td>
 </tr>
 <tr>
-  <td>D3Net</td>
+  <td>D3Net_V16</td>
   <td>0.097</td>
   <td>0.775</td>
   <td>0.849</td>
@@ -3303,7 +3741,7 @@
   <td>0.668</td>
 </tr>
 <tr>
-  <td>RD3D</td>
+  <td>RD3D_3DR50</td>
   <td>0.031</td>
   <td>0.931</td>
   <td>0.957</td>
@@ -3313,6 +3751,102 @@
   <td>0.96</td>
   <td>0.939</td>
   <td>0.907</td>
+</tr>
+<tr>
+  <td>CPFP_V16</td>
+  <td>0.1</td>
+  <td>0.749</td>
+  <td>0.815</td>
+  <td>0.735</td>
+  <td>0.759</td>
+  <td>0.695</td>
+  <td>0.81</td>
+  <td>0.718</td>
+  <td>0.637</td>
+</tr>
+<tr>
+  <td>CTMF_V16</td>
+  <td>0.097</td>
+  <td>0.831</td>
+  <td>0.882</td>
+  <td>0.792</td>
+  <td>0.81</td>
+  <td>0.747</td>
+  <td>0.899</td>
+  <td>0.823</td>
+  <td>0.681</td>
+</tr>
+<tr>
+  <td>DF_V16</td>
+  <td>0.145</td>
+  <td>0.732</td>
+  <td>0.842</td>
+  <td>0.748</td>
+  <td>0.665</td>
+  <td>0.586</td>
+  <td>0.82</td>
+  <td>0.734</td>
+  <td>0.536</td>
+</tr>
+<tr>
+  <td>DMRA_V19</td>
+  <td>0.048</td>
+  <td>0.888</td>
+  <td>0.93</td>
+  <td>0.882</td>
+  <td>0.926</td>
+  <td>0.884</td>
+  <td>0.933</td>
+  <td>0.897</td>
+  <td>0.851</td>
+</tr>
+<tr>
+  <td>MMCI_V16</td>
+  <td>0.112</td>
+  <td>0.791</td>
+  <td>0.856</td>
+  <td>0.753</td>
+  <td>0.774</td>
+  <td>0.696</td>
+  <td>0.859</td>
+  <td>0.767</td>
+  <td>0.627</td>
+</tr>
+<tr>
+  <td>PCANet_V16</td>
+  <td>0.1</td>
+  <td>0.801</td>
+  <td>0.863</td>
+  <td>0.76</td>
+  <td>0.821</td>
+  <td>0.741</td>
+  <td>0.856</td>
+  <td>0.771</td>
+  <td>0.687</td>
+</tr>
+<tr>
+  <td>TANet_V16</td>
+  <td>0.093</td>
+  <td>0.808</td>
+  <td>0.871</td>
+  <td>0.779</td>
+  <td>0.83</td>
+  <td>0.761</td>
+  <td>0.861</td>
+  <td>0.79</td>
+  <td>0.704</td>
+</tr>
+<tr>
+  <td>MB</td>
+  <td>0.156</td>
+  <td>0.608</td>
+  <td>0.696</td>
+  <td>0.579</td>
+  <td>0.642</td>
+  <td>0.541</td>
+  <td>0.766</td>
+  <td>0.612</td>
+  <td>0.451</td>
 </tr>
 <tr>
   <td>CDCP</td>
@@ -3325,30 +3859,6 @@
   <td>0.776</td>
   <td>0.625</td>
   <td>0.519</td>
-</tr>
-<tr>
-  <td>CPFP</td>
-  <td>0.1</td>
-  <td>0.749</td>
-  <td>0.815</td>
-  <td>0.735</td>
-  <td>0.759</td>
-  <td>0.695</td>
-  <td>0.81</td>
-  <td>0.718</td>
-  <td>0.637</td>
-</tr>
-<tr>
-  <td>CTMF</td>
-  <td>0.097</td>
-  <td>0.831</td>
-  <td>0.882</td>
-  <td>0.792</td>
-  <td>0.81</td>
-  <td>0.747</td>
-  <td>0.899</td>
-  <td>0.823</td>
-  <td>0.681</td>
 </tr>
 <tr>
   <td>DCMC</td>
@@ -3375,54 +3885,6 @@
   <td>0.379</td>
 </tr>
 <tr>
-  <td>DF</td>
-  <td>0.145</td>
-  <td>0.732</td>
-  <td>0.842</td>
-  <td>0.748</td>
-  <td>0.665</td>
-  <td>0.586</td>
-  <td>0.82</td>
-  <td>0.734</td>
-  <td>0.536</td>
-</tr>
-<tr>
-  <td>DMRA</td>
-  <td>0.048</td>
-  <td>0.888</td>
-  <td>0.93</td>
-  <td>0.882</td>
-  <td>0.926</td>
-  <td>0.884</td>
-  <td>0.933</td>
-  <td>0.897</td>
-  <td>0.851</td>
-</tr>
-<tr>
-  <td>MB</td>
-  <td>0.156</td>
-  <td>0.608</td>
-  <td>0.696</td>
-  <td>0.579</td>
-  <td>0.642</td>
-  <td>0.541</td>
-  <td>0.766</td>
-  <td>0.612</td>
-  <td>0.451</td>
-</tr>
-<tr>
-  <td>MMCI</td>
-  <td>0.112</td>
-  <td>0.791</td>
-  <td>0.856</td>
-  <td>0.753</td>
-  <td>0.774</td>
-  <td>0.696</td>
-  <td>0.859</td>
-  <td>0.767</td>
-  <td>0.627</td>
-</tr>
-<tr>
   <td>NLPR</td>
   <td>0.174</td>
   <td>0.571</td>
@@ -3434,34 +3896,9 @@
   <td>0.626</td>
   <td>0.345</td>
 </tr>
-<tr>
-  <td>PCANet</td>
-  <td>0.1</td>
-  <td>0.801</td>
-  <td>0.863</td>
-  <td>0.76</td>
-  <td>0.821</td>
-  <td>0.741</td>
-  <td>0.856</td>
-  <td>0.771</td>
-  <td>0.687</td>
-</tr>
-<tr>
-  <td>TANet</td>
-  <td>0.093</td>
-  <td>0.808</td>
-  <td>0.871</td>
-  <td>0.779</td>
-  <td>0.83</td>
-  <td>0.761</td>
-  <td>0.861</td>
-  <td>0.79</td>
-  <td>0.704</td>
-</tr>
 </tbody>
 </table>
 
-</p>
 </body>
 
 </html>
