@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-from collections import OrderedDict
 
-_RGBD_SOD_ROOT = "/home/lart/Datasets/Saliency/RGBDSOD"
+_RGBD_SOD_ROOT = "<your_datasets_path>"
 
 LFSD = dict(
     root=os.path.join(_RGBD_SOD_ROOT, "LFSD"),

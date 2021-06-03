@@ -1,6 +1,6 @@
 # 基于python的显著性目标检测测评工具箱
 
-A Python-based salient object detection evaluation toolbox.
+A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## TODO
 
@@ -8,11 +8,13 @@ A Python-based salient object detection evaluation toolbox.
 - [ ] 优化xlsx导出的代码
 - [X] 剥离USVOS部分的代码，让本仓库更专注一些，相关代码已转移到另一个仓库[PyDavis16EvalToolbox](https://github.com/lartpang/PyDavis16EvalToolbox)。
 - [X] 提供对输出的结果基于某个指标进行排序的功能的支持（即，使表格更加直观）,将会在接下来的版本中添加github-page来展示动态页面。
+- [X] 基于Fan的matlab代码，我实现了一份更加快速和准确的指标代码<https://github.com/lartpang/PySODMetrics>，已经整合到该代码中。
 
 ## 重要提示
 
-> 基于Fan的matlab代码，我实现了一份更加快速和准确的指标代码<https://github.com/lartpang/PySODMetrics>，已经整合到该代码中。
-
+- 2021年06月03日
+    - 调整`tools`中的文件，并修改readme.md。
+    - 在`examples`中补充了数据集配置和方法配置的python文件示例。
 - 2021年05月20日
     - 添加examples文件夹，存放一些基本的示例。实际上到目前为止，没必要独立出来评估单独方法的文件，使用提供的`eval_all.py`中的`include_methods`指定特定方法即可实现目的。
     - 添加了一些工具函数，例如用于批量重命名文件的`rename.py`，以及用于检查json文件中路径的合法性的`check_path.py`(建议每次修改完json后，用该工具检查下)。
@@ -57,23 +59,19 @@ A Python-based salient object detection evaluation toolbox.
 
 ## 使用方法
 
-### General/Co-RGB/RGBD-SOD
-
 由于对于数据集和方法的配置因用户而异，所以在<https://github.com/lartpang/Py-SOD-VOS-EvalToolkit/commit/d7bcc1d74065844fe0483dc3ce3fda7d06d07bc0>
 之后的版本不在更新`configs`文件夹中的这部分内容，直接给出一个简单的例子，用户可以自行修改。
 例子可以参考之前的版本，例如：<https://github.com/lartpang/Py-SOD-VOS-EvalToolkit/tree/f9c1fd5ffeef1a58067e31b9e6d28e9eb0754c46/configs>
 
-先安装指标代码库：
-
-```python
-pip install pysodmetrics
-```
-
-可见[Examples](#Examples)的配置注释。
-
-## 最后
-
-评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>，欢迎捉BUG！
+具体流程：
+1. 先安装指标代码库： `pip install pysodmetrics`。
+  - 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>，欢迎捉BUG！
+2. 配置不同数据集以及方法的路径信息：
+  - 本项目依赖于json文件存放数据。
+  - 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息转换为json文件。使用方法可见`tools/readme.md`。
+  - 准备好json文件后，建议使用提供的`tools/check_path.py`来检查下路径信息是否正常。
+  - **请务必确保*数据集字典的名字*和方法中配置不同*数据集字典的名字*一致。**
+3. 一切正常后，可以开始评估了。具体关于评估以及使用评估得到的`.npy`文件来绘图的例子，可见[Examples](#Examples)。
 
 ## 编程参考
 
