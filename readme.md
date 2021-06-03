@@ -65,12 +65,12 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 具体流程：
 1. 先安装指标代码库： `pip install pysodmetrics`。
-  - 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>，欢迎捉BUG！
+    - 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>，欢迎捉BUG！
 2. 配置不同数据集以及方法的路径信息：
-  - 本项目依赖于json文件存放数据。
-  - 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息转换为json文件。使用方法可见`tools/readme.md`。
-  - 准备好json文件后，建议使用提供的`tools/check_path.py`来检查下路径信息是否正常。
-  - **请务必确保*数据集字典的名字*和方法中配置不同*数据集字典的名字*一致。**
+    - 本项目依赖于json文件存放数据。
+    - 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息转换为json文件。使用方法可见`tools/readme.md`。
+    - 准备好json文件后，建议使用提供的`tools/check_path.py`来检查下路径信息是否正常。
+    - **请务必确保*数据集字典的名字*和方法中配置不同*数据集字典的名字*一致。**
 3. 一切正常后，可以开始评估了。具体关于评估以及使用评估得到的`.npy`文件来绘图的例子，可见[Examples](#Examples)。
 
 ## 编程参考
