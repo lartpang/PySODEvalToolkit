@@ -3,14 +3,10 @@
 # @Author  : Lart Pang
 # @GitHub  : https://github.com/lartpang
 
-# Modify the file names of a large number of files
 import glob
 import os
 import re
 import shutil
-
-# Please use with care and it is recommended to read the code carefully
-# before use to avoid data corruption.
 
 
 def path_join(base_path, sub_path):
@@ -19,14 +15,13 @@ def path_join(base_path, sub_path):
     return os.path.join(base_path, sub_path)
 
 
-def rename_all_files(src_pattern, dst_pattern, src_name, src_dir, dst_dir=None, verbose=False):
+def rename_all_files(src_pattern, dst_pattern, src_name, src_dir, dst_dir=None):
     """
     :param src_pattern: 匹配原始数据名字的正则表达式
     :param dst_pattern: 对应的修改后的字符式
     :param src_dir: 存放原始数据的文件夹路径，可以组合src_name来构造路径模式，使用glob进行数据搜索
     :param src_name: glob类型的模式
     :param dst_dir: 存放修改后数据的文件夹路径，默认为None，表示直接修改原始数据
-    :param verbose: 是否打印中间信息
     """
     assert os.path.isdir(src_dir)
 
@@ -70,5 +65,4 @@ if __name__ == "__main__":
         src_name="*/*.png",
         src_dir="",
         dst_dir="",
-        verbose=True,
     )
