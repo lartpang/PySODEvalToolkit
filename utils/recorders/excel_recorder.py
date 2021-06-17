@@ -119,7 +119,8 @@ class _BaseExcelRecorder(object):
         elif repalce_config.get("title"):
             string = string.title()
 
-        if sub_rule := repalce_config.get("replace"):
+        sub_rule = repalce_config.get("replace")
+        if sub_rule:
             string = re.sub(pattern=sub_rule[0], repl=sub_rule[1], string=string)
         return string
 

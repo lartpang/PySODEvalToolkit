@@ -55,18 +55,15 @@ for data_type, json_info in total_info.items():
             elif not os.path.isdir(dir_path):
                 total_msgs.append(f"{method_name}/{dataset_name}: {dir_path} 不是正常的文件夹路径")
                 continue
-            elif (
-                len(
-                    pred_names := [
-                        name[:-4] for name in os.listdir(dir_path) if name.endswith(file_suffix)
-                    ]
-                )
-                == 0
-            ):
-                total_msgs.append(
-                    f"{method_name}/{dataset_name}: {dir_path} 中不包含后缀为{file_suffix}的文件"
-                )
-                continue
+            else:
+                pred_names = [
+                    name[:-4] for name in os.listdir(dir_path) if name.endswith(file_suffix)
+                ]
+                if len(pred_names) == 0:
+                    total_msgs.append(
+                        f"{method_name}/{dataset_name}: {dir_path} 中不包含后缀为{file_suffix}的文件"
+                    )
+                    continue
 
             mask_names = [
                 name[:-4] for name in os.listdir(mask_path) if name.endswith(mask_suffix)
