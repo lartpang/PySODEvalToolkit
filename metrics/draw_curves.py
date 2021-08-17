@@ -20,6 +20,12 @@ def draw_curves(
     if dataset_alias is None:
         dataset_alias = {}
 
+    if drawing_info is None or not isinstance(drawing_info, dict) or len(drawing_info.keys()) == 0:
+        raise ValueError("drawing_info must contain valid information about the results.")
+
+    if dataset_info is None or not isinstance(dataset_info, dict) or len(dataset_info.keys()) == 0:
+        raise ValueError("dataset_info must contain valid information about the datasets.")
+
     mode = "pr" if for_pr else "fm"
     mode_axes_setting = axes_setting[mode]
 
