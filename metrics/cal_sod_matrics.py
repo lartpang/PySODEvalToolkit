@@ -2,19 +2,68 @@
 
 import os
 from collections import defaultdict
+from functools import partial
+from multiprocessing import RLock, pool
 
 import numpy as np
 from tqdm import tqdm
 
-from utils.misc import colored_print, get_gt_pre_with_name, get_name_list, make_dir
+from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
 from utils.print_formatter import formatter_for_tabulate
 from utils.recorders import MetricExcelRecorder, MetricRecorder, TxtRecorder
+
+
+class Recorder:
+    def __init__(
+        self,
+        txt_path,
+        to_append,
+        max_method_name_width,
+        xlsx_path,
+        sheet_name,
+        dataset_names,
+        metric_names,
+    ):
+        self.curves = defaultdict(dict)  # Two curve metrics
+        self.metrics = defaultdict(dict)  # Six numerical metrics
+        self.dataset_name = None
+
+        self.txt_recorder = TxtRecorder(
+            txt_path=txt_path,
+            to_append=to_append,
+            max_method_name_width=max_method_name_width,
+        )
+        self.excel_recorder = MetricExcelRecorder(
+            xlsx_path=xlsx_path,
+            sheet_name=sheet_name,
+            row_header=["methods"],
+            dataset_names=dataset_names,
+            metric_names=metric_names,
+        )
+
+    def record_dataset_name(self, dataset_name):
+        self.dataset_name = dataset_name
+        self.txt_recorder.add_row(row_name="Dataset", row_data=dataset_name, row_start_str="\n")
+
+    def record(self, method_results, method_name):
+        method_curves = method_results["sequential"]
+        method_metrics = method_results["numerical"]
+
+        self.curves[self.dataset_name][method_name] = method_curves
+        self.metrics[self.dataset_name][method_name] = method_metrics
+
+        self.excel_recorder(
+            row_data=method_metrics,
+            dataset_name=self.dataset_name,
+            method_name=method_name,
+        )
+        self.txt_recorder(method_results=method_metrics, method_name=method_name)
 
 
 def cal_sod_matrics(
     data_type: str = "rgb_sod",
     txt_path: str = "",
-    resume_record: bool = True,
+    to_append: bool = True,
     xlsx_path: str = "",
     drawing_info: dict = None,
     dataset_info: dict = None,
@@ -22,42 +71,54 @@ def cal_sod_matrics(
     curves_npy_path: str = "./curves.npy",
     metrics_npy_path: str = "./metrics.npy",
     num_bits: int = 3,
+    num_workers: int = 2,
+    use_mp: bool = False,
 ):
     """
     Save the results of all models on different datasets in a `npy` file in the form of a
     dictionary.
-    {
-      dataset1:{
-        method1:[fm, em, p, r],
-        method2:[fm, em, p, r],
-        .....
-      },
-      dataset2:{
-        method1:[fm, em, p, r],
-        method2:[fm, em, p, r],
-        .....
-      },
-      ....
-    }
-    """
-    curves = defaultdict(dict)  # Two curve metrics
-    metrics = defaultdict(dict)  # Six numerical metrics
 
-    txt_recoder = TxtRecorder(
+    ::
+
+        {
+          dataset1:{
+            method1:[fm, em, p, r],
+            method2:[fm, em, p, r],
+            .....
+          },
+          dataset2:{
+            method1:[fm, em, p, r],
+            method2:[fm, em, p, r],
+            .....
+          },
+          ....
+        }
+
+    :param data_type: the type of data
+    :param txt_path: the path of the txt for saving results
+    :param to_append: whether to append results to the original record
+    :param xlsx_path: the path of the xlsx file for saving results
+    :param drawing_info: the method information for plotting figures
+    :param dataset_info: the dataset information
+    :param save_npy: whether to save results into npy files
+    :param curves_npy_path: the npy file path for saving curve data
+    :param metrics_npy_path: the npy file path for saving metric values
+    :param num_bits: the number of bits used to format results
+    :param num_workers: the number of workers of multiprocessing or multithreading
+    :param use_mp: using multiprocessing or multithreading
+    """
+    recorder = Recorder(
         txt_path=txt_path,
-        resume=resume_record,
+        to_append=to_append,
         max_method_name_width=max([len(x) for x in drawing_info.keys()]),  # 显示完整名字
-    )
-    excel_recorder = MetricExcelRecorder(
         xlsx_path=xlsx_path,
         sheet_name=data_type,
-        row_header=["methods"],
-        dataset_names=sorted(list(dataset_info.keys())),
+        dataset_names=sorted(dataset_info.keys()),
         metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
     )
 
     for dataset_name, dataset_path in dataset_info.items():
-        txt_recoder.add_row(row_name="Dataset", row_data=dataset_name, row_start_str="\n")
+        recorder.record_dataset_name(dataset_name)
 
         # 获取真值图片信息
         gt_info = dataset_path["mask"]
@@ -72,13 +133,17 @@ def cal_sod_matrics(
         assert len(gt_name_list) > 0, "there is not ground truth."
 
         # ==>> test the intersection between pre and gt for each method <<==
+        tqdm.set_lock(RLock())
+        pool_cls = pool.Pool if use_mp else pool.ThreadPool
+        procs = pool_cls(
+            processes=num_workers, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)
+        )
+        procs_idx = 0
         for method_name, method_info in drawing_info.items():
             method_root = method_info["path_dict"]
             method_dataset_info = method_root.get(dataset_name, None)
             if method_dataset_info is None:
-                colored_print(
-                    msg=f"{method_name} does not have results on {dataset_name}", mode="warning"
-                )
+                tqdm.write(f"{method_name} does not have results on {dataset_name}")
                 continue
 
             # 预测结果存放路径下的图片文件名字列表和扩展名称
@@ -87,49 +152,62 @@ def cal_sod_matrics(
             pre_name_list = get_name_list(data_path=pre_root, file_ext=pre_ext)
 
             # get the intersection
-            eval_name_list = sorted(list(set(gt_name_list).intersection(set(pre_name_list))))
-            num_names = len(eval_name_list)
-
-            if num_names == 0:
-                colored_print(
-                    msg=f"{method_name} does not have results on {dataset_name}", mode="warning"
-                )
+            eval_name_list = sorted(list(set(gt_name_list).intersection(pre_name_list)))
+            if len(eval_name_list) == 0:
+                tqdm.write(f"{method_name} does not have results on {dataset_name}")
                 continue
 
-            colored_print(
-                f"Evaluating {method_name} with {num_names} images"
-                f" (G:{len(gt_name_list)},P:{len(pre_name_list)}) images on dataset {dataset_name}"
-            )
-
-            metric_recoder = MetricRecorder()
-            tqdm_bar = tqdm(
-                eval_name_list, total=num_names, leave=False, ncols=79, desc=f"[{dataset_name}]"
-            )
-            for img_name in tqdm_bar:
-                gt, pre = get_gt_pre_with_name(
-                    gt_root=gt_root,
+            procs.apply_async(
+                func=evaluate_data,
+                kwds=dict(
+                    names=eval_name_list,
+                    num_bits=num_bits,
                     pre_root=pre_root,
-                    img_name=img_name,
                     pre_ext=pre_ext,
+                    gt_root=gt_root,
                     gt_ext=gt_ext,
-                    to_normalize=False,
-                )
-                metric_recoder.update(pre=pre, gt=gt)
-            method_results = metric_recoder.show(num_bits=num_bits, return_ndarray=False)
-            method_curves = method_results["sequential"]
-            method_metrics = method_results["numerical"]
-            curves[dataset_name][method_name] = method_curves
-            metrics[dataset_name][method_name] = method_metrics
-
-            excel_recorder(
-                row_data=method_metrics, dataset_name=dataset_name, method_name=method_name
+                    desc=f"[{dataset_name}({len(gt_name_list)}):{method_name}({len(pre_name_list)})]",
+                    proc_idx=procs_idx,
+                    blocking=use_mp,
+                ),
+                callback=partial(recorder.record, method_name=method_name),
             )
-            txt_recoder(method_results=method_metrics, method_name=method_name)
+            procs_idx += 1
+        procs.close()
+        procs.join()
 
     if save_npy:
         make_dir(os.path.dirname(curves_npy_path))
-        np.save(curves_npy_path, curves)
-        np.save(metrics_npy_path, metrics)
-        colored_print(f"all methods have been saved in {curves_npy_path} and {metrics_npy_path}")
-    formatted_string = formatter_for_tabulate(metrics)
-    colored_print(f"all methods have been tested:\n{formatted_string}")
+        np.save(curves_npy_path, recorder.curves)
+        np.save(metrics_npy_path, recorder.metrics)
+        print(f"all methods have been saved in {curves_npy_path} and {metrics_npy_path}")
+    formatted_string = formatter_for_tabulate(recorder.metrics)
+    print(f"all methods have been tested:\n{formatted_string}")
+
+
+def evaluate_data(
+    names, num_bits, gt_root, gt_ext, pre_root, pre_ext, desc="", proc_idx=None, blocking=True
+):
+    metric_recoder = MetricRecorder()
+    # https://github.com/tqdm/tqdm#parameters
+    # https://github.com/tqdm/tqdm/blob/master/examples/parallel_bars.py
+    tqdm_bar = tqdm(
+        names,
+        total=len(names),
+        desc=desc,
+        position=proc_idx,
+        ncols=79,
+        lock_args=None if blocking else (False,),
+    )
+    for name in tqdm_bar:
+        gt, pre = get_gt_pre_with_name(
+            gt_root=gt_root,
+            pre_root=pre_root,
+            img_name=name,
+            pre_ext=pre_ext,
+            gt_ext=gt_ext,
+            to_normalize=False,
+        )
+        metric_recoder.update(pre=pre, gt=gt)
+    method_results = metric_recoder.show(num_bits=num_bits, return_ndarray=False)
+    return method_results

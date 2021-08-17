@@ -27,7 +27,7 @@ def group_names(names: list) -> dict:
 def cal_cosod_matrics(
     data_type: str = "rgb_sod",
     txt_path: str = "",
-    resume_record: bool = True,
+    to_append: bool = True,
     xlsx_path: str = "",
     drawing_info: dict = None,
     dataset_info: dict = None,
@@ -39,26 +39,40 @@ def cal_cosod_matrics(
     """
     Save the results of all models on different datasets in a `npy` file in the form of a
     dictionary.
-    {
-      dataset1:{
-        method1:[fm, em, p, r],
-        method2:[fm, em, p, r],
-        .....
-      },
-      dataset2:{
-        method1:[fm, em, p, r],
-        method2:[fm, em, p, r],
-        .....
-      },
-      ....
-    }
+
+    ::
+
+        {
+          dataset1:{
+            method1:[fm, em, p, r],
+            method2:[fm, em, p, r],
+            .....
+          },
+          dataset2:{
+            method1:[fm, em, p, r],
+            method2:[fm, em, p, r],
+            .....
+          },
+          ....
+        }
+
+    :param data_type: the type of data
+    :param txt_path: the path of the txt for saving results
+    :param to_append: whether to append results to the original record
+    :param xlsx_path: the path of the xlsx file for saving results
+    :param drawing_info: the method information for plotting figures
+    :param dataset_info: the dataset information
+    :param save_npy: whether to save results into npy files
+    :param curves_npy_path: the npy file path for saving curve data
+    :param metrics_npy_path: the npy file path for saving metric values
+    :param num_bits: the number of bits used to format results
     """
     curves = defaultdict(dict)  # Two curve metrics
     metrics = defaultdict(dict)  # Six numerical metrics
 
     txt_recoder = TxtRecorder(
         txt_path=txt_path,
-        resume=resume_record,
+        to_append=to_append,
         max_method_name_width=max([len(x) for x in drawing_info.keys()]),  # 显示完整名字
     )
     excel_recorder = MetricExcelRecorder(

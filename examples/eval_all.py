@@ -51,16 +51,20 @@ drawing_info = get_methods_info(
     # exclude_methods=["UCNet_ABP", "UCNet_CVAE"],
 )
 
-cal_sod_matrics.cal_sod_matrics(
-    data_type=data_type,
-    resume_record=True,  # 是否保留之前的评估记录（针对txt_path文件有效）
-    txt_path=os.path.join(output_path, f"{data_type}.txt"),
-    xlsx_path=os.path.join(output_path, f"other_{data_type}.xlsx"),
-    drawing_info=drawing_info,
-    dataset_info=dataset_info,
-    save_npy=True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
-    # 保存曲线指标数据的文件路径
-    curves_npy_path=os.path.join(output_path, data_type + "_" + "curves.npy"),
-    metrics_npy_path=os.path.join(output_path, data_type + "_" + "metrics.npy"),
-    num_bits=3,  # 评估结果保留的小数点后数据的位数
-)
+if __name__ == "__main__":
+    # 确保多进程在windows上也可以正常使用
+    cal_sod_matrics.cal_sod_matrics(
+        data_type=data_type,
+        to_append=True,  # 是否保留之前的评估记录（针对txt_path文件有效）
+        txt_path=os.path.join(output_path, f"{data_type}.txt"),
+        xlsx_path=os.path.join(output_path, f"{data_type}.xlsx"),
+        drawing_info=drawing_info,
+        dataset_info=dataset_info,
+        save_npy=True,  # 是否将评估结果到npy文件中，该文件可用来绘制pr和fm曲线
+        # 保存曲线指标数据的文件路径
+        curves_npy_path=os.path.join(output_path, data_type + "_" + "curves.npy"),
+        metrics_npy_path=os.path.join(output_path, data_type + "_" + "metrics.npy"),
+        num_bits=3,  # 评估结果保留的小数点后数据的位数
+        num_workers=4,
+        use_mp=False,  # using multi-threading
+    )

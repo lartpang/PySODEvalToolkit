@@ -243,3 +243,23 @@ def colored_print(msg: str, mode: str = "general"):
     else:
         raise ValueError(f"{mode} is invalid mode.")
     print(msg)
+
+
+class ColoredPrinter:
+    """
+    为不同类型的字符串消息的打印提供一些显示格式的定制
+    """
+
+    @staticmethod
+    def info(msg):
+        print(msg)
+
+    @staticmethod
+    def warn(msg):
+        msg = f"\033[5;31m{msg}\033[0m"
+        print(msg)
+
+    @staticmethod
+    def error(msg):
+        msg = f"\033[1;31m{msg}\033[0m"
+        print(msg)
