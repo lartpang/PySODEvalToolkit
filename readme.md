@@ -25,6 +25,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 * 测试代码高度优化
     - 纯python实现, 基于numpy和各种小trick计算各项指标, 速度有保障
     - 导出特定模型的结果到xlsx文件中（2021年01月04日重新提供支持）
+    - 直接支持从生成的npy文件导出latex表格代码，顺便还可以对前三的方法使用不同颜色进行标记。
     - 导出测试结果到txt文件中
     - 评估所有指定的方法, 根据评估结果绘制PR曲线和F-measure曲线
 
@@ -47,6 +48,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
     - **具体关于评估以及使用评估得到的`.npy`文件来绘图的例子, 可以参考 `examples` 文件夹中的 `eval_all.py` 和 `plot_results.py` .**
 4. 运行`eval_all.py`, 如无异常, 默认会在 <./results> 下生成结果文件, 并将用于绘图的信息保存到`.npy`文件中.
 5. 后续可以使用`plot_results.py`来读取`.npy`文件绘制`PR`曲线和`Fm`曲线.
+6. **(2021年08月25日新添加)**, 使用`tools/converter.py`直接从生成的npy文件中导出latex表格代码.
 
 ## 相关文献
 
@@ -108,6 +110,8 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## 更新日志
 
+* 2021年08月25日
+    - 添加从生成的npy自定义导出为latex表格代码的脚本(`tools/converter.py`), 并提供了配置文件示例(`examples/converter_config.py`).
 * 2021年08月24日
     - 添加多进程多线程支持, 仅支持sod、cod的代码(`metrics/cal_sod_matrics.py`), cosod的代码由于使用频率较小, 没有改写, 欢迎PR.
     - 修改对应的示例程序(`examples/eval_all.py`),
@@ -141,7 +145,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 * 2021年03月12日
     - 这一版本正式将sod的评估、绘图代码与配置分离, 主要考虑如下
         - 用户的配置是需要调整的, 这部分不适宜被git严格的监视, 也便于提交后续更新的时候, 直接忽略关于配置的更改, 即后续更新时, 用户配置部分会不再更新, 若是添加新功能, 直接调整原始的函数, 其参数默认关闭新功能, 保证用户不会受到影响.
-        - sod和cosod评估方式有差异, 但是绘图方式一致, 所以现将评估绘图拆分成独立部分, 置于metrics/sod文件夹下, 之后或许或调整位置,  但这种拆分策略不变.
+        - sod和cosod评估方式有差异, 但是绘图方式一致, 所以现将评估绘图拆分成独立部分, 置于metrics/sod文件夹下, 之后或许或调整位置, 但这种拆分策略不变.
     - 优化了cosod的评估代码, 对sod和cosod的指标recorder部分进行了简化.
     - 不再使用独立的sod_metrics代码, 由于我已经将PySODMetrics发布到了PyPI上, 所以可以直接通过pip安装.
     - 使用添加了对于print的一个彩色增强的封装, 可见`./utils/misc.py`中的`colored_print`.

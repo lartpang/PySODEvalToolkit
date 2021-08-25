@@ -1,5 +1,36 @@
 # Useful tools
 
+## `converter.py`
+
+将生成的 `*_metrics.npy` 文件中的信息导出成latex表格的形式.
+
+可以按照例子文件夹中的 `examples/converter_config.py` 进行手动配置, 从而针对性的生成latex表格代码.
+
+```shell
+$ python tools/converter.py --help
+usage: converter.py [-h] -i RESULT_FILE -o TEX_FILE [-c CONFIG_FILE] [--contain-table-env]
+
+A useful and convenient tool to convert your .npy results into the table code in latex.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i RESULT_FILE, --result-file RESULT_FILE
+                        The path of the *_metrics.npy file.
+  -o TEX_FILE, --tex-file TEX_FILE
+                        The path of the exported tex file.
+  -c CONFIG_FILE, --config-file CONFIG_FILE
+                        The path of the customized config file.
+  --contain-table-env   Whether to containe the table env in the exported code.
+```
+
+使用案例如下.
+
+```shell
+$ python tools/converter.py -i output/your_metrics.npy -o output/your_metrics.tex -c examples/converter_config.py
+```
+
+该指令从npy文件中读取数据, 处理后导出到指定的tex文件中. 并且使用指定的config文件设置了相关的数据集、指标以及模型方法.
+
 ## `check_path.py`
 
 通过将json中的信息与实际系统中的路径进行匹配, 检验是否存在异常.
