@@ -110,6 +110,8 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## 更新日志
 
+* 2021年08月28日
+    - 扩展`tools/converter.py`，使其支持横竖两种格式的表格, 并补充对应的文档.
 * 2021年08月25日
     - 添加从生成的npy自定义导出为latex表格代码的脚本(`tools/converter.py`), 并提供了配置文件示例(`examples/converter_config.py`).
 * 2021年08月24日

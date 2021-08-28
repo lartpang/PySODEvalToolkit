@@ -7,29 +7,31 @@
 可以按照例子文件夹中的 `examples/converter_config.py` 进行手动配置, 从而针对性的生成latex表格代码.
 
 ```shell
-$ python tools/converter.py --help
-usage: converter.py [-h] -i RESULT_FILE -o TEX_FILE [-c CONFIG_FILE] [--contain-table-env]
+$ python tools/converter.py --helpusage: converter.py [-h] -i RESULT_FILE [RESULT_FILE ...] -o TEX_FILE [-c CONFIG_FILE] [--contain-table-env] [--transpose]
 
 A useful and convenient tool to convert your .npy results into the table code in latex.
 
 optional arguments:
   -h, --help            show this help message and exit
-  -i RESULT_FILE, --result-file RESULT_FILE
+  -i RESULT_FILE [RESULT_FILE ...], --result-file RESULT_FILE [RESULT_FILE ...]
                         The path of the *_metrics.npy file.
   -o TEX_FILE, --tex-file TEX_FILE
                         The path of the exported tex file.
   -c CONFIG_FILE, --config-file CONFIG_FILE
                         The path of the customized config file.
   --contain-table-env   Whether to containe the table env in the exported code.
+  --transpose           Whether to transpose the table.
 ```
 
 使用案例如下.
 
 ```shell
-$ python tools/converter.py -i output/your_metrics.npy -o output/your_metrics.tex -c examples/converter_config.py
+$ python tools/converter.py -i output/your_metrics_1.npy output/your_metrics_2.npy -o output/your_metrics.tex -c ./examples/converter_config.py  --transpose --contain-table-env
 ```
 
-该指令从npy文件中读取数据, 处理后导出到指定的tex文件中. 并且使用指定的config文件设置了相关的数据集、指标以及模型方法.
+该指令从多个npy文件中(如果你仅有一个, 可以紧跟一个npy文件)读取数据, 处理后导出到指定的tex文件中. 并且使用指定的config文件设置了相关的数据集、指标以及模型方法.
+
+另外, 对于输出的表格代码, 使用转置后的竖表, 并且包含table的 `tabular` 环境代码.
 
 ## `check_path.py`
 
