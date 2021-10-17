@@ -16,9 +16,9 @@ args = parser.parse_args()
 
 for method_json, dataset_json in zip(args.method_jsons, args.dataset_jsons):
     with open(method_json, encoding="utf-8", mode="r") as f:
-        methods_info = json.load(f, object_pairs_hook=OrderedDict)  # 有序载入
+        methods_info = json.load(f, object_hook=OrderedDict)  # 有序载入
     with open(dataset_json, encoding="utf-8", mode="r") as f:
-        datasets_info = json.load(f, object_pairs_hook=OrderedDict)  # 有序载入
+        datasets_info = json.load(f, object_hook=OrderedDict)  # 有序载入
 
     total_msgs = []
     for method_name, method_info in methods_info.items():
@@ -34,28 +34,32 @@ for method_json, dataset_json in zip(args.method_jsons, args.dataset_jsons):
             file_suffix = resutls_info["suffix"]
 
             if not os.path.exists(dir_path):
-                total_msgs.append(f"{method_name}/{dataset_name}: {dir_path} 不存在")
+                total_msgs.append(f"{dir_path} 不存在")
                 continue
             elif not os.path.isdir(dir_path):
-                total_msgs.append(f"{method_name}/{dataset_name}: {dir_path} 不是正常的文件夹路径")
+                total_msgs.append(f"{dir_path} 不是正常的文件夹路径")
                 continue
             else:
                 pred_names = [
-                    name[:-4] for name in os.listdir(dir_path) if name.endswith(file_suffix)
+                    name[: -len(file_suffix)]
+                    for name in os.listdir(dir_path)
+                    if name.endswith(file_suffix)
                 ]
                 if len(pred_names) == 0:
-                    total_msgs.append(
-                        f"{method_name}/{dataset_name}: {dir_path} 中不包含后缀为{file_suffix}的文件"
-                    )
+                    total_msgs.append(f"{dir_path} 中不包含后缀为{file_suffix}的文件")
                     continue
 
             mask_names = [
-                name[:-4] for name in os.listdir(mask_path) if name.endswith(mask_suffix)
+                name[: -len(mask_suffix)]
+                for name in os.listdir(mask_path)
+                if name.endswith(mask_suffix)
             ]
-            if len(set(mask_names).intersection(set(pred_names))) == 0:
-                total_msgs.append(
-                    f"{method_name}/{dataset_name}: {dir_path} 中数据名字与真值 {mask_path} 不匹配"
-                )
+            intersection_names = set(mask_names).intersection(set(pred_names))
+            if len(intersection_names) == 0:
+                total_msgs.append(f"{dir_path} 中数据名字与真值 {mask_path} 不匹配")
+            elif len(intersection_names) != len(mask_names):
+                difference_names = set(mask_names).difference(pred_names)
+                total_msgs.append(f"{dir_path} 中数据{difference_names}与真值 {mask_path} 不一致")
 
     if total_msgs:
         print(*total_msgs, sep="\n")

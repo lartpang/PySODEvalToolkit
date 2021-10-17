@@ -60,7 +60,8 @@ def get_name_list(data_path: str, file_ext: str = None) -> list:
         data_list = os.listdir(data_path)
 
     if file_ext is not None:
-        name_list = [os.path.splitext(f)[0] for f in data_list if f.endswith(file_ext)]
+        # 如果提供file_ext，则基于file_ext来截断文件名，这可以用来应对具有额外名称后缀的数据
+        name_list = [f[: -len(file_ext)] for f in data_list if f.endswith(file_ext)]
     else:
         name_list = [os.path.splitext(f)[0] for f in data_list]
 

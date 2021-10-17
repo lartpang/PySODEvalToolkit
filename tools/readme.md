@@ -7,7 +7,8 @@
 可以按照例子文件夹中的 `examples/converter_config.py` 进行手动配置, 从而针对性的生成latex表格代码.
 
 ```shell
-$ python tools/converter.py --helpusage: converter.py [-h] -i RESULT_FILE [RESULT_FILE ...] -o TEX_FILE [-c CONFIG_FILE] [--contain-table-env] [--transpose]
+$ python tools/converter.py --help
+usage: converter.py [-h] -i RESULT_FILE [RESULT_FILE ...] -o TEX_FILE [-c CONFIG_FILE] [--contain-table-env] [--transpose]
 
 A useful and convenient tool to convert your .npy results into the table code in latex.
 

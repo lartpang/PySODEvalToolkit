@@ -57,7 +57,7 @@ def simple_info_generator():
 def get_methods_info(
     methods_info_json: str,
     for_drawing: bool = False,
-    our_name: str = "Ours",
+    our_name: str = None,
     include_methods: list = None,
     exclude_methods: list = None,
 ) -> OrderedDict:
