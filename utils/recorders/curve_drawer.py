@@ -6,44 +6,62 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from utils.misc import update_info
+
 
 class CurveDrawer(object):
-    def __init__(self, row_num, col_num):
+    def __init__(self, row_num, col_num, font_cfg=None, subplots_cfg=None):
         fig, axes = plt.subplots(nrows=row_num, ncols=col_num)
         self.fig = fig
         self.axes = axes.flatten()
 
         self.num_subplots = row_num * col_num
+
+        if subplots_cfg is None:
+            subplots_cfg = dict(
+                left=None, bottom=None, right=None, top=None, wspace=None, hspace=None
+            )
+        self.subplots_cfg = subplots_cfg
+
         self.font_cfg = {
             "title": {
-                "fontsize": 12,
-                "fontweight": "bold",
-                "fontname": "Liberation Sans",
+                "fontdict": {
+                    "fontsize": 12,
+                    "fontweight": "bold",
+                }
             },
             "label": {
-                "fontsize": 10,
-                "fontweight": "normal",
-                "fontname": "Liberation Sans",
+                "fontdict": {
+                    "fontsize": 10,
+                    "fontweight": "normal",
+                }
             },
             "ticks": {
-                "fontsize": 8,
-                "fontweight": "normal",
-                "fontname": "Liberation Sans",
+                "fontdict": {
+                    "fontsize": 8,
+                    "fontweight": "normal",
+                }
             },
             "legend": {
-                "size": 8,
-                "weight": "normal",
-                "family": "Liberation Sans",
+                "ncol": 1,
+                "prop": {
+                    "size": 8,
+                    "weight": "normal",
+                },
             },
         }
+        if font_cfg is not None:
+            update_info(source_info=self.font_cfg, new_info=font_cfg)
 
         self.init_subplots()
 
     def init_subplots(self):
         plt.style.use("default")
+        plt.subplots_adjust(**self.subplots_cfg)
         for ax in self.axes:
             ax.grid(False)
             ax.set_axis_off()
+        print(f"Config: {self.subplots_cfg}\n{self.font_cfg}")
 
     def draw_method_curve(
         self,
@@ -71,18 +89,18 @@ class CurveDrawer(object):
         ax.set_axis_on()
 
         # give plot a title
-        ax.set_title(dataset_name, fontdict=self.font_cfg["title"])
+        ax.set_title(dataset_name, **self.font_cfg["title"])
 
         # make axis labels
-        ax.set_xlabel(x_label, fontdict=self.font_cfg["label"])
-        ax.set_ylabel(y_label, fontdict=self.font_cfg["label"])
+        ax.set_xlabel(x_label, **self.font_cfg["label"])
+        ax.set_ylabel(y_label, **self.font_cfg["label"])
 
         # 对坐标刻度的设置
         label = [f"{x:.2f}" for x in np.linspace(0, 1, 11)]
         ax.set_xticks(np.linspace(0, 1, 11))
         ax.set_yticks(np.linspace(0, 1, 11))
-        ax.set_xticklabels(labels=label, fontdict=self.font_cfg["ticks"])
-        ax.set_yticklabels(labels=label, fontdict=self.font_cfg["ticks"])
+        ax.set_xticklabels(labels=label, **self.font_cfg["ticks"])
+        ax.set_yticklabels(labels=label, **self.font_cfg["ticks"])
 
         ax.set_xlim(x_lim)
         ax.set_ylim(y_lim)
@@ -98,7 +116,7 @@ class CurveDrawer(object):
         )
 
         # loc=0，自动将位置放在最合适的
-        ax.legend(loc=3, prop=self.font_cfg["legend"])
+        ax.legend(loc=3, **self.font_cfg["legend"])
 
         # 对坐标轴的框线进行设置, 设置轴
         ax.spines["top"].set_linewidth(1)

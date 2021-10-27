@@ -7,7 +7,6 @@ import argparse
 import importlib.util
 import os
 import sys
-from collections import OrderedDict
 from itertools import chain
 
 import numpy as np
@@ -116,7 +115,7 @@ for dataset_idx, dataset_name in enumerate(dataset_names):
 
 style_templates = dict(
     method_row_body="& {method_name}",
-    method_column_body="& {method_name}",
+    method_column_body=" {method_name}",
     dataset_row_body="& \multicolumn{{{num_metrics}}}{{c}}{{\\textbf{{{dataset_name}}}}}",
     dataset_column_body="\multirow{{-{num_metrics}}}{{*}}{{\\rotatebox{{90}}{{\\textbf{{{dataset_name}}}}}",
     dataset_head=" ",

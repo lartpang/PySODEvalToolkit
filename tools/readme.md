@@ -1,5 +1,36 @@
 # Useful tools
 
+## `append_results.py`
+
+将新生成的npy文件与旧的npy文件合并到一个新npy文件中。
+
+```shell
+$ python tools/append_results.py --help
+usage: append_results.py [-h] --old-npy OLD_NPY --new-npy NEW_NPY --out-npy OUT_NPY
+
+A simple tool for merging two npy file.
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --old-npy OLD_NPY
+  --new-npy NEW_NPY
+  --out-npy OUT_NPY
+```
+
+使用情形：
+
+对于rgb sod数据，我已经生成了包含一批方法的结果的npy文件：`old_rgb_sod_curves.npy`。
+对于某个方法重新评估后又获得了一个新的npy文件（文件不重名，所以不会覆盖）：`new_rgb_sod_curves.npy`。
+现在我想要将这两个结果整合到一个文件中：`finalnew_rgb_sod_curves.npy`。
+可以通过如下指令实现。
+
+```shell
+python tools/append_results.py --old-npy output/old_rgb_sod_curves.npy \
+                               --new-npy output/new_rgb_sod_curves.npy \
+                               --out-npy output/finalnew_rgb_sod_curves.npy
+```
+
+
 ## `converter.py`
 
 将生成的 `*_metrics.npy` 文件中的信息导出成latex表格的形式.

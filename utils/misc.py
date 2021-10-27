@@ -264,3 +264,14 @@ class ColoredPrinter:
     def error(msg):
         msg = f"\033[1;31m{msg}\033[0m"
         print(msg)
+
+
+def update_info(source_info: dict, new_info: dict):
+    for name, info in source_info.items():
+        if name in new_info:
+            if isinstance(info, dict):
+                update_info(source_info=info, new_info=new_info[name])
+            else:  # int, float, list, tuple
+                info = new_info[name]
+            source_info[name] = info
+    return source_info

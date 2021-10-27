@@ -16,6 +16,8 @@ def draw_curves(
     drawing_info: dict = None,
     dataset_info: dict = None,
     dataset_alias: dict = None,
+    font_cfg: dict = None,
+    subplots_cfg: dict = None,
 ):
     if dataset_alias is None:
         dataset_alias = {}
@@ -35,7 +37,10 @@ def draw_curves(
     curves = np.load(curves_npy_path, allow_pickle=True).item()
 
     curve_drawer = CurveDrawer(
-        row_num=row_num, col_num=math.ceil(len(dataset_info.keys()) / row_num)
+        row_num=row_num,
+        col_num=math.ceil(len(dataset_info.keys()) / row_num),
+        font_cfg=font_cfg,
+        subplots_cfg=subplots_cfg,
     )
 
     for idx, dataset_name in enumerate(dataset_info.keys()):
