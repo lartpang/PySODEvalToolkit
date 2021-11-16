@@ -46,7 +46,7 @@ def get_name_list_and_suffix(data_path: str) -> tuple:
     return name_list, file_ext
 
 
-def get_name_list(data_path: str, file_ext: str = None) -> list:
+def get_name_list(data_path: str, name_prefix: str = "", name_suffix: str = "") -> list:
     if os.path.isfile(data_path):
         assert data_path.endswith((".txt", ".lst"))
         data_list = []
@@ -55,15 +55,18 @@ def get_name_list(data_path: str, file_ext: str = None) -> list:
             while line:
                 data_list.append(line)
                 line = f.readline().strip()
-        file_ext = None  # 使用name list时不需要指定ext了
     else:
         data_list = os.listdir(data_path)
 
-    if file_ext is not None:
-        # 如果提供file_ext，则基于file_ext来截断文件名，这可以用来应对具有额外名称后缀的数据
-        name_list = [f[: -len(file_ext)] for f in data_list if f.endswith(file_ext)]
+    name_list = data_list
+    if not name_prefix and not name_suffix:
+        name_list = [os.path.splitext(f)[0] for f in name_list]
     else:
-        name_list = [os.path.splitext(f)[0] for f in data_list]
+        name_list = [
+            f[len(name_prefix) : -len(name_suffix)]
+            for f in name_list
+            if f.startswith(name_prefix) and f.endswith(name_suffix)
+        ]
 
     name_list = list(set(name_list))
     return name_list
@@ -174,11 +177,12 @@ def get_gt_pre_with_name(
     gt_root: str,
     pre_root: str,
     img_name: str,
-    pre_ext: str,
+    pre_prefix: str,
+    pre_suffix: str,
     gt_ext: str = ".png",
     to_normalize: bool = False,
 ):
-    img_path = os.path.join(pre_root, img_name + pre_ext)
+    img_path = os.path.join(pre_root, pre_prefix + img_name + pre_suffix)
     gt_path = os.path.join(gt_root, img_name + gt_ext)
 
     pre = imread_wich_checking(img_path, for_color=False)

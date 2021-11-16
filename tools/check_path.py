@@ -22,16 +22,17 @@ for method_json, dataset_json in zip(args.method_jsons, args.dataset_jsons):
 
     total_msgs = []
     for method_name, method_info in methods_info.items():
-        for dataset_name, resutls_info in method_info.items():
-            if resutls_info is None:
+        for dataset_name, results_info in method_info.items():
+            if results_info is None:
                 continue
 
             dataset_mask_info = datasets_info[dataset_name]["mask"]
             mask_path = dataset_mask_info["path"]
             mask_suffix = dataset_mask_info["suffix"]
 
-            dir_path = resutls_info["path"]
-            file_suffix = resutls_info["suffix"]
+            dir_path = results_info["path"]
+            file_prefix = results_info.get("prefix", "")
+            file_suffix = results_info["suffix"]
 
             if not os.path.exists(dir_path):
                 total_msgs.append(f"{dir_path} 不存在")
@@ -41,12 +42,12 @@ for method_json, dataset_json in zip(args.method_jsons, args.dataset_jsons):
                 continue
             else:
                 pred_names = [
-                    name[: -len(file_suffix)]
+                    name[len(file_prefix) : -len(file_suffix)]
                     for name in os.listdir(dir_path)
-                    if name.endswith(file_suffix)
+                    if name.startswith(file_prefix) and name.endswith(file_suffix)
                 ]
                 if len(pred_names) == 0:
-                    total_msgs.append(f"{dir_path} 中不包含后缀为{file_suffix}的文件")
+                    total_msgs.append(f"{dir_path} 中不包含前缀为{file_prefix}且后缀为{file_suffix}的文件")
                     continue
 
             mask_names = [
@@ -59,7 +60,9 @@ for method_json, dataset_json in zip(args.method_jsons, args.dataset_jsons):
                 total_msgs.append(f"{dir_path} 中数据名字与真值 {mask_path} 不匹配")
             elif len(intersection_names) != len(mask_names):
                 difference_names = set(mask_names).difference(pred_names)
-                total_msgs.append(f"{dir_path} 中数据{difference_names}与真值 {mask_path} 不一致")
+                total_msgs.append(
+                    f"{dir_path} 中数据({len(list(pred_names))})与真值({len(list(mask_names))})不一致"
+                )
 
     if total_msgs:
         print(*total_msgs, sep="\n")

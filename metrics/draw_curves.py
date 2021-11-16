@@ -18,6 +18,8 @@ def draw_curves(
     dataset_alias: dict = None,
     font_cfg: dict = None,
     subplots_cfg: dict = None,
+    separated_legend: bool = False,
+    sharey: bool = False,
 ):
     if dataset_alias is None:
         dataset_alias = {}
@@ -38,14 +40,25 @@ def draw_curves(
 
     curve_drawer = CurveDrawer(
         row_num=row_num,
-        col_num=math.ceil(len(dataset_info.keys()) / row_num),
+        num_subplots=len(dataset_info.keys()),
         font_cfg=font_cfg,
         subplots_cfg=subplots_cfg,
+        separated_legend=separated_legend,
+        sharey=sharey,
     )
 
     for idx, dataset_name in enumerate(dataset_info.keys()):
         # 与cfg[dataset_info]中的key保持一致
         dataset_results = curves[dataset_name]
+        curve_drawer.set_axis_property(
+            idx=idx,
+            title=dataset_alias.get(dataset_name, dataset_name).upper(),
+            x_label=x_label,
+            y_label=y_label,
+            x_lim=x_lim,
+            y_lim=y_lim,
+        )
+
         for method_name, method_info in drawing_info.items():
             # 与cfg[drawing_info]中的key保持一致
             method_results = dataset_results.get(method_name, None)
@@ -65,15 +78,10 @@ def draw_curves(
                 y_data = method_results["fm"]
                 x_data = np.linspace(0, 1, 256)
 
-            curve_drawer.draw_method_curve(
-                curr_idx=idx,
-                dataset_name=dataset_alias.get(dataset_name, dataset_name).upper(),
+            curve_drawer.plot_at_axis(
+                idx=idx,
                 method_curve_setting=method_info["curve_setting"],
-                x_label=x_label,
-                y_label=y_label,
                 x_data=x_data,
                 y_data=y_data,
-                x_lim=x_lim,
-                y_lim=y_lim,
             )
     curve_drawer.show()

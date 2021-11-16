@@ -54,6 +54,30 @@ def simple_info_generator():
     return _template_generator
 
 
+def get_valid_elements(
+    source: list,
+    include_elements: list = None,
+    exclude_elements: list = None,
+):
+    if include_elements is None:
+        include_elements = []
+    if exclude_elements is None:
+        exclude_elements = []
+    assert not set(include_elements).intersection(
+        exclude_elements
+    ), "`include_elements` and `exclude_elements` must have no intersection."
+
+    targeted = set(source).difference(exclude_elements)
+    assert targeted, "`exclude_elements can not include all datasets."
+
+    if include_elements:
+        # include_elements: [] or [dataset1_name, dataset2_name, ...]
+        # only latter will be used to select datasets from `targeted`
+        targeted = targeted.intersection(include_elements)
+
+    return list(targeted)
+
+
 def get_methods_info(
     methods_info_json: str,
     for_drawing: bool = False,
@@ -72,26 +96,22 @@ def get_methods_info(
     :return: methods_full_info
     """
 
-    assert os.path.exists(methods_info_json) and os.path.isfile(
-        methods_info_json
-    ), methods_info_json
-    if include_methods and exclude_methods:
-        raise ValueError("include_methods、exclude_methods 不可以同时非None")
-
+    assert os.path.isfile(methods_info_json), methods_info_json
     with open(methods_info_json, encoding="utf-8", mode="r") as f:
-        methods_info = json.load(f, object_pairs_hook=OrderedDict)  # 有序载入
-
-    if include_methods:
-        for method_name in include_methods:
-            if method_name not in methods_info:
-                raise ValueError(f"The info of {method_name} is not in the methods_info_json.")
-    if exclude_methods:
-        for method_name in exclude_methods:
-            if method_name not in methods_info:
-                raise ValueError(f"The info of {method_name} is not in the methods_info_json.")
+        methods_info = json.load(f, object_hook=OrderedDict)  # 有序载入
 
     if our_name:
         assert our_name in methods_info, f"{our_name} is not in json file."
+
+    targeted_methods = get_valid_elements(
+        source=list(methods_info.keys()),
+        include_elements=include_methods,
+        exclude_elements=exclude_methods,
+    )
+    if our_name and our_name in targeted_methods:
+        targeted_methods.pop(targeted_methods.index(our_name))
+        targeted_methods.sort()
+        targeted_methods.insert(0, our_name)
 
     if for_drawing:
         info_generator = curve_info_generator()
@@ -99,11 +119,8 @@ def get_methods_info(
         info_generator = simple_info_generator()
 
     methods_full_info = []
-    for method_name, method_path in methods_info.items():
-        if include_methods and (method_name not in include_methods):
-            continue
-        if exclude_methods and (method_name in exclude_methods):
-            continue
+    for method_name in targeted_methods:
+        method_path = methods_info[method_name]
 
         if for_drawing and our_name and our_name == method_name:
             method_info = info_generator(method_path, method_name, line_color="red", line_width=3)
@@ -114,7 +131,9 @@ def get_methods_info(
 
 
 def get_datasets_info(
-    datastes_info_json: str, include_datasets: list = None, exclude_datasets: list = None
+    datastes_info_json: str,
+    include_datasets: list = None,
+    exclude_datasets: list = None,
 ) -> OrderedDict:
     """
     在json文件中存储的所有数据集的信息会被直接导出到一个字典中
@@ -125,30 +144,20 @@ def get_datasets_info(
     :return: datastes_full_info
     """
 
-    assert os.path.exists(datastes_info_json) and os.path.isfile(
-        datastes_info_json
-    ), datastes_info_json
-    if include_datasets and exclude_datasets:
-        raise ValueError("include_methods、exclude_methods 不可以同时非None")
-
+    assert os.path.isfile(datastes_info_json), datastes_info_json
     with open(datastes_info_json, encoding="utf-8", mode="r") as f:
-        datasets_info = json.load(f, object_pairs_hook=OrderedDict)  # 有序载入
+        datasets_info = json.load(f, object_hook=OrderedDict)  # 有序载入
 
-    if include_datasets:
-        for dataset_name in include_datasets:
-            if dataset_name not in datasets_info:
-                raise ValueError(f"The info of {dataset_name} is not in the datasets_info_json.")
-    if exclude_datasets:
-        for dataset_name in exclude_datasets:
-            if dataset_name not in datasets_info:
-                raise ValueError(f"The info of {dataset_name} is not in the methods_info_json.")
+    targeted_datasets = get_valid_elements(
+        source=list(datasets_info.keys()),
+        include_elements=include_datasets,
+        exclude_elements=exclude_datasets,
+    )
+    targeted_datasets.sort()
 
     datasets_full_info = []
-    for dataset_name, data_path in datasets_info.items():
-        if include_datasets and (dataset_name not in include_datasets):
-            continue
-        if exclude_datasets and (dataset_name in exclude_datasets):
-            continue
+    for dataset_name in targeted_datasets:
+        data_path = datasets_info[dataset_name]
 
         datasets_full_info.append((dataset_name, data_path))
     return OrderedDict(datasets_full_info)

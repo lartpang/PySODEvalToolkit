@@ -275,5 +275,6 @@ gen
 /untracked/
 /configs/
 /*.py
+/*.sh
 /results/rgb_sod.md
 /results/htmls/*.html

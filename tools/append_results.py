@@ -8,6 +8,8 @@ def get_args():
     parser = argparse.ArgumentParser(description="A simple tool for merging two npy file.")
     parser.add_argument("--old-npy", type=str, required=True)
     parser.add_argument("--new-npy", type=str, required=True)
+    parser.add_argument("--method-names", type=str, nargs="+")
+    parser.add_argument("--dataset-names", type=str, nargs="+")
     parser.add_argument("--out-npy", type=str, required=True)
     args = parser.parse_args()
     return args
@@ -19,13 +21,21 @@ def main():
     old_npy: dict = np.load(args.old_npy, allow_pickle=True).item()
 
     for dataset_name, methods_info in new_npy.items():
+        if args.dataset_names and dataset_name not in args.dataset_names:
+            continue
+
         print(f"[PROCESSING INFORMATION ABOUT DATASET {dataset_name}...]")
         old_methods_info = old_npy.get(dataset_name)
         if not old_methods_info:
             raise KeyError(f"{old_npy} doesn't contain the information about {dataset_name}.")
+
         print(f"OLD_NPY: {list(old_methods_info.keys())}")
         print(f"NEW_NPY: {list(methods_info.keys())}")
+
         for method_name, method_info in methods_info.items():
+            if args.method_names and method_name not in args.method_names:
+                continue
+
             if method_name not in old_npy[dataset_name]:
                 old_methods_info[method_name] = method_info
         print(f"MERGED_NPY: {list(old_methods_info.keys())}")

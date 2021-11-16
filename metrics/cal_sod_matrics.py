@@ -127,9 +127,9 @@ def cal_sod_matrics(
         # 真值名字列表
         gt_index_file = dataset_path.get("index_file")
         if gt_index_file:
-            gt_name_list = get_name_list(data_path=gt_index_file, file_ext=gt_ext)
+            gt_name_list = get_name_list(data_path=gt_index_file, name_suffix=gt_ext)
         else:
-            gt_name_list = get_name_list(data_path=gt_root, file_ext=gt_ext)
+            gt_name_list = get_name_list(data_path=gt_root, name_suffix=gt_ext)
         assert len(gt_name_list) > 0, "there is not ground truth."
 
         # ==>> test the intersection between pre and gt for each method <<==
@@ -147,9 +147,14 @@ def cal_sod_matrics(
                 continue
 
             # 预测结果存放路径下的图片文件名字列表和扩展名称
-            pre_ext = method_dataset_info["suffix"]
+            pre_prefix = method_dataset_info.get("prefix", "")
+            pre_suffix = method_dataset_info["suffix"]
             pre_root = method_dataset_info["path"]
-            pre_name_list = get_name_list(data_path=pre_root, file_ext=pre_ext)
+            pre_name_list = get_name_list(
+                data_path=pre_root,
+                name_prefix=pre_prefix,
+                name_suffix=pre_suffix,
+            )
 
             # get the intersection
             eval_name_list = sorted(list(set(gt_name_list).intersection(pre_name_list)))
@@ -163,7 +168,8 @@ def cal_sod_matrics(
                     names=eval_name_list,
                     num_bits=num_bits,
                     pre_root=pre_root,
-                    pre_ext=pre_ext,
+                    pre_prefix=pre_prefix,
+                    pre_suffix=pre_suffix,
                     gt_root=gt_root,
                     gt_ext=gt_ext,
                     desc=f"[{dataset_name}({len(gt_name_list)}):{method_name}({len(pre_name_list)})]",
@@ -186,7 +192,16 @@ def cal_sod_matrics(
 
 
 def evaluate_data(
-    names, num_bits, gt_root, gt_ext, pre_root, pre_ext, desc="", proc_idx=None, blocking=True
+    names,
+    num_bits,
+    gt_root,
+    gt_ext,
+    pre_root,
+    pre_prefix,
+    pre_suffix,
+    desc="",
+    proc_idx=None,
+    blocking=True,
 ):
     metric_recoder = MetricRecorder()
     # https://github.com/tqdm/tqdm#parameters
@@ -204,7 +219,8 @@ def evaluate_data(
             gt_root=gt_root,
             pre_root=pre_root,
             img_name=name,
-            pre_ext=pre_ext,
+            pre_prefix=pre_prefix,
+            pre_suffix=pre_suffix,
             gt_ext=gt_ext,
             to_normalize=False,
         )
