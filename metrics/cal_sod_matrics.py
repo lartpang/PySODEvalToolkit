@@ -28,22 +28,30 @@ class Recorder:
         self.metrics = defaultdict(dict)  # Six numerical metrics
         self.dataset_name = None
 
-        self.txt_recorder = TxtRecorder(
-            txt_path=txt_path,
-            to_append=to_append,
-            max_method_name_width=max_method_name_width,
-        )
-        self.excel_recorder = MetricExcelRecorder(
-            xlsx_path=xlsx_path,
-            sheet_name=sheet_name,
-            row_header=["methods"],
-            dataset_names=dataset_names,
-            metric_names=metric_names,
-        )
+        self.txt_recorder = None
+        if txt_path:
+            self.txt_recorder = TxtRecorder(
+                txt_path=txt_path,
+                to_append=to_append,
+                max_method_name_width=max_method_name_width,
+            )
+
+        self.excel_recorder = None
+        if xlsx_path:
+            self.excel_recorder = MetricExcelRecorder(
+                xlsx_path=xlsx_path,
+                sheet_name=sheet_name,
+                row_header=["methods"],
+                dataset_names=dataset_names,
+                metric_names=metric_names,
+            )
 
     def record_dataset_name(self, dataset_name):
         self.dataset_name = dataset_name
-        self.txt_recorder.add_row(row_name="Dataset", row_data=dataset_name, row_start_str="\n")
+        if self.txt_recorder:
+            self.txt_recorder.add_row(
+                row_name="Dataset", row_data=dataset_name, row_start_str="\n"
+            )
 
     def record(self, method_results, method_name):
         method_curves = method_results["sequential"]
@@ -52,22 +60,21 @@ class Recorder:
         self.curves[self.dataset_name][method_name] = method_curves
         self.metrics[self.dataset_name][method_name] = method_metrics
 
-        self.excel_recorder(
-            row_data=method_metrics,
-            dataset_name=self.dataset_name,
-            method_name=method_name,
-        )
-        self.txt_recorder(method_results=method_metrics, method_name=method_name)
+        if self.excel_recorder:
+            self.excel_recorder(
+                row_data=method_metrics, dataset_name=self.dataset_name, method_name=method_name
+            )
+        if self.txt_recorder:
+            self.txt_recorder(method_results=method_metrics, method_name=method_name)
 
 
 def cal_sod_matrics(
-    data_type: str = "rgb_sod",
+    sheet_name: str = "results",
     txt_path: str = "",
     to_append: bool = True,
     xlsx_path: str = "",
-    drawing_info: dict = None,
-    dataset_info: dict = None,
-    save_npy: bool = True,
+    methods_info: dict = None,
+    datasets_info: dict = None,
     curves_npy_path: str = "./curves.npy",
     metrics_npy_path: str = "./metrics.npy",
     num_bits: int = 3,
@@ -94,13 +101,12 @@ def cal_sod_matrics(
           ....
         }
 
-    :param data_type: the type of data
+    :param sheet_name: the type of the sheet in xlsx file
     :param txt_path: the path of the txt for saving results
     :param to_append: whether to append results to the original record
     :param xlsx_path: the path of the xlsx file for saving results
-    :param drawing_info: the method information for plotting figures
-    :param dataset_info: the dataset information
-    :param save_npy: whether to save results into npy files
+    :param methods_info: the method information
+    :param datasets_info: the dataset information
     :param curves_npy_path: the npy file path for saving curve data
     :param metrics_npy_path: the npy file path for saving metric values
     :param num_bits: the number of bits used to format results
@@ -110,14 +116,14 @@ def cal_sod_matrics(
     recorder = Recorder(
         txt_path=txt_path,
         to_append=to_append,
-        max_method_name_width=max([len(x) for x in drawing_info.keys()]),  # 显示完整名字
+        max_method_name_width=max([len(x) for x in methods_info.keys()]),  # 显示完整名字
         xlsx_path=xlsx_path,
-        sheet_name=data_type,
-        dataset_names=sorted(dataset_info.keys()),
+        sheet_name=sheet_name,
+        dataset_names=sorted(datasets_info.keys()),
         metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
     )
 
-    for dataset_name, dataset_path in dataset_info.items():
+    for dataset_name, dataset_path in datasets_info.items():
         recorder.record_dataset_name(dataset_name)
 
         # 获取真值图片信息
@@ -139,7 +145,7 @@ def cal_sod_matrics(
             processes=num_workers, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)
         )
         procs_idx = 0
-        for method_name, method_info in drawing_info.items():
+        for method_name, method_info in methods_info.items():
             method_root = method_info["path_dict"]
             method_dataset_info = method_root.get(dataset_name, None)
             if method_dataset_info is None:
@@ -182,13 +188,16 @@ def cal_sod_matrics(
         procs.close()
         procs.join()
 
-    if save_npy:
+    if curves_npy_path:
         make_dir(os.path.dirname(curves_npy_path))
         np.save(curves_npy_path, recorder.curves)
+        print(f"All curves has been saved in {curves_npy_path}")
+    if metrics_npy_path:
+        make_dir(os.path.dirname(metrics_npy_path))
         np.save(metrics_npy_path, recorder.metrics)
-        print(f"all methods have been saved in {curves_npy_path} and {metrics_npy_path}")
+        print(f"All metrics has been saved in {metrics_npy_path}")
     formatted_string = formatter_for_tabulate(recorder.metrics)
-    print(f"all methods have been tested:\n{formatted_string}")
+    print(f"All methods have been evaluated:\n{formatted_string}")
 
 
 def evaluate_data(

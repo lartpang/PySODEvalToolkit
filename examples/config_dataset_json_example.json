@@ -1,0 +1,101 @@
+{
+  "LFSD": {
+    "root": "Path_Of_RGBDSOD_Datasets/LFSD",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/LFSD/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/LFSD/Mask",
+      "suffix": ".png"
+    }
+  },
+  "NJUD": {
+    "root": "Path_Of_RGBDSOD_Datasets/NJUD_FULL",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/NJUD_FULL/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/NJUD_FULL/Mask",
+      "suffix": ".png"
+    }
+  },
+  "NLPR": {
+    "root": "Path_Of_RGBDSOD_Datasets/NLPR_FULL",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/NLPR_FULL/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/NLPR_FULL/Mask",
+      "suffix": ".png"
+    }
+  },
+  "RGBD135": {
+    "root": "Path_Of_RGBDSOD_Datasets/RGBD135",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/RGBD135/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/RGBD135/Mask",
+      "suffix": ".png"
+    }
+  },
+  "SIP": {
+    "root": "Path_Of_RGBDSOD_Datasets/SIP",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/SIP/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/SIP/Mask",
+      "suffix": ".png"
+    }
+  },
+  "SSD": {
+    "root": "Path_Of_RGBDSOD_Datasets/SSD",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/SSD/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/SSD/Mask",
+      "suffix": ".png"
+    }
+  },
+  "STEREO797": {
+    "root": "Path_Of_RGBDSOD_Datasets/STEREO797",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/STEREO797/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/STEREO797/Mask",
+      "suffix": ".png"
+    }
+  },
+  "STEREO1000": {
+    "root": "Path_Of_RGBDSOD_Datasets/STEREO1000",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/STEREO1000/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/STEREO1000/Mask",
+      "suffix": ".png"
+    }
+  },
+  "DUTRGBD": {
+    "root": "Path_Of_RGBDSOD_Datasets/DUT-RGBD/Test",
+    "image": {
+      "path": "Path_Of_RGBDSOD_Datasets/DUT-RGBD/Test/Image",
+      "suffix": ".jpg"
+    },
+    "mask": {
+      "path": "Path_Of_RGBDSOD_Datasets/DUT-RGBD/Test/Mask",
+      "suffix": ".png"
+    }
+  }
+}

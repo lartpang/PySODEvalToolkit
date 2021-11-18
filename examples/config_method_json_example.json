@@ -1,0 +1,78 @@
+{
+  "Method1": {
+    "PASCAL-S": {
+      "path": "Path_Of_Method1/PASCAL-S/DGRL",
+      "suffix": ".png"
+    },
+    "ECSSD": {
+      "path": "Path_Of_Method1/ECSSD/DGRL",
+      "suffix": ".png"
+    },
+    "HKU-IS": {
+      "path": "Path_Of_Method1/HKU-IS/DGRL",
+      "suffix": ".png"
+    },
+    "DUT-OMRON": {
+      "path": "Path_Of_Method1/DUT-OMRON/DGRL",
+      "suffix": ".png"
+    },
+    "DUTS-TE": {
+      "path": "Path_Of_Method1/DUTS-TE/DGRL",
+      "suffix": ".png"
+    }
+  },
+  "Method2": {
+    "PASCAL-S": {
+      "path": "Path_Of_Method2/pascal",
+      "prefix": "pascal_",
+      "suffix": ".png"
+    },
+    "ECSSD": {
+      "path": "Path_Of_Method2/ecssd",
+      "prefix": "ecssd_",
+      "suffix": ".png"
+    },
+    "HKU-IS": {
+      "path": "Path_Of_Method2/hku",
+      "prefix": "hku_",
+      "suffix": ".png"
+    },
+    "DUT-OMRON": {
+      "path": "Path_Of_Method2/duto",
+      "prefix": "duto_",
+      "suffix": ".png"
+    },
+    "DUTS-TE": {
+      "path": "Path_Of_Method2/dut_te",
+      "prefix": "dut_te_",
+      "suffix": ".png"
+    }
+  },
+  "Method3": {
+    "PASCAL-S": {
+      "path": "Path_Of_Method3/pascal",
+      "prefix": "pascal_",
+      "suffix": "_fused_sod.png"
+    },
+    "ECSSD": {
+      "path": "Path_Of_Method3/ecssd",
+      "prefix": "ecssd_",
+      "suffix": "_fused_sod.png"
+    },
+    "HKU-IS": {
+      "path": "Path_Of_Method3/hku",
+      "prefix": "hku_",
+      "suffix": "_fused_sod.png"
+    },
+    "DUT-OMRON": {
+      "path": "Path_Of_Method3/duto",
+      "prefix": "duto_",
+      "suffix": "_fused_sod.png"
+    },
+    "DUTS-TE": {
+      "path": "Path_Of_Method3/dut_te",
+      "prefix": "dut_te_",
+      "suffix": "_fused_sod.png"
+    }
+  }
+}

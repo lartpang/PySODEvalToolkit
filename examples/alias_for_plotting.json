@@ -1,0 +1,17 @@
+{
+  "dataset": {
+    "Name_In_Json": "Name_In_SubFigure",
+    "NJUD": "NJUD",
+    "NLPR": "NLPR",
+    "DUTRGBD": "DUTRGBD",
+    "STEREO1000": "SETERE",
+    "RGBD135": "RGBD135",
+    "SSD": "SSD",
+    "SIP": "SIP"
+  },
+  "method": {
+    "Name_In_Json": "Name_In_Legend",
+    "GateNet_2020": "GateNet",
+    "MINet_R50_2020": "MINet"
+  }
+}

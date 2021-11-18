@@ -4,6 +4,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## TODO
 
+* [ ] 更灵活的绘图配置脚本
 * [ ] 添加测试脚本
 * [ ] 添加更详细的注释
 * [ ] 优化xlsx导出的代码(? 导出CSV或许更好些? 既可以当做文本文件打开, 亦可使用Excel来进行整理)
@@ -32,21 +33,26 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 ## 使用方法
 
 由于对于数据集和方法的配置因用户而异, 所以在<https://github.com/lartpang/Py-SOD-VOS-EvalToolkit/commit/d7bcc1d74065844fe0483dc3ce3fda7d06d07bc0>
-之后的版本不在更新 `configs` 文件夹中的这部分内容, 直接给出一个简单的例子, 用户可以自行修改.
+之后的版本不在更新 `configs` 文件夹中的这部分内容, 直接给出一些简单的例子, 用户可以自行修改.
 
-**python版本的配置文件的例子可以参考 `examples` 文件夹中的 `dataset_config.py` 和 `method_config.py` .**
+配置文件的例子:
+* python版本, 书写方便, 可以使用IDE的特性, 可以注释, 只需满足python语法. 但是需使用转换脚本进行转换.
+    + 可以参考 `examples` 文件夹中的 ~~`dataset_config.py` 和 `method_config.py`~~ `config_dataset_py_example.py` 和 `config_method_py_example.py`.
+* json版本, 更直接, 但是可能需要特定的插件支持. 需要满足json的语法. 不可以使用注释和末尾的逗号.
+    + 可以参考`examples`文件夹中的 `config_dataset_json_example.json` 和 `config_method_json_example.json`.
 
 具体使用流程:
 1. 先安装指标代码库： `pip install pysodmetrics`.
     - 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>, 欢迎捉BUG！
 2. 配置不同数据集以及方法的路径信息：
     - 本项目依赖于json文件存放数据.
-    - 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息（例子可见`examples`文件夹中的`dataset_config.py`和`method_config.py`）转换为json文件. 使用方法可见`tools/readme.md`.
+    - 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息转换为json文件. 使用方法可见`tools/readme.md`.
     - 准备好json文件后, 建议使用提供的`tools/check_path.py`来检查下路径信息是否正常.
     - **请务必确保*数据集字典的名字*和方法中配置不同*数据集字典的名字*一致**.
 3. 一切正常后, 可以开始评估了.
     - **具体关于评估以及使用评估得到的`.npy`文件来绘图的例子, 可以参考 `examples` 文件夹中的 `eval_all.py` 和 `plot_results.py` .**
-4. 运行`eval_all.py`, 如无异常, 默认会在 <./results> 下生成结果文件, 并将用于绘图的信息保存到`.npy`文件中.
+    - 请参考`examples`中的`run_eval_all.sh`和`run_plot_results.sh`来使用这两个文件。
+4. 运行`eval_all.py`, 如无异常, 会生成指定文件名的结果文件（如果不指定所有的文件，那么就直接输出结果，具体可见阅读`eval_all.py`和相关代码）, 并将用于绘图的信息保存到`.npy`文件中.
 5. 后续可以使用`plot_results.py`来读取`.npy`文件绘制`PR`曲线和`Fm`曲线.
 6. **(2021年08月25日新添加)**, 使用`tools/converter.py`直接从生成的npy文件中导出latex表格代码.
 
@@ -98,6 +104,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 ## Some Tips
 
 **For some methods, their results' names are not consistent with those of original datsets.**
+* **NOTE**: (2021-11-18)当前同时提供了对名称前缀与后缀的支持, 所以基本不用用户自己改名字了.
 * You can use the script `rename.py` in folder `tools` to modify the file names of a large number of files. **Please use with care and it is recommended to read the code carefully before use to avoid data corruption.**
 * **Other useful tools**
   + Linux: `rename`
@@ -110,6 +117,15 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## 更新日志
 
+* 2021年11月18日
+    1. 改正拼写错误，调整命名。
+    2. 支持预测结果中使用名称前缀 (例子可见`examples`文件夹中的`config_method_json_example.json`)，现在搭配后缀，基本上可以应对所有可能的情形了。但是需要说明的是，目前不支持使用文件提供的映射关系，请确保预测名字中包含真值（不包含扩展名）名字。
+    3. 优化了绘图中的axis的设置，由于这些设置属于非常细粒度的设定，目前暂不支持使用终端选项配置，之后可能会使用特定的配置文件，例如json等来配置相关选项。
+    4. 支持绘图中使用共享的纵轴，即`sharey`，这可以用来辅助绘制独立的示例图。具体使用可见`examples`中的`plot_results.py`文件。
+    5. 优化了下 `include_` 与 `exclude_` 类选项的相关函数.
+    6. 添加了数据集和方法配置的json的例子。并且针对`examples`中提供的配置文件统一命名为`config_`.
+    7. 绘图支持对数据名和方法名使用别名。之前都是直接从各自的 `json` 配置文件中读取键来作为绘图中显示的名字，这对于名字有特殊标记（例如名字中想补充年份或者会议名字）时的使用不太方便和灵活。所以当前支持了使用额外的 `json` 配置文件来配置映射关系。例子可见 `examples` 中的 `alias_for_plotting.json` 。
+    8. 由于核心文件`eval_all.py`和`plot_results.py`的配置和调用方式发生了变化，所以为了便于大家的使用和修改，我提供了两个简单调用的`sh`文件，里面提供了这怒地各个选项的基本配置案例。linux用户可以直接使用`bash <sh_name>.sh`来执行，而windows用户麻烦些，还是自己参考着其中的配置项在终端自行配置吧！有问题欢迎提问，当然，如果大家可以提供windows直接调用的`bat`文件倒也欢迎PR哦！
 * 2021年08月28日
     - 扩展`tools/converter.py`，使其支持横竖两种格式的表格, 并补充对应的文档.
 * 2021年08月25日
