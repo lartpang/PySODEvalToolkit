@@ -5,15 +5,19 @@
 将新生成的npy文件与旧的npy文件合并到一个新npy文件中。
 
 ```shell
-$ python tools/append_results.py --help
-usage: append_results.py [-h] --old-npy OLD_NPY --new-npy NEW_NPY --out-npy OUT_NPY
+$ python append_results.py --help
+usage: append_results.py [-h] --old-npy OLD_NPY --new-npy NEW_NPY [--method-names METHOD_NAMES [METHOD_NAMES ...]]
+                         [--dataset-names DATASET_NAMES [DATASET_NAMES ...]] --out-npy OUT_NPY
 
-A simple tool for merging two npy file.
+A simple tool for merging two npy file. Patch the method items corresponding to the `--method-names` and `--dataset-names` of `--new-npy`
+into `--old-npy`, and output the whole container to `--out-npy`.
 
 optional arguments:
-  -h, --help         show this help message and exit
+  -h, --help            show this help message and exit
   --old-npy OLD_NPY
   --new-npy NEW_NPY
+  --method-names METHOD_NAMES [METHOD_NAMES ...]
+  --dataset-names DATASET_NAMES [DATASET_NAMES ...]
   --out-npy OUT_NPY
 ```
 
@@ -38,7 +42,7 @@ python tools/append_results.py --old-npy output/old_rgb_sod_curves.npy \
 可以按照例子文件夹中的 `examples/converter_config.py` 进行手动配置, 从而针对性的生成latex表格代码.
 
 ```shell
-$ python tools/converter.py --help
+$ python converter.py --help
 usage: converter.py [-h] -i RESULT_FILE [RESULT_FILE ...] -o TEX_FILE [-c CONFIG_FILE] [--contain-table-env] [--transpose]
 
 A useful and convenient tool to convert your .npy results into the table code in latex.
@@ -50,7 +54,7 @@ optional arguments:
   -o TEX_FILE, --tex-file TEX_FILE
                         The path of the exported tex file.
   -c CONFIG_FILE, --config-file CONFIG_FILE
-                        The path of the customized config file.
+                        The path of the customized config yaml file.
   --contain-table-env   Whether to containe the table env in the exported code.
   --transpose           Whether to transpose the table.
 ```
@@ -58,7 +62,7 @@ optional arguments:
 使用案例如下.
 
 ```shell
-$ python tools/converter.py -i output/your_metrics_1.npy output/your_metrics_2.npy -o output/your_metrics.tex -c ./examples/converter_config.py  --transpose --contain-table-env
+$ python tools/converter.py -i output/your_metrics_1.npy output/your_metrics_2.npy -o output/your_metrics.tex -c ./examples/converter_config.yaml --transpose --contain-table-env
 ```
 
 该指令从多个npy文件中(如果你仅有一个, 可以紧跟一个npy文件)读取数据, 处理后导出到指定的tex文件中. 并且使用指定的config文件设置了相关的数据集、指标以及模型方法.

@@ -118,7 +118,7 @@ def main(args):
     method_aliases = dataset_aliases = None
     if args.alias_yaml:
         with open(args.alias_yaml, mode="r", encoding="utf-8") as f:
-            aliases = yaml.load(f, Loader=yaml.SafeLoader)
+            aliases = yaml.safe_load(f)
         method_aliases = aliases.get("method")
         dataset_aliases = aliases.get("dataset")
 

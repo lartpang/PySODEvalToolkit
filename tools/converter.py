@@ -4,12 +4,10 @@
 # @GitHub  : https://github.com/lartpang
 
 import argparse
-import importlib.util
-import os
-import sys
 from itertools import chain
 
 import numpy as np
+import yaml
 
 parser = argparse.ArgumentParser(
     description="A useful and convenient tool to convert your .npy results into the table code in latex."
@@ -26,7 +24,7 @@ parser.add_argument(
     "-o", "--tex-file", required=True, type=str, help="The path of the exported tex file."
 )
 parser.add_argument(
-    "-c", "--config-file", type=str, help="The path of the customized config file."
+    "-c", "--config-file", type=str, help="The path of the customized config yaml file."
 )
 parser.add_argument(
     "--contain-table-env",
@@ -64,34 +62,28 @@ metric_names = ["SM", "wFm", "MAE", "adpF", "avgF", "maxF", "adpE", "avgE", "max
 method_names = sorted(list(set(chain(*[list(results[n].keys()) for n in dataset_names]))))
 
 if args.config_file is not None:
-    assert args.config_file.endswith(".py")
-    module_name = os.path.basename(args.config_file)
-    spec = importlib.util.spec_from_file_location(module_name, args.config_file)
-    module = importlib.util.module_from_spec(spec)
-    if module_name in sys.modules:
-        print(f"{module_name} has existed in sys.modules")
-    else:
-        sys.modules[module_name] = module
-        print(f"{module_name} is loaded.")
-    spec.loader.exec_module(module)
-    if "dataset_names" not in module.__dict__:
+    assert args.config_file.endswith(".yaml") or args.config_file.endswith("yml")
+    with open(args.config_file, mode="r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+
+    if "dataset_names" not in cfg:
         print(
             "`dataset_names` doesnot be contained in your config file, so we use the default config."
         )
     else:
-        dataset_names = module.__dict__["dataset_names"]
-    if "metric_names" not in module.__dict__:
+        dataset_names = cfg["dataset_names"]
+    if "metric_names" not in cfg:
         print(
             "`metric_names` doesnot be contained in your config file, so we use the default config."
         )
     else:
-        metric_names = module.__dict__["metric_names"]
-    if "method_names" not in module.__dict__:
+        metric_names = cfg["metric_names"]
+    if "method_names" not in cfg:
         print(
             "`method_names` doesnot be contained in your config file, so we use the default config."
         )
     else:
-        method_names = module.__dict__["method_names"]
+        method_names = cfg["method_names"]
 
 print(
     f"CONFIG INFORMATION:"

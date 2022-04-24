@@ -1,0 +1,30 @@
+dataset_names: [
+    'NJUD',
+    'NLPR',
+    'SIP',
+    'STEREO1000',
+    'SSD',
+    'LFSD',
+    'RGBD135',
+    'DUTRGBD'
+]
+
+# 使用单引号保证不被转义
+method_names: {
+    '2020-ECCV-DANetV19': 'DANet$_{20}$',
+    '2020-ECCV-HDFNetR50': 'HDFNet$_{20}$',
+    '2022-AAAI-SSLSOD-ImageNet': 'SSLSOD$_{22}$',
+}
+
+# 使用单引号保证不被转义
+metric_names: {
+    'sm': '$S_{m}~\uparrow$',
+    'wfm': '$F^{\omega}_{\beta}~\uparrow$',
+    'mae': '$MAE~\downarrow$',
+    'adpf': '$F^{adp}_{\beta}~\uparrow$',
+    'avgf': '$F^{avg}_{\beta}~\uparrow$',
+    'maxf': '$F^{max}_{\beta}~\uparrow$',
+    'adpe': '$E^{adp}_{m}~\uparrow$',
+    'avge': '$E^{avg}_{m}~\uparrow$',
+    'maxe': '$E^{max}_{m}~\uparrow$',
+}

@@ -63,7 +63,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
     - 如指定`--curves-npy`, 绘图的信息将会保存到对应的`.npy`文件中.
 4. 后续可以使用`plot.py`来读取`.npy`文件按需对指定方法和数据集的结果整理并绘制`PR`曲线和`Fm`曲线.
     - 该脚本用法可见：`python plot.py --help`
-    - 按照自己需求添加配置项并执行即可。
+    - 按照自己需求添加配置项并执行即可。最基本的一条是请按照子图数量合理指定配置文件中的`figure.figsize`项的数值。
 5. 可选：
    1. 使用`tools/converter.py`直接从生成的npy文件中导出latex表格代码.
 

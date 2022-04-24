@@ -1,0 +1,16 @@
+dataset: {
+    "NJUD": "NJUD",
+    "NLPR": "NLPR",
+    "SIP": "SIP",
+    "STEREO1000": "STEREO1000",
+    "RGBD135": "RGBD135",
+    "SSD": "SSD",
+    "LFSD": "LFSD",
+    "DUTRGBD": "DUTRGBD",
+}
+
+method: {
+    '2020-ECCV-DANetV19': 'DANet$_{20}$',
+    '2020-ECCV-HDFNetR50': 'HDFNet$_{20}$',
+    '2022-AAAI-SSLSOD-ImageNet': 'SSLSOD$_{22}$',
+}

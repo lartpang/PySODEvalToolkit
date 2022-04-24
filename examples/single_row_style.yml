@@ -1,0 +1,205 @@
+# Based:
+# - https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file
+# - https://github.com/rougier/scientific-visualization-book/blob/master/code/defaults/mystyle.txt
+
+
+## ***************************************************************************
+## * LINES                                                                   *
+## ***************************************************************************
+## See https://matplotlib.org/api/artist_api.html#module-matplotlib.lines
+## for more information on line properties.
+lines.linewidth: 2
+lines.markersize: 5
+
+
+## ***************************************************************************
+## * FONT                                                                    *
+## ***************************************************************************
+## The font properties used by `text.Text`.
+## See https://matplotlib.org/api/font_manager_api.html for more information
+## on font properties.  The 6 font properties used for font matching are
+## given below with their default values.
+##
+## The font.family property can take either a concrete font name (not supported
+## when rendering text with usetex), or one of the following five generic
+## values:
+##     - 'serif' (e.g., Times),
+##     - 'sans-serif' (e.g., Helvetica),
+##     - 'cursive' (e.g., Zapf-Chancery),
+##     - 'fantasy' (e.g., Western), and
+##     - 'monospace' (e.g., Courier).
+## Each of these values has a corresponding default list of font names
+## (font.serif, etc.); the first available font in the list is used.  Note that
+## for font.serif, font.sans-serif, and font.monospace, the first element of
+## the list (a DejaVu font) will always be used because DejaVu is shipped with
+## Matplotlib and is thus guaranteed to be available; the other entries are
+## left as examples of other possible values.
+##
+## The font.style property has three values: normal (or roman), italic
+## or oblique.  The oblique style will be used for italic, if it is not
+## present.
+##
+## The font.variant property has two values: normal or small-caps.  For
+## TrueType fonts, which are scalable fonts, small-caps is equivalent
+## to using a font size of 'smaller', or about 83%% of the current font
+## size.
+##
+## The font.weight property has effectively 13 values: normal, bold,
+## bolder, lighter, 100, 200, 300, ..., 900.  Normal is the same as
+## 400, and bold is 700.  bolder and lighter are relative values with
+## respect to the current weight.
+##
+## The font.stretch property has 11 values: ultra-condensed,
+## extra-condensed, condensed, semi-condensed, normal, semi-expanded,
+## expanded, extra-expanded, ultra-expanded, wider, and narrower.  This
+## property is not currently implemented.
+##
+## The font.size property is the default font size for text, given in points.
+## 10 pt is the standard value.
+##
+## Note that font.size controls default text sizes.  To configure
+## special text sizes tick labels, axes, labels, title, etc., see the rc
+## settings for axes and ticks.  Special text sizes can be defined
+## relative to font.size, using the following values: xx-small, x-small,
+## small, medium, large, x-large, xx-large, larger, or smaller
+font.family:  sans-serif
+font.style:   normal
+font.variant: normal
+font.weight:  normal
+# font.stretch: normal
+font.size:    12.0
+
+#font.serif:      DejaVu Serif, Bitstream Vera Serif, Computer Modern Roman, New Century Schoolbook, Century Schoolbook L, Utopia, ITC Bookman, Bookman, Nimbus Roman No9 L, Times New Roman, Times, Palatino, Charter, serif
+font.sans-serif: Trebuchet MS, DejaVu Sans, Bitstream Vera Sans, Computer Modern Sans Serif, Lucida Grande, Verdana, Geneva, Lucid, Arial, Helvetica, Avant Garde, sans-serif
+#font.cursive:    Apple Chancery, Textile, Zapf Chancery, Sand, Script MT, Felipa, Comic Neue, Comic Sans MS, cursive
+#font.fantasy:    Chicago, Charcoal, Impact, Western, Humor Sans, xkcd, fantasy
+#font.monospace:  DejaVu Sans Mono, Bitstream Vera Sans Mono, Computer Modern Typewriter, Andale Mono, Nimbus Mono L, Courier New, Courier, Fixed, Terminal, monospace
+
+
+## ***************************************************************************
+## * AXES                                                                    *
+## ***************************************************************************
+## Following are default face and edge colors, default tick sizes,
+## default font sizes for tick labels, and so on.  See
+## https://matplotlib.org/api/axes_api.html#module-matplotlib.axes
+axes.linewidth: 1
+axes.grid: True
+axes.ymargin: 0.1
+
+axes.titlelocation: center  # alignment of the title: {left, right, center}
+axes.titlesize:     x-large   # font size of the axes title
+axes.titleweight:   bold  # font weight of title
+axes.titlecolor:    black    # color of the axes title, auto falls back to text.color as default value
+
+axes.spines.left:   True
+axes.spines.bottom: True
+axes.spines.right:  False
+axes.spines.top:    False
+
+axes.labelsize:     medium  # font size of the x and y labels
+axes.labelpad:      2.0     # space between label and axis
+axes.labelweight:   normal  # weight of the x and y labels
+axes.labelcolor:    black
+axes.axisbelow:     True    # draw axis gridlines and ticks:
+                            #     - below patches (True)
+                            #     - above patches but below lines ('line')
+                            #     - above all (False)
+
+
+## ***************************************************************************
+## * TICKS                                                                   *
+## ***************************************************************************
+## See https://matplotlib.org/api/axis_api.html#matplotlib.axis.Tick
+xtick.bottom: True
+xtick.top: False
+xtick.direction: out
+xtick.major.size: 5
+xtick.major.width: 1
+xtick.minor.size: 3
+xtick.minor.width: 0.5
+xtick.minor.visible: False
+xtick.alignment: center  # alignment of xticks
+
+ytick.left: True
+ytick.right: False
+ytick.direction: out
+ytick.major.size: 5
+ytick.major.width: 1
+ytick.minor.size: 3
+ytick.minor.width: 0.5
+ytick.minor.visible: False
+ytick.alignment: center_baseline  # alignment of yticks
+
+
+## ***************************************************************************
+## * GRIDS                                                                   *
+## ***************************************************************************
+grid.color:     black
+grid.linewidth: 0.1
+grid.alpha:     0.4     # transparency, between 0.0 and 1.0
+
+
+## ***************************************************************************
+## * LEGEND                                                                  *
+## ***************************************************************************
+legend.fancybox:      True     # if True, use a rounded box for the legend background, else a rectangle
+legend.shadow:        False    # if True, give background a shadow effect
+legend.numpoints:     1        # the number of marker points in the legend line
+legend.scatterpoints: 1        # number of scatter points
+legend.markerscale:   1.0      # the relative size of legend markers vs. original
+legend.fontsize:      large
+legend.framealpha:    0.9
+
+# Dimensions as fraction of font size:
+legend.borderpad:     0.4  # border whitespace
+legend.labelspacing:  0.5  # the vertical space between the legend entries
+legend.handlelength:  2.0  # the length of the legend lines
+legend.handleheight:  0.7  # the height of the legend handle
+legend.handletextpad: 0.5  # the space between the legend line and legend text
+legend.borderaxespad: 0.5  # the border between the axes and legend edge
+legend.columnspacing: 0.5  # column separation
+
+
+## ***************************************************************************
+## * FIGURE                                                                  *
+## ***************************************************************************
+## See https://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure
+figure.titlesize:   large     # size of the figure title (``Figure.suptitle()``)
+figure.titleweight: normal    # weight of the figure title
+figure.figsize:     16,4      # figure size in inches
+figure.dpi:         600       # figure dots per inch
+figure.facecolor:   white     # figure face color
+figure.edgecolor:   white     # figure edge color
+
+# The figure subplot parameters.  All dimensions are a fraction of the figure width and height.
+figure.subplot.left:   0.00    # the left side of the subplots of the figure
+figure.subplot.right:  1.00    # the right side of the subplots of the figure
+figure.subplot.bottom: 0.00    # the bottom of the subplots of the figure
+figure.subplot.top:    1.00    # the top of the subplots of the figure
+figure.subplot.wspace: 0.10    # the amount of width reserved for space between subplots, expressed as a fraction of the average axis width
+figure.subplot.hspace: 0.10    # the amount of height reserved for space between subplots, expressed as a fraction of the average axis height
+
+## Figure layout
+figure.autolayout: False  # When True, automatically adjust subplot parameters to make the plot fit the figure using `tight_layout`
+
+
+## ***************************************************************************
+## * IMAGES                                                                  *
+## ***************************************************************************
+image.interpolation:   antialiased  # see help(imshow) for options
+image.cmap:            gray      # A colormap name, gray etc...
+image.lut:             256          # the size of the colormap lookup table
+
+
+## ***************************************************************************
+## * SAVING FIGURES                                                          *
+## ***************************************************************************
+## The default savefig parameters can be different from the display parameters
+## e.g., you may want a higher resolution, or to make the figure
+## background white
+savefig.dpi:       figure      # figure dots per inch or 'figure'
+savefig.format:    pdf         # {png, ps, pdf, svg}
+
+## PDF backend params
+pdf.compression:    6  # integer from 0 to 9 0 disables compression (good for debugging)
+pdf.fonttype:       3  # Output Type 3 (Type3) or Type 42 (TrueType)
