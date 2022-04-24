@@ -22,6 +22,7 @@ for method_json, dataset_json in zip(args.method_jsons, args.dataset_jsons):
 
     total_msgs = []
     for method_name, method_info in methods_info.items():
+        print(f"Checking for {method_name} ...")
         for dataset_name, results_info in method_info.items():
             if results_info is None:
                 continue

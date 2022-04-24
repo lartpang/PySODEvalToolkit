@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
 from utils.print_formatter import formatter_for_tabulate
-from utils.recorders import MetricExcelRecorder, MetricRecorder, TxtRecorder
+from utils.recorders import MetricExcelRecorder, MetricRecorder_V2, TxtRecorder
 
 
 class Recorder:
@@ -80,6 +80,8 @@ def cal_sod_matrics(
     num_bits: int = 3,
     num_workers: int = 2,
     use_mp: bool = False,
+    metric_names: tuple = ("mae", "fm", "em", "sm", "wfm"),
+    ncols_tqdm: int = 79,
 ):
     """
     Save the results of all models on different datasets in a `npy` file in the form of a
@@ -112,6 +114,8 @@ def cal_sod_matrics(
     :param num_bits: the number of bits used to format results
     :param num_workers: the number of workers of multiprocessing or multithreading
     :param use_mp: using multiprocessing or multithreading
+    :param metric_names: names of metrics
+    :param ncols_tqdm: number of columns for tqdm
     """
     recorder = Recorder(
         txt_path=txt_path,
@@ -181,6 +185,8 @@ def cal_sod_matrics(
                     desc=f"[{dataset_name}({len(gt_name_list)}):{method_name}({len(pre_name_list)})]",
                     proc_idx=procs_idx,
                     blocking=use_mp,
+                    metric_names=metric_names,
+                    ncols_tqdm=ncols_tqdm,
                 ),
                 callback=partial(recorder.record, method_name=method_name),
             )
@@ -211,8 +217,10 @@ def evaluate_data(
     desc="",
     proc_idx=None,
     blocking=True,
+    metric_names=None,
+    ncols_tqdm=79,
 ):
-    metric_recoder = MetricRecorder()
+    metric_recoder = MetricRecorder_V2(metric_names=metric_names)
     # https://github.com/tqdm/tqdm#parameters
     # https://github.com/tqdm/tqdm/blob/master/examples/parallel_bars.py
     tqdm_bar = tqdm(
@@ -220,7 +228,7 @@ def evaluate_data(
         total=len(names),
         desc=desc,
         position=proc_idx,
-        ncols=79,
+        ncols=ncols_tqdm,
         lock_args=None if blocking else (False,),
     )
     for name in tqdm_bar:

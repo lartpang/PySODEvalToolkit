@@ -79,7 +79,7 @@ def get_valid_elements(
 
 
 def get_methods_info(
-    methods_info_json: str,
+    methods_info_jsons: list,
     for_drawing: bool = False,
     our_name: str = None,
     include_methods: list = None,
@@ -88,17 +88,23 @@ def get_methods_info(
     """
     在json文件中存储的对应方法的字典的键值会被直接用于绘图
 
-    :param methods_info_json: 保存方法信息的json文件
+    :param methods_info_jsons: 保存方法信息的json文件，支持多个文件组合使用，按照输入的顺序依此读取
     :param for_drawing: 是否用于绘制曲线图，True会补充一些绘图信息
     :param our_name: 在绘图时，可以通过指定our_name来使用红色加粗实线强调特定方法的曲线
     :param include_methods: 仅返回列表中指定的方法的信息，为None时，返回所有
     :param exclude_methods: 仅返回列表中指定的方法的信息，为None时，返回所有，与include_datasets必须仅有一个非None
     :return: methods_full_info
     """
+    if not isinstance(methods_info_jsons, (list, tuple)):
+        methods_info_jsons = [methods_info_jsons]
 
-    assert os.path.isfile(methods_info_json), methods_info_json
-    with open(methods_info_json, encoding="utf-8", mode="r") as f:
-        methods_info = json.load(f, object_hook=OrderedDict)  # 有序载入
+    methods_info = {}
+    for f in methods_info_jsons:
+        if not os.path.isfile(f):
+            raise FileNotFoundError(f"{f} is not be found!!!")
+
+        with open(f, encoding="utf-8", mode="r") as f:
+            methods_info.update(json.load(f, object_hook=OrderedDict))  # 有序载入
 
     if our_name:
         assert our_name in methods_info, f"{our_name} is not in json file."

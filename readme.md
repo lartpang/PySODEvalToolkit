@@ -4,9 +4,10 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## TODO
 
-* [ ] 更灵活的绘图配置脚本
+* [x] 更灵活的绘图配置脚本（支持使用[符合matplotlib要求的](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file)yaml文件来对绘图格式进行配置）
 * [ ] 添加测试脚本
 * [ ] 添加更详细的注释
+* [ ] 考虑是否要使用yaml来替换配置策略。其支持注释操作，功能更丰富，相比json更加灵活
 * [ ] 优化xlsx导出的代码(? 导出CSV或许更好些? 既可以当做文本文件打开, 亦可使用Excel来进行整理)
 * [x] 多进程和多线程的支持.
 * [X] 剥离USVOS部分的代码, 让本仓库更专注一些, 相关代码已转移到另一个仓库[PyDavis16EvalToolbox](https://github.com/lartpang/PyDavis16EvalToolbox).
@@ -21,8 +22,15 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
     - MAE
     - weighted F-measure
     - S-measure
-    - max/mean/adaptive F-measure
-    - max/mean/adaptive E-measure
+    - max/average/adaptive F-measure
+    - max/average/adaptive E-measure
+* 额外提供针对部分医学二值分割任务使用的数个指标的支持
+    - max/average Precision
+    - max/average Sensitivity
+    - max/average Specificity
+    - max/average F-measure
+    - max/average Dice
+    - max/average IoU
 * 测试代码高度优化
     - 纯python实现, 基于numpy和各种小trick计算各项指标, 速度有保障
     - 导出特定模型的结果到xlsx文件中（2021年01月04日重新提供支持）
@@ -41,7 +49,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 * json版本, 更直接, 但是可能需要特定的插件支持. 需要满足json的语法. 不可以使用注释和末尾的逗号.
     + 可以参考`examples`文件夹中的 `config_dataset_json_example.json` 和 `config_method_json_example.json`.
 
-具体使用流程:
+具体使用流程（更新于2022年4月24日）:
 1. 先安装指标代码库： `pip install pysodmetrics`.
     - 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>, 欢迎捉BUG！
 2. 配置不同数据集以及方法的路径信息：
@@ -50,11 +58,14 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
     - 准备好json文件后, 建议使用提供的`tools/check_path.py`来检查下路径信息是否正常.
     - **请务必确保*数据集字典的名字*和方法中配置不同*数据集字典的名字*一致**.
 3. 一切正常后, 可以开始评估了.
-    - **具体关于评估以及使用评估得到的`.npy`文件来绘图的例子, 可以参考 `examples` 文件夹中的 `eval_all.py` 和 `plot_results.py` .**
-    - 请参考`examples`中的`run_eval_all.sh`和`run_plot_results.sh`来使用这两个文件。
-4. 运行`eval_all.py`, 如无异常, 会生成指定文件名的结果文件（如果不指定所有的文件，那么就直接输出结果，具体可见阅读`eval_all.py`和相关代码）, 并将用于绘图的信息保存到`.npy`文件中.
-5. 后续可以使用`plot_results.py`来读取`.npy`文件绘制`PR`曲线和`Fm`曲线.
-6. **(2021年08月25日新添加)**, 使用`tools/converter.py`直接从生成的npy文件中导出latex表格代码.
+    - 评估脚本用法：`python eval.py --help`
+    - 根据自己需求添加配置项并执行即可。如无异常, 会生成指定文件名的结果文件。如果不指定所有的文件，那么就直接输出结果，具体可见阅读`eval_all.py`的帮助信息。
+    - 如指定`--curves-npy`, 绘图的信息将会保存到对应的`.npy`文件中.
+4. 后续可以使用`plot.py`来读取`.npy`文件按需对指定方法和数据集的结果整理并绘制`PR`曲线和`Fm`曲线.
+    - 该脚本用法可见：`python plot.py --help`
+    - 按照自己需求添加配置项并执行即可。
+5. 可选：
+   1. 使用`tools/converter.py`直接从生成的npy文件中导出latex表格代码.
 
 ## 相关文献
 
@@ -117,6 +128,16 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## 更新日志
 
+* 2022年4月23日
+    - 为了便于使用和配置，对大量代码进行了调整和修改，与之前版本相比，使用上也存在部分差异。
+    - 评估部分：
+      - 支持多个方法的json文件同时使用评估。
+      - 更新了指标统计类，便于更灵活的指定不同的指标。
+      - 对一些医学二值分割的指标提供了支持。
+    - 绘图部分：
+      - 支持多个曲线npy文件同时用于绘图。
+      - 将个性化配置尽可能独立出来，提供了独立的绘图配置文件。
+      - 重构了绘图类，便于使用yaml文件对matplotlib的默认设定进行覆盖。
 * 2021年11月18日
     1. 改正拼写错误，调整命名。
     2. 支持预测结果中使用名称前缀 (例子可见`examples`文件夹中的`config_method_json_example.json`)，现在搭配后缀，基本上可以应对所有可能的情形了。但是需要说明的是，目前不支持使用文件提供的映射关系，请确保预测名字中包含真值（不包含扩展名）名字。

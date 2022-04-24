@@ -55,8 +55,8 @@ for result_file in args.result_file:
     result = np.load(file=result_file, allow_pickle=True).item()
     update_dict(results, result)
 
-impossible_up_bound = 1
-impossible_down_bound = 0
+IMPOSSIBLE_UP_BOUND = 1
+IMPOSSIBLE_DOWN_BOUND = 0
 
 # 读取数据
 dataset_names = sorted(list(results.keys()))
@@ -94,21 +94,38 @@ if args.config_file is not None:
         method_names = module.__dict__["method_names"]
 
 print(
-    f"CONFIG INFORMATION:\n - DATASETS: {dataset_names}]\n - METRICS: {metric_names}\n - METHODS: {method_names}"
+    f"CONFIG INFORMATION:"
+    f"\n- DATASETS ({len(dataset_names)}): {dataset_names}]"
+    f"\n- METRICS ({len(metric_names)}): {metric_names}"
+    f"\n- METHODS ({len(method_names)}): {method_names}"
 )
+
+if isinstance(metric_names, (list, tuple)):
+    ori_metric_names = metric_names
+elif isinstance(metric_names, dict):
+    ori_metric_names, metric_names = list(zip(*list(metric_names.items())))
+else:
+    raise NotImplementedError
+
+if isinstance(method_names, (list, tuple)):
+    ori_method_names = method_names
+elif isinstance(method_names, dict):
+    ori_method_names, method_names = list(zip(*list(method_names.items())))
+else:
+    raise NotImplementedError
 
 # 整理表格
 ori_columns = []
 column_for_index = []
 for dataset_idx, dataset_name in enumerate(dataset_names):
-    for metric_idx, metric_name in enumerate(metric_names):
+    for metric_idx, ori_metric_name in enumerate(ori_metric_names):
         fiiled_value = (
-            impossible_up_bound if metric_name.lower() == "mae" else impossible_down_bound
+            IMPOSSIBLE_UP_BOUND if ori_metric_name.lower() == "mae" else IMPOSSIBLE_DOWN_BOUND
         )
-        fiiled_dict = {k: fiiled_value for k in metric_names}
+        fiiled_dict = {k: fiiled_value for k in ori_metric_names}
         ori_column = [
-            results[dataset_name].get(method_name, fiiled_dict)[metric_name]
-            for method_name in method_names
+            results[dataset_name].get(method_name, fiiled_dict)[ori_metric_name]
+            for method_name in ori_method_names
         ]
         column_for_index.append([x * round(1 - fiiled_value * 2) for x in ori_column])
         ori_columns.append(ori_column)
@@ -117,7 +134,7 @@ style_templates = dict(
     method_row_body="& {method_name}",
     method_column_body=" {method_name}",
     dataset_row_body="& \multicolumn{{{num_metrics}}}{{c}}{{\\textbf{{{dataset_name}}}}}",
-    dataset_column_body="\multirow{{-{num_metrics}}}{{*}}{{\\rotatebox{{90}}{{\\textbf{{{dataset_name}}}}}",
+    dataset_column_body="\multirow{{-{num_metrics}}}{{*}}{{\\rotatebox{{90}}{{\\textbf{{{dataset_name}}}}}}}",
     dataset_head=" ",
     metric_body="& {metric_name}",
     metric_row_head=" ",
@@ -133,7 +150,7 @@ style_templates = dict(
 
 # 排序并添加样式
 def replace_cell(ori_value, k):
-    if ori_value == impossible_up_bound or ori_value == impossible_down_bound:
+    if ori_value == IMPOSSIBLE_UP_BOUND or ori_value == IMPOSSIBLE_DOWN_BOUND:
         new_value = "& "
     else:
         new_value = style_templates["body"][k].format(txt=ori_value)

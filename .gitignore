@@ -1,8 +1,12 @@
 # Big files
 **/*.png
+**/*.pdf
+**/*.jpg
+**/*.bmp
 **/*.zip
 **/*.7z
 **/*.rar
+**/*.tar*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -274,7 +278,7 @@ gen
 /output/
 /untracked/
 /configs/
-/*.py
-/*.sh
+# /*.py
+# /*.sh
 /results/rgb_sod.md
 /results/htmls/*.html

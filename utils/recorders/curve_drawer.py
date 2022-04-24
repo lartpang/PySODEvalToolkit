@@ -3,11 +3,9 @@
 # @Author  : Lart Pang
 # @GitHub  : https://github.com/lartpang
 import math
+import os
 
 import matplotlib.pyplot as plt
-import numpy as np
-
-from utils.misc import update_info
 
 
 class CurveDrawer(object):
@@ -15,11 +13,26 @@ class CurveDrawer(object):
         self,
         row_num,
         num_subplots,
-        font_cfg=None,
-        subplots_cfg=None,
+        style_cfg=None,
+        ncol_of_legend=1,
         separated_legend=False,
-        sharey=True,
+        sharey=False,
     ):
+        """A better wrapper of matplotlib for me.
+
+        Args:
+            row_num (int): Number of rows.
+            num_subplots (int): Number of subplots.
+            style_cfg (str, optional): Style yaml file path for matplotlib. Defaults to None.
+            ncol_of_legend (int, optional): Number of columns of the legend. Defaults to 1.
+            separated_legend (bool, optional): Use the separated legend. Defaults to False.
+            sharey (bool, optional): Use a shared y-axis. Defaults to False.
+        """
+        if style_cfg is not None:
+            assert os.path.isfile(style_cfg)
+            plt.style.use(style_cfg)
+
+        self.ncol_of_legend = ncol_of_legend
         self.separated_legend = separated_legend
         if self.separated_legend:
             num_subplots += 1
@@ -27,59 +40,17 @@ class CurveDrawer(object):
         self.sharey = sharey
 
         fig, axes = plt.subplots(
-            nrows=row_num,
-            ncols=math.ceil(self.num_subplots / row_num),
-            sharey=self.sharey,
+            nrows=row_num, ncols=math.ceil(self.num_subplots / row_num), sharey=self.sharey
         )
         self.fig = fig
         self.axes = axes.flatten()
-
-        if subplots_cfg is None:
-            subplots_cfg = dict(
-                left=None, bottom=None, right=None, top=None, wspace=None, hspace=None
-            )
-        self.subplots_cfg = subplots_cfg
-
-        self.font_cfg = {
-            "title": {
-                "fontdict": {
-                    "fontsize": 12,
-                    "fontweight": "bold",
-                }
-            },
-            "label": {
-                "fontdict": {
-                    "fontsize": 10,
-                    "fontweight": "normal",
-                }
-            },
-            "ticks": {
-                "fontdict": {
-                    "fontsize": 8,
-                    "fontweight": "normal",
-                }
-            },
-            "legend": {
-                "ncol": 1,
-                "prop": {
-                    "size": 8,
-                    "weight": "normal",
-                },
-            },
-        }
-        if font_cfg is not None:
-            update_info(source_info=self.font_cfg, new_info=font_cfg)
 
         self.init_subplots()
         self.dummy_data = {}
 
     def init_subplots(self):
-        plt.style.use("default")
-        plt.subplots_adjust(**self.subplots_cfg)
         for ax in self.axes:
-            ax.grid(False)
             ax.set_axis_off()
-        print(f"Config: {self.subplots_cfg}\n{self.font_cfg}")
 
     def plot_at_axis(self, idx, method_curve_setting, x_data, y_data):
         """
@@ -91,7 +62,6 @@ class CurveDrawer(object):
             }
         """
         assert isinstance(idx, int) and 0 <= idx < self.num_subplots
-        # [CPFP, "red", "-", "OURS", 3],
         self.axes[idx].plot(
             x_data,
             y_data,
@@ -105,45 +75,30 @@ class CurveDrawer(object):
             self.dummy_data[method_curve_setting["line_label"]] = method_curve_setting
 
     def set_axis_property(
-        self, idx, title=None, x_label=None, y_label=None, x_lim=None, y_lim=None
+        self, idx, title=None, x_label=None, y_label=None, x_ticks=None, y_ticks=None
     ):
         ax = self.axes[idx]
 
-        ax.grid(True)
         ax.set_axis_on()
 
         # give plot a title
-        ax.set_title(title, **self.font_cfg["title"])
+        ax.set_title(title)
 
         # make axis labels
-        ax.set_xlabel(x_label, **self.font_cfg["label"])
-        ax.set_ylabel(y_label, **self.font_cfg["label"])
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
 
         # 对坐标刻度的设置
-        ax.set_xlim(x_lim)
-        ax.set_ylim(y_lim)
-
-        if x_lim is not None:
-            x_ticks = np.linspace(min(x_lim), max(x_lim), 11)
-        else:
-            x_ticks = []
-        if y_lim is not None:
-            y_ticks = np.linspace(min(y_lim), max(y_lim), 11)
-        else:
-            y_ticks = []
-
+        x_ticks = [] if x_ticks is None else x_ticks
+        y_ticks = [] if y_ticks is None else y_ticks
+        ax.set_xlim((min(x_ticks), max(x_ticks)))
+        ax.set_ylim((min(y_ticks), max(x_ticks)))
         ax.set_xticks(x_ticks)
         ax.set_yticks(y_ticks)
-        ax.set_xticklabels(labels=[f"{x:.1f}" for x in x_ticks], **self.font_cfg["ticks"])
-        ax.set_yticklabels(labels=[f"{y:.2f}" for y in y_ticks], **self.font_cfg["ticks"])
+        ax.set_xticklabels(labels=[f"{x:.2f}" for x in x_ticks])
+        ax.set_yticklabels(labels=[f"{y:.2f}" for y in y_ticks])
 
-        # 对坐标轴的框线进行设置, 设置轴
-        ax.spines["top"].set_linewidth(1)
-        ax.spines["bottom"].set_linewidth(1)
-        ax.spines["left"].set_linewidth(1)
-        ax.spines["right"].set_linewidth(1)
-
-    def show(self):
+    def _plot(self):
         if self.sharey:
             for ax in self.axes[1:]:
                 ax.set_ylabel(None)
@@ -156,12 +111,20 @@ class CurveDrawer(object):
                     idx=self.num_subplots - 1, method_curve_setting=method_info, x_data=0, y_data=0
                 )
             ax = self.axes[self.num_subplots - 1]
-            ax.grid(False)
             ax.set_axis_off()
-            ax.legend(loc=3, **self.font_cfg["legend"])
+            ax.legend(loc=10, ncol=self.ncol_of_legend, facecolor="white", edgecolor="white")
         else:
             # settings for the legneds of all common subplots.
             for ax in self.axes:
                 # loc=0，自动将位置放在最合适的
-                ax.legend(loc=3, **self.font_cfg["legend"])
+                ax.legend(loc=3, ncol=self.ncol_of_legend, facecolor="white", edgecolor="white")
+
+    def show(self):
+        self._plot()
+        plt.tight_layout()
         plt.show()
+
+    def save(self, path):
+        self._plot()
+        plt.tight_layout()
+        plt.savefig(path)

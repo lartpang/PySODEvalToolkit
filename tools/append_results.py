@@ -5,7 +5,12 @@ import numpy as np
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description="A simple tool for merging two npy file.")
+    parser = argparse.ArgumentParser(
+        description="""A simple tool for merging two npy file.
+    Patch the method items corresponding to the `--method-names` and `--dataset-names` of `--new-npy` into `--old-npy`,
+    and output the whole container to `--out-npy`.
+    """
+    )
     parser.add_argument("--old-npy", type=str, required=True)
     parser.add_argument("--new-npy", type=str, required=True)
     parser.add_argument("--method-names", type=str, nargs="+")

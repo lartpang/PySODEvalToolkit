@@ -2,7 +2,6 @@
 # @Time    : 2021/1/4
 # @Author  : Lart Pang
 # @GitHub  : https://github.com/lartpang
-from collections import defaultdict
 
 import numpy as np
 from py_sod_metrics.sod_metrics import (
@@ -12,6 +11,8 @@ from py_sod_metrics.sod_metrics import (
     Smeasure,
     WeightedFmeasure,
 )
+
+from metrics.extra_metrics import ExtraSegMeasure
 
 
 def ndarray_to_basetype(data):
@@ -34,6 +35,107 @@ def ndarray_to_basetype(data):
         assert isinstance(data, np.ndarray)
         results = _to_list_or_scalar(data)
     return results
+
+
+METRIC_MAPPING = {
+    "mae": MAE,
+    "fm": Fmeasure,
+    "em": Emeasure,
+    "sm": Smeasure,
+    "wfm": WeightedFmeasure,
+    "extra": ExtraSegMeasure,
+}
+
+
+class MetricRecorder_V2(object):
+    def __init__(self, metric_names=None):
+        """
+        用于统计各种指标的类
+        """
+        if metric_names is None:
+            metric_names = ("mae", "fm", "em", "sm", "wfm")
+        self.metric_objs = {}
+        for metric_name in metric_names:
+            self.metric_objs[metric_name] = METRIC_MAPPING[metric_name]()
+
+    def update(self, pre: np.ndarray, gt: np.ndarray):
+        assert pre.shape == gt.shape
+        assert pre.dtype == np.uint8
+        assert gt.dtype == np.uint8
+        for m_name, m_obj in self.metric_objs.items():
+            m_obj.step(pre, gt)
+
+    def show(self, num_bits: int = 3, return_ndarray: bool = False) -> dict:
+        """
+        返回指标计算结果：
+
+        - 曲线数据(sequential)
+        - 数值指标(numerical)
+        """
+        sequential_results = {}
+        numerical_results = {}
+        for m_name, m_obj in self.metric_objs.items():
+            info = m_obj.get_results()
+            if m_name == "fm":
+                fm = info["fm"]
+                pr = info["pr"]
+                sequential_results.update(
+                    {
+                        "fm": np.flip(fm["curve"]),
+                        "p": np.flip(pr["p"]),
+                        "r": np.flip(pr["r"]),
+                    }
+                )
+                numerical_results.update(
+                    {"maxf": fm["curve"].max(), "avgf": fm["curve"].mean(), "adpf": fm["adp"]}
+                )
+            elif m_name == "wfm":
+                wfm = info["wfm"]
+                numerical_results["wfm"] = wfm
+            elif m_name == "sm":
+                sm = info["sm"]
+                numerical_results["sm"] = sm
+            elif m_name == "em":
+                em = info["em"]
+                sequential_results["em"] = np.flip(em["curve"])
+                numerical_results.update(
+                    {"maxe": em["curve"].max(), "avge": em["curve"].mean(), "adpe": em["adp"]}
+                )
+            elif m_name == "mae":
+                mae = info["mae"]
+                numerical_results["mae"] = mae
+            elif m_name == "extra":
+                pre = info["pre"]
+                sen = info["sen"]
+                spec = info["spec"]
+                fm_std = info["fm"]
+                dice = info["dice"]
+                iou = info["iou"]
+                numerical_results.update(
+                    {
+                        "maxpre": pre.max(),
+                        "avgpre": pre.mean(),
+                        "maxsen": sen.max(),
+                        "avgsen": sen.mean(),
+                        "maxspec": spec.max(),
+                        "avgspec": spec.mean(),
+                        "maxfm_std": fm_std.max(),
+                        "avgfm_std": fm_std.mean(),
+                        "maxdice": dice.max(),
+                        "avgdice": dice.mean(),
+                        "maxiou": iou.max(),
+                        "avgiou": iou.mean(),
+                    }
+                )
+            else:
+                raise NotImplementedError
+
+        if num_bits is not None and isinstance(num_bits, int):
+            numerical_results = {k: v.round(num_bits) for k, v in numerical_results.items()}
+        if not return_ndarray:
+            sequential_results = ndarray_to_basetype(sequential_results)
+            numerical_results = ndarray_to_basetype(numerical_results)
+        return {"sequential": sequential_results, "numerical": numerical_results}
 
 
 class MetricRecorder(object):
