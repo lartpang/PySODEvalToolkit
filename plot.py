@@ -47,8 +47,6 @@ def get_args():
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
-    parser.add_argument("--dataset-json", type=str, help="Json file for datasets.")
-    parser.add_argument("--method-json", type=str, help="Json file for methods.")
     parser.add_argument("--alias-yaml", type=str, help="Yaml file for datasets and methods alias.")
     parser.add_argument(
         "--style-cfg",
@@ -63,7 +61,6 @@ def get_args():
         nargs="+",
         help="Npy file for saving curve results.",
     )
-    parser.add_argument("--our-method", type=str, help="Name of our method for highlighting it.")
     parser.add_argument(
         "--our-methods", type=str, nargs="+", help="Names of our methods for highlighting it."
     )
@@ -79,30 +76,6 @@ def get_args():
         choices=["pr", "fm"],
         default="pr",
         help="Mode for plotting. Default: pr",
-    )
-    parser.add_argument(
-        "--include-methods",
-        type=str,
-        nargs="+",
-        help="Names of only specific methods you want to evaluate.",
-    )
-    parser.add_argument(
-        "--exclude-methods",
-        type=str,
-        nargs="+",
-        help="Names of some specific methods you do not want to evaluate.",
-    )
-    parser.add_argument(
-        "--include-datasets",
-        type=str,
-        nargs="+",
-        help="Names of only specific datasets you want to evaluate.",
-    )
-    parser.add_argument(
-        "--exclude-datasets",
-        type=str,
-        nargs="+",
-        help="Names of some specific datasets you do not want to evaluate.",
     )
     parser.add_argument(
         "--separated-legend", action="store_true", help="Use the separated legend."

@@ -51,14 +51,17 @@ def update_dict(parent_dict, sub_dict):
 results = {}
 for result_file in args.result_file:
     result = np.load(file=result_file, allow_pickle=True).item()
-    update_dict(results, result)
+    for dataset_name, method_infos in result.items():
+        results.setdefault(dataset_name, {})
+        for method_name, method_info in method_infos.items():
+            results[dataset_name][method_name] = method_info
 
 IMPOSSIBLE_UP_BOUND = 1
 IMPOSSIBLE_DOWN_BOUND = 0
 
 # 读取数据
 dataset_names = sorted(list(results.keys()))
-metric_names = ["SM", "wFm", "MAE", "adpF", "avgF", "maxF", "adpE", "avgE", "maxE"]
+metric_names = ["SM", "wFm", "MAE", "adpE", "avgE", "maxE", "adpF", "avgF", "maxF"]
 method_names = sorted(list(set(chain(*[list(results[n].keys()) for n in dataset_names]))))
 
 if args.config_file is not None:
@@ -115,10 +118,15 @@ for dataset_idx, dataset_name in enumerate(dataset_names):
             IMPOSSIBLE_UP_BOUND if ori_metric_name.lower() == "mae" else IMPOSSIBLE_DOWN_BOUND
         )
         fiiled_dict = {k: fiiled_value for k in ori_metric_names}
-        ori_column = [
-            results[dataset_name].get(method_name, fiiled_dict)[ori_metric_name]
-            for method_name in ori_method_names
-        ]
+        ori_column = []
+        for method_name in ori_method_names:
+            method_result = results[dataset_name].get(method_name, fiiled_dict)
+            if ori_metric_name not in method_result:
+                raise KeyError(
+                    f"{ori_metric_name} must be contained in {list(method_result.keys())}"
+                )
+            ori_column.append(method_result[ori_metric_name])
+
         column_for_index.append([x * round(1 - fiiled_value * 2) for x in ori_column])
         ori_columns.append(ori_column)
 

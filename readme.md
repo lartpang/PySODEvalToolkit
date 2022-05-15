@@ -4,10 +4,10 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## TODO
 
-* [x] 更灵活的绘图配置脚本（支持使用[符合matplotlib要求的](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file)yaml文件来对绘图格式进行配置）
+* [x] 更灵活的绘图配置脚本(支持使用[符合matplotlib要求的](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file)yaml文件来对绘图格式进行配置)
 * [ ] 添加测试脚本
 * [ ] 添加更详细的注释
-* [ ] 考虑是否要使用yaml来替换配置策略。其支持注释操作，功能更丰富，相比json更加灵活
+* [ ] 考虑是否要使用yaml来替换配置策略. 其支持注释操作, 功能更丰富, 相比json更加灵活
 * [ ] 优化xlsx导出的代码(? 导出CSV或许更好些? 既可以当做文本文件打开, 亦可使用Excel来进行整理)
 * [x] 多进程和多线程的支持.
 * [X] 剥离USVOS部分的代码, 让本仓库更专注一些, 相关代码已转移到另一个仓库[PyDavis16EvalToolbox](https://github.com/lartpang/PyDavis16EvalToolbox).
@@ -45,18 +45,18 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 配置文件的例子:
 * python版本, 书写方便, 可以使用IDE的特性, 可以注释, 只需满足python语法. 但是需使用转换脚本进行转换.
-    + 可以参考 `examples` 文件夹中的 ~~`dataset_config.py` 和 `method_config.py`~~ `config_dataset_py_example.py` 和 `config_method_py_example.py`.
+    - 可以参考 `examples` 文件夹中的 ~~`dataset_config.py` 和 `method_config.py`~~ `config_dataset_py_example.py` 和 `config_method_py_example.py`.
 * json版本, 更直接, 但是可能需要特定的插件支持. 需要满足json的语法. 不可以使用注释和末尾的逗号.
-    + 可以参考`examples`文件夹中的 `config_dataset_json_example.json` 和 `config_method_json_example.json`.
+    - 可以参考`examples`文件夹中的 `config_dataset_json_example.json` 和 `config_method_json_example.json`.
 
-具体使用流程（更新于2022年4月24日）:
+具体使用流程(更新于2022年4月24日):
 1. 先安装指标代码库： `pip install pysodmetrics`.
     - 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>, 欢迎捉BUG！
 2. 配置不同数据集以及方法的路径信息：
-    - 本项目依赖于json文件存放数据.
-    - 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息转换为json文件. 使用方法可见`tools/readme.md`.
-    - 准备好json文件后, 建议使用提供的`tools/check_path.py`来检查下路径信息是否正常.
-    - **请务必确保*数据集字典的名字*和方法中配置不同*数据集字典的名字*一致**.
+    - 本项目依赖于json文件存放数据，`./examples`中已经提供了数据集和方法配置的例子：`config_dataset_json_example.json`和`config_method_json_example.json`，可以至直接修改他们用于后续步骤。
+      - **[可选]** 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息（可见`./examples`中的提供的py格式的例子）转换为json文件. 使用方法可见`tools/readme.md`.
+      - **[注意]** 请务必确保*数据集配置文件中数据集的名字*和方法配置文件中*数据集的名字*一致.
+    - 准备好json文件后, 建议使用提供的`tools/check_path.py`来检查下json文件中的路径信息是否正常.
 3. 一切正常后, 可以开始评估了.
     - 评估脚本用法：`python eval.py --help`
     - 根据自己需求添加配置项并执行即可。如无异常, 会生成指定文件名的结果文件。如果不指定所有的文件，那么就直接输出结果，具体可见阅读`eval_all.py`的帮助信息。
@@ -65,7 +65,7 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
     - 该脚本用法可见：`python plot.py --help`
     - 按照自己需求添加配置项并执行即可。最基本的一条是请按照子图数量合理指定配置文件中的`figure.figsize`项的数值。
 5. 可选：
-   1. 使用`tools/converter.py`直接从生成的npy文件中导出latex表格代码.
+   1. 使用 `tools/converter.py` 直接从生成的npy文件中导出latex表格代码.
 
 ## 相关文献
 
@@ -128,6 +128,8 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 
 ## 更新日志
 
+* 2022年5月15日
+    - 代码优化
 * 2022年4月23日
     - 为了便于使用和配置，对大量代码进行了调整和修改，与之前版本相比，使用上也存在部分差异。
     - 评估部分：
