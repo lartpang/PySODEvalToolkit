@@ -67,6 +67,49 @@ A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
 5. 可选：
    1. 使用 `tools/converter.py` 直接从生成的npy文件中导出latex表格代码.
 
+### 一个基本的执行流程
+
+这里以我自己本地的configs文件夹中的RGB SOD的配置(需要根据实际情况进行必要的修改)为例.
+
+```shell
+# 检查配置文件
+python tools/check_path.py --method-jsons configs/methods/rgb-sod/rgb_sod_methods.json --dataset-jsons configs/datasets/rgb_sod.json
+
+# 在输出信息中没有不合理的地方后，开始进行评估
+# --dataset-json 数据集配置文件 configs/datasets/rgb_sod.json
+# --method-json 方法配置文件 configs/methods/rgb-sod/rgb_sod_methods.json
+# --metric-npy 输出评估结果数据到 output/rgb_sod/metrics.npy
+# --curves-npy 输出曲线数据到 output/rgb_sod/curves.npy
+# --record-txt 输出评估结果文本到 output/rgb_sod/results.txt
+# --record-xlsx 输出评估结果到excel文档 output/rgb_sod/results.xlsx
+# --metric-names 所有结果仅包含指标 mae fm em sm wfm 对应的信息
+# --include-methods 评估过程仅包含 configs/methods/rgb-sod/rgb_sod_methods.json 中包含的方法 MINet_R50_2020 GateNet_2020
+# --include-datasets 评估过程仅包含 configs/datasets/rgb_sod.json 中包含的数据集 PASCAL-S ECSSD
+python eval.py --dataset-json configs/datasets/rgb_sod.json --method-json configs/methods/rgb-sod/rgb_sod_methods.json --metric-npy output/rgb_sod/metrics.npy --curves-npy output/rgb_sod/curves.npy --record-txt output/rgb_sod/results.txt --record-xlsx output/rgb_sod/results.xlsx --metric-names mae fm em sm wfm --include-methods MINet_R50_2020 GateNet_2020 --include-datasets PASCAL-S ECSSD
+
+# 得到曲线数据文件，即这里的 output/rgb_sod/curves.npy 文件后，就可以开始绘制图像了
+
+# 简单的例子，下面指令执行后，结果保存为 output/rgb_sod/simple_curve_pr.pdf
+# --style-cfg 使用图像风格配置文件 examples/single_row_style.yml，这里子图较少，直接使用单行的配置
+# --num-rows 图像子图都位于一行
+# --curves-npys 将使用曲线数据文件 output/rgb_sod/curves.npy 来绘图
+# --mode pr: 绘制是pr曲线；fm: 绘制的是fm曲线
+# --save-name 图像保存路径，只需写出名字，代码会加上由前面指定的 --style-cfg 中的 `savefig.format` 项指定的格式后缀名
+python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-npys output/rgb_sod/curves.npy --mode pr --save-name output/rgb_sod/simple_curve_pr
+
+# 复杂的例子，下面指令执行后，结果保存为 output/rgb_sod/complex_curve_pr.pdf
+# --style-cfg 使用图像风格配置文件 examples/single_row_style.yml，这里子图较少，直接使用单行的配置
+# --num-rows 图像子图都位于一行
+# --curves-npys 将使用曲线数据文件 output/rgb_sod/curves.npy 来绘图
+# --our-methods 在图中使用红色实线加粗标注指定的方法 MINet_R50_2020
+# --num-col-legend 图像子图图示中信息的列数
+# --mode pr: 绘制是pr曲线；fm: 绘制的是fm曲线
+# --separated-legend 使用独立的图示
+# --sharey 使用共享的 y 轴刻度，这将仅在每行的第一个图上显示刻度值
+# --save-name 图像保存路径，只需写出名字，代码会加上由前面指定的 --style-cfg 中的 `savefig.format` 项指定的格式后缀名
+python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-npys output/rgb_sod/curves.npy --our-methods MINet_R50_2020 --num-col-legend 1 --mode pr --separated-legend --sharey --save-name output/rgb_sod/complex_curve_pr
+```
+
 ## 相关文献
 
 ```text
