@@ -5,7 +5,6 @@ import re
 
 import cv2
 import numpy as np
-from PIL import Image
 
 
 def get_ext(path_list):
@@ -145,7 +144,7 @@ def get_name_with_group_list(
     return name_list
 
 
-def get_list_with_postfix(dataset_path: str, postfix: str):
+def get_list_with_suffix(dataset_path: str, suffix: str):
     name_list = []
     if os.path.isfile(dataset_path):
         print(f" ++>> {dataset_path} is a file. <<++ ")
@@ -158,43 +157,10 @@ def get_list_with_postfix(dataset_path: str, postfix: str):
     else:
         print(f" ++>> {dataset_path} is a folder. <<++ ")
         name_list = [
-            os.path.splitext(f)[0] for f in os.listdir(dataset_path) if f.endswith(postfix)
+            os.path.splitext(f)[0] for f in os.listdir(dataset_path) if f.endswith(suffix)
         ]
     name_list = list(set(name_list))
     return name_list
-
-
-def rgb_loader(path):
-    with open(path, "rb") as f:
-        img = Image.open(f)
-        return img.convert("L")
-
-
-def binary_loader(path):
-    assert os.path.exists(path), f"`{path}` does not exist."
-    with open(path, "rb") as f:
-        img = Image.open(f)
-        return img.convert("L")
-
-
-def load_data(pre_root, gt_root, name, postfixs):
-    pre = binary_loader(os.path.join(pre_root, name + postfixs[0]))
-    gt = binary_loader(os.path.join(gt_root, name + postfixs[1]))
-    return pre, gt
-
-
-def normalize_pil(pre, gt):
-    gt = np.asarray(gt)
-    pre = np.asarray(pre)
-    gt = gt / (gt.max() + 1e-8)
-    gt = np.where(gt > 0.5, 1, 0)
-    max_pre = pre.max()
-    min_pre = pre.min()
-    if max_pre == min_pre:
-        pre = pre / 255
-    else:
-        pre = (pre - min_pre) / (max_pre - min_pre)
-    return pre, gt
 
 
 def make_dir(path):
@@ -206,16 +172,13 @@ def make_dir(path):
         print(f"`{path}`已存在")
 
 
-def imread_wich_checking(path, for_color: bool = True, with_cv2: bool = True) -> np.ndarray:
+def imread_with_checking(path, for_color: bool = True) -> np.ndarray:
     assert os.path.exists(path=path) and os.path.isfile(path=path), path
-    if with_cv2:
-        if for_color:
-            data = cv2.imread(path, flags=cv2.IMREAD_COLOR)
-            data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
-        else:
-            data = cv2.imread(path, flags=cv2.IMREAD_GRAYSCALE)
+    if for_color:
+        data = cv2.imread(path, flags=cv2.IMREAD_COLOR)
+        data = cv2.cvtColor(data, cv2.COLOR_BGR2RGB)
     else:
-        data = np.array(Image.open(path).convert("RGB" if for_color else "L"))
+        data = cv2.imread(path, flags=cv2.IMREAD_GRAYSCALE)
     return data
 
 
@@ -233,8 +196,8 @@ def get_gt_pre_with_name(
     img_path = os.path.join(pre_root, pre_prefix + img_name + pre_suffix)
     gt_path = os.path.join(gt_root, gt_prefix + img_name + gt_suffix)
 
-    pre = imread_wich_checking(img_path, for_color=False)
-    gt = imread_wich_checking(gt_path, for_color=False)
+    pre = imread_with_checking(img_path, for_color=False)
+    gt = imread_with_checking(gt_path, for_color=False)
 
     if pre.shape != gt.shape:
         pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=cv2.INTER_LINEAR).astype(
@@ -271,8 +234,8 @@ def get_gt_pre_with_name_and_group(
     img_path = os.path.join(pre_root, pre_prefix + file_name + pre_suffix)
     gt_path = os.path.join(gt_root, gt_prefix + file_name + gt_suffix)
 
-    pre = imread_wich_checking(img_path, for_color=False)
-    gt = imread_wich_checking(gt_path, for_color=False)
+    pre = imread_with_checking(img_path, for_color=False)
+    gt = imread_with_checking(gt_path, for_color=False)
 
     if pre.shape != gt.shape:
         pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=interpolation).astype(np.uint8)

@@ -7,15 +7,17 @@ A Python-based image binary segmentation evaluation toolbox.
 ## 一些规划
 
 * [ ] 向执行脚本中添加配置信息合理行检测.
-* 更灵活的配置脚本
+* 更灵活的配置脚本.
   + [ ] 使用[符合matplotlib要求的](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file)的 yaml 文件来控制绘图格式.
   + [ ] 是否应该使用更加灵活强大的配置格式, 例如 yaml 或者 toml 来替换配置策略.
-* [ ] 添加测试脚本
-* [ ] 添加更详细的注释
-* 优化导出代码
-  + [ ] 导出到 XLSX 文件的代码
+* [ ] 添加测试脚本.
+* [ ] 添加更详细的注释.
+* 优化导出评估结果的代码.
+  + [x] 实现导出 XLSX 文件的代码.
+  + [ ] 优化导出到 XLSX 文件的代码.
   + [ ] 是否应该使用 CSV 这样的文本格式更好些? 既可以当做文本文件打开, 亦可使用Excel来进行整理.
-* [ ] 完善关于分组数据的代码, 即CoSOD、Video Binary Segmentation等任务的支持.
+* [ ] 使用 `pathlib.Path` 替换 `os.path`.
+* [ ] 完善关于分组数据的代码, 即 CoSOD、Video Binary Segmentation 等任务的支持.
 * [x] 支持并发策略加速计算. 目前保留了多线程支持, 剔除了之前的多进程代码.
 * [X] 剥离 USVOS 代码到另一个仓库 [PyDavis16EvalToolbox](https://github.com/lartpang/PyDavis16EvalToolbox).
 * [X] 基于 github page 服务自动化生成结果汇总网页, 并支持基于某个指标进行排序的支持.
@@ -59,15 +61,17 @@ A Python-based image binary segmentation evaluation toolbox.
 
 ### 安装依赖
 
-先安装指标代码库: `pip install pysodmetrics` .
+先安装相关依赖库: `pip install -r requirements.txt` .
 
-这来自本人的另一个项目:[PySODMetrics](https://github.com/lartpang/PySODMetrics), 欢迎捉BUG!
+其中指标评估是基于本人的另一个项目: [PySODMetrics](https://github.com/lartpang/PySODMetrics), 欢迎捉BUG!
 
 ### 配置数据集与方法预测的路径信息
 
 本项目依赖于json文件存放数据, `./examples` 中已经提供了数据集和方法配置的例子: `config_dataset_json_example.json` 和 `config_method_json_example.json` , 可以至直接修改他们用于后续步骤.
 
-[注意] 请务必确保*数据集配置文件中数据集的名字*和方法配置文件中*数据集的名字*一致. 准备好json文件后, 建议使用提供的 `tools/check_path.py` 来检查下json文件中的路径信息是否正常.
+[注意]
+* 请注意, 由于本项目依赖于 OpenCV 读取图片, 所以请确保路径字符串不包含非 ASCII 字符.
+* 请务必确保*数据集配置文件中数据集的名字*和方法配置文件中*数据集的名字*一致. 准备好json文件后, 建议使用提供的 `tools/check_path.py` 来检查下json文件中的路径信息是否正常.
 
 <details>
 <summary>
@@ -191,10 +195,10 @@ python tools/check_path.py --method-jsons configs/methods/rgb-sod/rgb_sod_method
 # --curves-npy 输出曲线数据到 output/rgb_sod/curves.npy
 # --record-txt 输出评估结果文本到 output/rgb_sod/results.txt
 # --record-xlsx 输出评估结果到excel文档 output/rgb_sod/results.xlsx
-# --metric-names 所有结果仅包含指标 mae fm em sm wfm 对应的信息
-# --include-methods 评估过程仅包含 configs/methods/rgb-sod/rgb_sod_methods.json 中包含的方法 MINet_R50_2020 GateNet_2020
-# --include-datasets 评估过程仅包含 configs/datasets/rgb_sod.json 中包含的数据集 PASCAL-S ECSSD
-python eval.py --dataset-json configs/datasets/rgb_sod.json --method-json configs/methods/rgb-sod/rgb_sod_methods.json --metric-npy output/rgb_sod/metrics.npy --curves-npy output/rgb_sod/curves.npy --record-txt output/rgb_sod/results.txt --record-xlsx output/rgb_sod/results.xlsx --metric-names mae fm em sm wfm --include-methods MINet_R50_2020 GateNet_2020 --include-datasets PASCAL-S ECSSD
+# --metric-names 所有结果仅包含给定指标的信息
+# --include-methods 评估过程仅包含 configs/methods/rgb-sod/rgb_sod_methods.json 中的给定方法
+# --include-datasets 评估过程仅包含 configs/datasets/rgb_sod.json 中的给定数据集
+python eval.py --dataset-json configs/datasets/rgb_sod.json --method-json configs/methods/rgb-sod/rgb_sod_methods.json --metric-npy output/rgb_sod/metrics.npy --curves-npy output/rgb_sod/curves.npy --record-txt output/rgb_sod/results.txt --record-xlsx output/rgb_sod/results.xlsx --metric-names sm wfm mae fmeasure em --include-methods MINet_R50_2020 GateNet_2020 --include-datasets PASCAL-S ECSSD
 
 # 得到曲线数据文件，即这里的 output/rgb_sod/curves.npy 文件后，就可以开始绘制图像了
 
@@ -282,6 +286,7 @@ python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-n
     1. 提供更丰富的指标的支持。
     2. 更新`readme.md`和示例文件。
     3. 提供更灵活的接口。
+    4. 更新指标库版本。
 * 2022年5月15日
     - 代码优化
 * 2022年4月23日
