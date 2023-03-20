@@ -2,46 +2,145 @@
 
 import os
 from collections import defaultdict
+from functools import partial
+from multiprocessing import pool
+from threading import RLock as TRLock
 
 import numpy as np
 from tqdm import tqdm
 
 from utils.misc import (
-    colored_print,
-    get_gt_pre_with_name,
+    get_gt_pre_with_name_and_group,
     get_name_with_group_list,
     make_dir,
 )
 from utils.print_formatter import formatter_for_tabulate
-from utils.recorders import GroupedMetricRecorder, MetricExcelRecorder, TxtRecorder
+from utils.recorders import (
+    GRAYSCALE_METRICS,
+    GroupedMetricRecorder,
+    MetricExcelRecorder,
+    TxtRecorder,
+)
 
 
-def group_names(names: list) -> dict:
-    grouped_data = defaultdict(list)
-    for name in names:
-        group_name, file_name = name.split("/")
-        grouped_data[group_name].append(file_name)
-    return grouped_data
+class Recorder:
+    def __init__(
+        self,
+        method_names,
+        dataset_names,
+        metric_names,
+        *,
+        txt_path,
+        to_append,
+        xlsx_path,
+        sheet_name,
+    ):
+        self.curves = defaultdict(dict)  # Two curve metrics
+        self.metrics = defaultdict(dict)  # Six numerical metrics
+        self.method_names = method_names
+        self.dataset_names = dataset_names
+
+        self.txt_recorder = None
+        if txt_path:
+            self.txt_recorder = TxtRecorder(
+                txt_path=txt_path,
+                to_append=to_append,
+                max_method_name_width=max([len(x) for x in method_names]),  # 显示完整名字
+            )
+
+        self.excel_recorder = None
+        if xlsx_path:
+            excel_metric_names = []
+            for x in metric_names:
+                if x in GRAYSCALE_METRICS:
+                    if x == "em":
+                        excel_metric_names.append(f"max{x}")
+                        excel_metric_names.append(f"avg{x}")
+                        excel_metric_names.append(f"adp{x}")
+                    else:
+                        config = BINARY_METRIC_MAPPING[x]
+                        if config["kwargs"]["with_dynamic"]:
+                            excel_metric_names.append(f"max{x}")
+                            excel_metric_names.append(f"avg{x}")
+                        if config["kwargs"]["with_adaptive"]:
+                            excel_metric_names.append(f"adp{x}")
+                else:
+                    excel_metric_names.append(x)
+
+            self.excel_recorder = MetricExcelRecorder(
+                xlsx_path=xlsx_path,
+                sheet_name=sheet_name,
+                row_header=["methods"],
+                dataset_names=dataset_names,
+                metric_names=excel_metric_names,
+            )
+
+    def record(self, method_results, dataset_name, method_name):
+        """Record results"""
+        method_curves = method_results.get("sequential")
+        method_metrics = method_results["numerical"]
+        self.curves[dataset_name][method_name] = method_curves
+        self.metrics[dataset_name][method_name] = method_metrics
+
+    def export(self):
+        """After evaluating all methods, export results to ensure the order of names."""
+        for dataset_name in self.dataset_names:
+            if dataset_name not in self.metrics:
+                continue
+
+            for method_name in self.method_names:
+                dataset_results = self.metrics[dataset_name]
+                method_results = dataset_results.get(method_name)
+                if method_results is None:
+                    continue
+
+                if self.txt_recorder:
+                    self.txt_recorder.add_row(row_name="Dataset", row_data=dataset_name)
+                    self.txt_recorder(method_results=method_results, method_name=method_name)
+                if self.excel_recorder:
+                    self.excel_recorder(
+                        row_data=method_results, dataset_name=dataset_name, method_name=method_name
+                    )
 
 
-def cal_cosod_matrics(
-    data_type: str = "rgb_sod",
+def cal_video_matrics(
+    sheet_name: str = "results",
     txt_path: str = "",
     to_append: bool = True,
     xlsx_path: str = "",
-    drawing_info: dict = None,
-    dataset_info: dict = None,
-    save_npy: bool = True,
+    methods_info: dict = None,
+    datasets_info: dict = None,
     curves_npy_path: str = "./curves.npy",
     metrics_npy_path: str = "./metrics.npy",
     num_bits: int = 3,
+    num_workers: int = 2,
+    ncols_tqdm: int = 79,
+    metric_names: tuple = ("sm", "wfm", "mae", "avgdice", "avgiou", "adpe", "avge", "maxe"),
+    return_group: bool = False,
+    start_idx: int = 1,
+    end_idx: int = -1,
 ):
-    """
-    Save the results of all models on different datasets in a `npy` file in the form of a
+    """Save the results of all models on different datasets in a `npy` file in the form of a
     dictionary.
 
-    ::
+    Args:
+        sheet_name (str, optional): The type of the sheet in xlsx file. Defaults to "results".
+        txt_path (str, optional): The path of the txt for saving results. Defaults to "".
+        to_append (bool, optional): Whether to append results to the original record. Defaults to True.
+        xlsx_path (str, optional): The path of the xlsx file for saving results. Defaults to "".
+        methods_info (dict, optional): The method information. Defaults to None.
+        datasets_info (dict, optional): The dataset information. Defaults to None.
+        curves_npy_path (str, optional): The npy file path for saving curve data. Defaults to "./curves.npy".
+        metrics_npy_path (str, optional): The npy file path for saving metric values. Defaults to "./metrics.npy".
+        num_bits (int, optional): The number of bits used to format results. Defaults to 3.
+        num_workers (int, optional): The number of workers of multiprocessing or multithreading. Defaults to 2.
+        ncols_tqdm (int, optional): Number of columns for tqdm. Defaults to 79.
+        metric_names (tuple, optional): Names of metrics. Defaults to ("sm", "wfm", "em", "mae", "dice", "iou").
+        return_group (bool, optional): Whether to return the grouped results. Defaults to False.
+        start_idx (int, optional): The index of the first frame in each gt sequence. Defaults to 1, it will skip the first frame. If it is set to None, the code will not skip frames.
+        end_idx (int, optional): The index of the last frame in each gt sequence. Defaults to -1, it will skip the last frame. If it is set to None, the code will not skip frames.
 
+    Returns:
         {
           dataset1:{
             method1:[fm, em, p, r],
@@ -56,123 +155,147 @@ def cal_cosod_matrics(
           ....
         }
 
-    :param data_type: the type of data
-    :param txt_path: the path of the txt for saving results
-    :param to_append: whether to append results to the original record
-    :param xlsx_path: the path of the xlsx file for saving results
-    :param drawing_info: the method information for plotting figures
-    :param dataset_info: the dataset information
-    :param save_npy: whether to save results into npy files
-    :param curves_npy_path: the npy file path for saving curve data
-    :param metrics_npy_path: the npy file path for saving metric values
-    :param num_bits: the number of bits used to format results
     """
-    curves = defaultdict(dict)  # Two curve metrics
-    metrics = defaultdict(dict)  # Six numerical metrics
+    metric_class = GroupedMetricRecorder
 
-    txt_recoder = TxtRecorder(
+    method_names = tuple(methods_info.keys())
+    dataset_names = tuple(datasets_info.keys())
+    recorder = Recorder(
+        method_names=method_names,
+        dataset_names=dataset_names,
+        metric_names=metric_names,
         txt_path=txt_path,
         to_append=to_append,
-        max_method_name_width=max([len(x) for x in drawing_info.keys()]),  # 显示完整名字
-    )
-    excel_recorder = MetricExcelRecorder(
         xlsx_path=xlsx_path,
-        sheet_name=data_type,
-        row_header=["methods"],
-        dataset_names=sorted(list(dataset_info.keys())),
-        metric_names=["sm", "wfm", "mae", "adpf", "avgf", "maxf", "adpe", "avge", "maxe"],
+        sheet_name=sheet_name,
     )
 
-    for dataset_name, dataset_path in dataset_info.items():
-        txt_recoder.add_row(row_name="Dataset", row_data=dataset_name, row_start_str="\n")
+    tqdm.set_lock(TRLock())
+    pool_cls = pool.ThreadPool
+    procs = pool_cls(processes=num_workers, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),))
+    print(f"Create a {procs}).")
 
+    procs_idx = 0
+    for dataset_name, dataset_path in datasets_info.items():
         # 获取真值图片信息
         gt_info = dataset_path["mask"]
         gt_root = gt_info["path"]
-        gt_ext = gt_info["suffix"]
+        gt_prefix = gt_info.get("prefix", "")
+        gt_suffix = gt_info["suffix"]
         # 真值名字列表
         gt_index_file = dataset_path.get("index_file")
         if gt_index_file:
-            gt_name_list = get_name_with_group_list(data_path=gt_index_file, file_ext=gt_ext)
+            gt_name_list = get_name_with_group_list(
+                data_path=gt_index_file,
+                name_prefix=gt_prefix,
+                name_suffix=gt_suffix,
+            )
         else:
-            gt_name_list = get_name_with_group_list(data_path=gt_root, file_ext=gt_ext)
+            gt_name_list = get_name_with_group_list(
+                data_path=gt_root,
+                name_prefix=gt_prefix,
+                name_suffix=gt_suffix,
+                start_idx=start_idx,
+                end_idx=end_idx,
+            )
         assert len(gt_name_list) > 0, "there is not ground truth."
 
         # ==>> test the intersection between pre and gt for each method <<==
-        for method_name, method_info in drawing_info.items():
+        for method_name, method_info in methods_info.items():
             method_root = method_info["path_dict"]
             method_dataset_info = method_root.get(dataset_name, None)
             if method_dataset_info is None:
-                colored_print(
-                    msg=f"{method_name} does not have results on {dataset_name}", mode="warning"
-                )
+                tqdm.write(f"{method_name} does not have results on {dataset_name}")
                 continue
 
             # 预测结果存放路径下的图片文件名字列表和扩展名称
-            pre_ext = method_dataset_info["suffix"]
+            pre_prefix = method_dataset_info.get("prefix", "")
+            pre_suffix = method_dataset_info["suffix"]
             pre_root = method_dataset_info["path"]
-            pre_name_list = get_name_with_group_list(data_path=pre_root, file_ext=pre_ext)
+            pre_name_list = get_name_with_group_list(
+                data_path=pre_root, name_prefix=pre_prefix, name_suffix=pre_suffix
+            )
 
             # get the intersection
-            eval_name_list = sorted(list(set(gt_name_list).intersection(set(pre_name_list))))
-            num_names = len(eval_name_list)
-
-            if num_names == 0:
-                colored_print(
-                    msg=f"{method_name} does not have results on {dataset_name}", mode="warning"
-                )
+            eval_name_list = sorted(list(set(gt_name_list).intersection(pre_name_list)))
+            if len(eval_name_list) == 0:
+                tqdm.write(f"{method_name} does not have results on {dataset_name}")
                 continue
 
-            grouped_data = group_names(names=eval_name_list)
-            num_groups = len(grouped_data)
-
-            colored_print(
-                f"Evaluating {method_name} with {num_names} images and {num_groups} groups"
-                f" (G:{len(gt_name_list)},P:{len(pre_name_list)}) images on dataset {dataset_name}"
+            kwargs = dict(
+                names=eval_name_list,
+                num_bits=num_bits,
+                pre_root=pre_root,
+                pre_prefix=pre_prefix,
+                pre_suffix=pre_suffix,
+                gt_root=gt_root,
+                gt_prefix=gt_prefix,
+                gt_suffix=gt_suffix,
+                desc=f"[{dataset_name}({len(gt_name_list)}):{method_name}({len(pre_name_list)})]",
+                proc_idx=procs_idx,
+                metric_names=metric_names,
+                ncols_tqdm=ncols_tqdm,
+                metric_class=metric_class,
+                return_group=return_group,
             )
+            callback = partial(recorder.record, dataset_name=dataset_name, method_name=method_name)
+            procs.apply_async(func=evaluate, kwds=kwargs, callback=callback)
+            # for debugging
+            # callback(evaluate(**kwargs), dataset_name=dataset_name, method_name=method_name)
+            procs_idx += 1
+    procs.close()
+    procs.join()
 
-            group_metric_recorder = GroupedMetricRecorder()
-            inter_group_bar = tqdm(
-                grouped_data.items(),
-                total=num_groups,
-                leave=False,
-                ncols=79,
-                desc=f"[{dataset_name}]",
-            )
-            for group_name, names_in_group in inter_group_bar:
-                intra_group_bar = tqdm(
-                    names_in_group,
-                    total=len(names_in_group),
-                    leave=False,
-                    ncols=79,
-                    desc=f"({group_name})",
-                )
-                for img_name in intra_group_bar:
-                    img_name_with_group = os.path.join(group_name, img_name)
-                    gt, pre = get_gt_pre_with_name(
-                        gt_root=gt_root,
-                        pre_root=pre_root,
-                        img_name=img_name_with_group,
-                        pre_ext=pre_ext,
-                        gt_ext=gt_ext,
-                        to_normalize=False,
-                    )
-                    group_metric_recorder.update(group_name=group_name, pre=pre, gt=gt)
-            method_results = group_metric_recorder.show(num_bits=num_bits, return_ndarray=False)
-            method_curves = method_results["sequential"]
-            method_metrics = method_results["numerical"]
-            curves[dataset_name][method_name] = method_curves
-            metrics[dataset_name][method_name] = method_metrics
+    recorder.export()
+    if curves_npy_path:
+        make_dir(os.path.dirname(curves_npy_path))
+        np.save(curves_npy_path, recorder.curves)
+        tqdm.write(f"All curves has been saved in {curves_npy_path}")
+    if metrics_npy_path:
+        make_dir(os.path.dirname(metrics_npy_path))
+        np.save(metrics_npy_path, recorder.metrics)
+        tqdm.write(f"All metrics has been saved in {metrics_npy_path}")
+    formatted_string = formatter_for_tabulate(recorder.metrics, method_names, dataset_names)
+    tqdm.write(f"All methods have been evaluated:\n{formatted_string}")
 
-            excel_recorder(
-                row_data=method_metrics, dataset_name=dataset_name, method_name=method_name
-            )
-            txt_recoder(method_results=method_metrics, method_name=method_name)
 
-    if save_npy:
-        make_dir(os.path.basename(curves_npy_path))
-        np.save(curves_npy_path, curves)
-        np.save(metrics_npy_path, metrics)
-        colored_print(f"all methods have been saved in {curves_npy_path} and {metrics_npy_path}")
-    formatted_string = formatter_for_tabulate(metrics)
-    colored_print(f"all methods have been tested:\n{formatted_string}")
+def evaluate(
+    names,
+    num_bits,
+    gt_root,
+    gt_prefix,
+    gt_suffix,
+    pre_root,
+    pre_prefix,
+    pre_suffix,
+    metric_class,
+    desc="",
+    proc_idx=None,
+    metric_names=None,
+    ncols_tqdm=79,
+    return_group=False,
+):
+    group_names = sorted(set([n.split(os.sep)[0] for n in names]))
+    metric_recoder = metric_class(group_names=group_names, metric_names=metric_names)
+    # https://github.com/tqdm/tqdm#parameters
+    # https://github.com/tqdm/tqdm/blob/master/examples/parallel_bars.py
+    tqdm_bar = tqdm(
+        names, total=len(names), desc=desc, position=proc_idx, ncols=ncols_tqdm, lock_args=(False,)
+    )
+    for name in tqdm_bar:
+        group_name = name.split("/")[0]
+        gt, pre = get_gt_pre_with_name_and_group(
+            img_name=name,
+            pre_root=pre_root,
+            pre_prefix=pre_prefix,
+            pre_suffix=pre_suffix,
+            gt_root=gt_root,
+            gt_prefix=gt_prefix,
+            gt_suffix=gt_suffix,
+            to_normalize=False,
+        )
+        metric_recoder.step(pre=pre, gt=gt, gt_path=os.path.join(gt_root, name))
+
+    # TODO: 打印的形式有待进一步完善
+    method_results = metric_recoder.show(num_bits=num_bits, return_group=return_group)
+    return method_results

@@ -1,71 +1,180 @@
-# 基于python的显著性目标检测测评工具箱
+# 基于Python的图像二值分割测评工具箱
 
-A Python-based **RGB/Co-RGB/RGB-D** salient object detection evaluation toolbox.
+A Python-based image binary segmentation evaluation toolbox.
 
-## TODO
+基于Python的图像二值分割测评工具箱
 
-* [x] 更灵活的绘图配置脚本(支持使用[符合matplotlib要求的](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file)yaml文件来对绘图格式进行配置)
+## 一些规划
+
+* [ ] 向执行脚本中添加配置信息合理行检测.
+* 更灵活的配置脚本
+  + [ ] 使用[符合matplotlib要求的](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file)的 yaml 文件来控制绘图格式.
+  + [ ] 是否应该使用更加灵活强大的配置格式, 例如 yaml 或者 toml 来替换配置策略.
 * [ ] 添加测试脚本
 * [ ] 添加更详细的注释
-* [ ] 考虑是否要使用yaml来替换配置策略. 其支持注释操作, 功能更丰富, 相比json更加灵活
-* [ ] 优化xlsx导出的代码(? 导出CSV或许更好些? 既可以当做文本文件打开, 亦可使用Excel来进行整理)
-* [x] 多进程和多线程的支持.
-* [X] 剥离USVOS部分的代码, 让本仓库更专注一些, 相关代码已转移到另一个仓库[PyDavis16EvalToolbox](https://github.com/lartpang/PyDavis16EvalToolbox).
-* [X] 提供对输出的结果基于某个指标进行排序的功能的支持(即, 使表格更加直观), 将会在接下来的版本中添加github-page来展示动态页面.
-* [X] 基于Fan的matlab代码, 我实现了一份更加快速和准确的指标代码<https://github.com/lartpang/PySODMetrics>, 已经整合到该代码中.
+* 优化导出代码
+  + [ ] 导出到 XLSX 文件的代码
+  + [ ] 是否应该使用 CSV 这样的文本格式更好些? 既可以当做文本文件打开, 亦可使用Excel来进行整理.
+* [ ] 完善关于分组数据的代码, 即CoSOD、Video Binary Segmentation等任务的支持.
+* [x] 支持并发策略加速计算. 目前保留了多线程支持, 剔除了之前的多进程代码.
+* [X] 剥离 USVOS 代码到另一个仓库 [PyDavis16EvalToolbox](https://github.com/lartpang/PyDavis16EvalToolbox).
+* [X] 基于 github page 服务自动化生成结果汇总网页, 并支持基于某个指标进行排序的支持.
+* [X] 使用更加快速和准确的指标代码 [PySODMetrics](https://github.com/lartpang/PySODMetrics) 作为评估基准.
 
 ## 特性
 
-* 提供11项显著性目标检测指标的评估
-    - F-measure-Threshold Curve
-    - Precision-Recall Curve
+* 受益于 PySODMetrics, 从而获得了更加丰富的指标的支持. 更多细节可见 `utils/recorders/metric_recorder.py`.
+  + 支持评估*灰度图像*, 例如来自显著性目标检测任务的预测.
     - MAE
-    - weighted F-measure
-    - S-measure
-    - max/average/adaptive F-measure
-    - max/average/adaptive E-measure
-* 额外提供针对部分医学二值分割任务使用的数个指标的支持
-    - max/average Precision
-    - max/average Sensitivity
-    - max/average Specificity
-    - max/average F-measure
-    - max/average Dice
-    - max/average IoU
-* 测试代码高度优化
-    - 纯python实现, 基于numpy和各种小trick计算各项指标, 速度有保障
-    - 导出特定模型的结果到xlsx文件中（2021年01月04日重新提供支持）
-    - 直接支持从生成的npy文件导出latex表格代码，顺便还可以对前三的方法使用不同颜色进行标记。
-    - 导出测试结果到txt文件中
-    - 评估所有指定的方法, 根据评估结果绘制PR曲线和F-measure曲线
+    - Emeasure
+    - Smeasure
+    - weighted Fmeasure
+    - maximum/average/adaptive Fmeasure
+    - maximum/average/adaptive Precision
+    - maximum/average/adaptive Recall
+    - maximum/average/adaptive IoU
+    - maximum/average/adaptive Dice
+    - maximum/average/adaptive Specificity
+    - maximum/average/adaptive BER
+    - Fmeasure-Threshold Curve
+    - Emeasure-Threshold Curve
+    - Precision-Recall Curve
+  + 支持评估*二值图像*, 例如常见的二值分割任务.
+    - binary Fmeasure
+    - binary Precision
+    - binary Recall
+    - binary IoU
+    - binary Dice
+    - binary Specificity
+    - binary BER
+* 更丰富的功能.
+  + 支持根据配置评估模型.
+  + 支持根据配置和评估结果绘制 PR 曲线和 F-measure 曲线.
+  + 支持导出测试结果到 TXT 文件中.**目前由于多线程的使用, 存在提示信息额外写入的问题, 有待优化.**
+  + 支持导出结果到 XLSX 文件(2021年01月04日重新提供支持).
+  + 支持从生成的 `.npy` 文件导出 LaTeX 表格代码, 同时支持对最优的前三个方法用不同颜色进行标记.
+  + 其他更多功能有待发觉:>.
 
 ## 使用方法
 
-由于对于数据集和方法的配置因用户而异, 所以在<https://github.com/lartpang/Py-SOD-VOS-EvalToolkit/commit/d7bcc1d74065844fe0483dc3ce3fda7d06d07bc0>
-之后的版本不在更新 `configs` 文件夹中的这部分内容, 直接给出一些简单的例子, 用户可以自行修改.
+### 安装依赖
 
-配置文件的例子:
-* python版本, 书写方便, 可以使用IDE的特性, 可以注释, 只需满足python语法. 但是需使用转换脚本进行转换.
-    - 可以参考 `examples` 文件夹中的 ~~`dataset_config.py` 和 `method_config.py`~~ `config_dataset_py_example.py` 和 `config_method_py_example.py`.
-* json版本, 更直接, 但是可能需要特定的插件支持. 需要满足json的语法. 不可以使用注释和末尾的逗号.
-    - 可以参考`examples`文件夹中的 `config_dataset_json_example.json` 和 `config_method_json_example.json`.
+先安装指标代码库: `pip install pysodmetrics` .
 
-具体使用流程(更新于2022年4月24日):
-1. 先安装指标代码库： `pip install pysodmetrics`.
-    - 评估代码来自本人的另一个项目：<https://github.com/lartpang/PySODMetrics>, 欢迎捉BUG！
-2. 配置不同数据集以及方法的路径信息：
-    - 本项目依赖于json文件存放数据，`./examples`中已经提供了数据集和方法配置的例子：`config_dataset_json_example.json`和`config_method_json_example.json`，可以至直接修改他们用于后续步骤。
-      - **[可选]** 但是本项目提供了`tools/info_py_to_json.py`来将python格式的信息（可见`./examples`中的提供的py格式的例子）转换为json文件. 使用方法可见`tools/readme.md`.
-      - **[注意]** 请务必确保*数据集配置文件中数据集的名字*和方法配置文件中*数据集的名字*一致.
-    - 准备好json文件后, 建议使用提供的`tools/check_path.py`来检查下json文件中的路径信息是否正常.
-3. 一切正常后, 可以开始评估了.
-    - 评估脚本用法：`python eval.py --help`
-    - 根据自己需求添加配置项并执行即可。如无异常, 会生成指定文件名的结果文件。如果不指定所有的文件，那么就直接输出结果，具体可见阅读`eval_all.py`的帮助信息。
-    - 如指定`--curves-npy`, 绘图的信息将会保存到对应的`.npy`文件中.
-4. 后续可以使用`plot.py`来读取`.npy`文件按需对指定方法和数据集的结果整理并绘制`PR`曲线和`Fm`曲线.
-    - 该脚本用法可见：`python plot.py --help`
-    - 按照自己需求添加配置项并执行即可。最基本的一条是请按照子图数量合理指定配置文件中的`figure.figsize`项的数值。
-5. 可选：
-   1. 使用 `tools/converter.py` 直接从生成的npy文件中导出latex表格代码.
+这来自本人的另一个项目:[PySODMetrics](https://github.com/lartpang/PySODMetrics), 欢迎捉BUG!
+
+### 配置数据集与方法预测的路径信息
+
+本项目依赖于json文件存放数据, `./examples` 中已经提供了数据集和方法配置的例子: `config_dataset_json_example.json` 和 `config_method_json_example.json` , 可以至直接修改他们用于后续步骤.
+
+[注意] 请务必确保*数据集配置文件中数据集的名字*和方法配置文件中*数据集的名字*一致. 准备好json文件后, 建议使用提供的 `tools/check_path.py` 来检查下json文件中的路径信息是否正常.
+
+<details>
+<summary>
+关于配置的更多细节
+</summary>
+
+例子 1: 数据集配置
+
+注意, 这里的 "image" 是非必要的. 实际评估仅仅读取 "mask".
+
+```json
+{
+    "LFSD": {
+        "image": {
+            "path": "Path_Of_RGBDSOD_Datasets/LFSD/Image",
+            "prefix": "some_gt_prefix",
+            "suffix": ".jpg"
+        },
+        "mask": {
+            "path": "Path_Of_RGBDSOD_Datasets/LFSD/Mask",
+            "prefix": "some_gt_prefix",
+            "suffix": ".png"
+        }
+    }
+}
+```
+
+例子 2: 方法配置
+
+```json
+{
+    "Method1": {
+        "PASCAL-S": {
+            "path": "Path_Of_Method1/PASCAL-S",
+            "prefix": "some_method_prefix",
+            "suffix": ".png"
+        },
+        "ECSSD": {
+            "path": "Path_Of_Method1/ECSSD",
+            "prefix": "some_method_prefix",
+            "suffix": ".png"
+        },
+        "HKU-IS": {
+            "path": "Path_Of_Method1/HKU-IS",
+            "prefix": "some_method_prefix",
+            "suffix": ".png"
+        },
+        "DUT-OMRON": {
+            "path": "Path_Of_Method1/DUT-OMRON",
+            "prefix": "some_method_prefix",
+            "suffix": ".png"
+        },
+        "DUTS-TE": {
+            "path": "Path_Of_Method1/DUTS-TE",
+            "suffix": ".png"
+        }
+    }
+}
+```
+
+这里 `path` 表示存放图像数据的目录. 而 `prefix` 和 `suffix` 表示实际预测图像和真值图像中除去共有部分外的前缀预后缀内容.
+
+评估过程中, 方法预测和数据集真值匹配的方式是基于文件名字的共有部分. 二者的名字模式预设为 `[prefix]+[shared-string]+[suffix]` . 例如假如有这样的预测图像 `method1_00001.jpg` , `method1_00002.jpg` , `method1_00003.jpg` 和真值图像 `gt_00001.png` , `gt_00002.png` , `gt_00003.png` . 则我们可以配置如下:
+
+例子 3: 数据集配置
+
+```json
+{
+    "dataset1": {
+        "mask": {
+            "path": "path/Mask",
+            "prefix": "gt_",
+            "suffix": ".png"
+        }
+    }
+}
+```
+
+例子 4: 方法配置
+
+```json
+{
+    "method1": {
+        "dataset1": {
+            "path": "path/dataset1",
+            "prefix": "method1_",
+            "suffix": ".jpg"
+        }
+    }
+}
+```
+
+</details>
+
+### 执行评估过程
+
+* 前述步骤一切正常后, 可以开始评估了. 评估脚本用法可参考命令 `python eval.py --help` 的输出.
+* 根据自己需求添加配置项并执行即可. 如无异常, 会生成指定文件名的结果文件.
+* 如果不指定所有的文件, 那么就直接输出结果, 具体可见 `eval.py` 的帮助信息.
+* 如指定`--curves-npy`, 绘图相关的指标信息将会保存到对应的`.npy`文件中.
+* [可选] 可以使用 `tools/converter.py` 直接从生成的npy文件中导出latex表格代码.
+
+### 为灰度图像的评估绘制曲线
+
+可以使用 `plot.py` 来读取 `.npy` 文件按需对指定方法和数据集的结果整理并绘制 `PR` 曲线和 `Fm` 曲线. 该脚本用法可见 `python plot.py --help` 的输出. 按照自己需求添加配置项并执行即可.
+
+最基本的一条是请按照子图数量, 合理地指定配置文件中的 `figure.figsize` 项的数值.
 
 ### 一个基本的执行流程
 
@@ -155,14 +264,12 @@ python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-n
 }
 ```
 
-## Some Tips
+## 小提示
 
-**For some methods, their results' names are not consistent with those of original datsets.**
-* **NOTE**: (2021-11-18)当前同时提供了对名称前缀与后缀的支持, 所以基本不用用户自己改名字了.
-* You can use the script `rename.py` in folder `tools` to modify the file names of a large number of files. **Please use with care and it is recommended to read the code carefully before use to avoid data corruption.**
-* **Other useful tools**
-  + Linux: `rename`
-  + Windows: `Microsoft PowerToys` <https://github.com/microsoft/PowerToys>
+* 一些方法提供的结果名字预原始数据集真值的名字不一致
+  + [注意] (2021-11-18) 当前同时提供了对名称前缀与后缀的支持, 所以基本不用用户自己改名字了.
+  + [可选] 可以使用提供的脚本 `tools/rename.py` 来批量修改文件名.**请小心使用, 以避免数据被覆盖.**
+  + [可选] 其他的工具: 例如 Linux 上的 `rename`, Windows 上的 [`Microsoft PowerToys`](https://github.com/microsoft/PowerToys)
 
 ## 编程参考
 
@@ -171,6 +278,10 @@ python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-n
 
 ## 更新日志
 
+* 2023年3月20日
+    1. 提供更丰富的指标的支持。
+    2. 更新`readme.md`和示例文件。
+    3. 提供更灵活的接口。
 * 2022年5月15日
     - 代码优化
 * 2022年4月23日
@@ -235,3 +346,4 @@ python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-n
     - 使用添加了对于print的一个彩色增强的封装, 可见`./utils/misc.py`中的`colored_print`.
     - git不再跟踪方法配置文件和数据集配置文件, 这部分现有的作为示例, 仅供使用者独立补充和参考.
     - 修复了之前绘制Fm曲线时x的问题, 之前取反了. 详见<https://github.com/lartpang/Py-SOD-VOS-EvalToolkit/issues/2>.
+sues/2>.

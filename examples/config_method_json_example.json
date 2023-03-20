@@ -2,18 +2,22 @@
   "Method1": {
     "PASCAL-S": {
       "path": "Path_Of_Method1/PASCAL-S/DGRL",
+      "prefix": "some_method_prefix",
       "suffix": ".png"
     },
     "ECSSD": {
       "path": "Path_Of_Method1/ECSSD/DGRL",
+      "prefix": "some_method_prefix",
       "suffix": ".png"
     },
     "HKU-IS": {
       "path": "Path_Of_Method1/HKU-IS/DGRL",
+      "prefix": "some_method_prefix",
       "suffix": ".png"
     },
     "DUT-OMRON": {
       "path": "Path_Of_Method1/DUT-OMRON/DGRL",
+      "prefix": "some_method_prefix",
       "suffix": ".png"
     },
     "DUTS-TE": {

@@ -1,17 +1,17 @@
 {
   "LFSD": {
-    "root": "Path_Of_RGBDSOD_Datasets/LFSD",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/LFSD/Image",
+      "prefix": "some_gt_prefix",
       "suffix": ".jpg"
     },
     "mask": {
       "path": "Path_Of_RGBDSOD_Datasets/LFSD/Mask",
+      "prefix": "some_gt_prefix",
       "suffix": ".png"
     }
   },
   "NJUD": {
-    "root": "Path_Of_RGBDSOD_Datasets/NJUD_FULL",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/NJUD_FULL/Image",
       "suffix": ".jpg"
@@ -22,7 +22,6 @@
     }
   },
   "NLPR": {
-    "root": "Path_Of_RGBDSOD_Datasets/NLPR_FULL",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/NLPR_FULL/Image",
       "suffix": ".jpg"
@@ -33,7 +32,6 @@
     }
   },
   "RGBD135": {
-    "root": "Path_Of_RGBDSOD_Datasets/RGBD135",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/RGBD135/Image",
       "suffix": ".jpg"
@@ -44,7 +42,6 @@
     }
   },
   "SIP": {
-    "root": "Path_Of_RGBDSOD_Datasets/SIP",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/SIP/Image",
       "suffix": ".jpg"
@@ -55,7 +52,6 @@
     }
   },
   "SSD": {
-    "root": "Path_Of_RGBDSOD_Datasets/SSD",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/SSD/Image",
       "suffix": ".jpg"
@@ -66,7 +62,6 @@
     }
   },
   "STEREO797": {
-    "root": "Path_Of_RGBDSOD_Datasets/STEREO797",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/STEREO797/Image",
       "suffix": ".jpg"
@@ -77,7 +72,6 @@
     }
   },
   "STEREO1000": {
-    "root": "Path_Of_RGBDSOD_Datasets/STEREO1000",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/STEREO1000/Image",
       "suffix": ".jpg"
@@ -88,7 +82,6 @@
     }
   },
   "DUTRGBD": {
-    "root": "Path_Of_RGBDSOD_Datasets/DUT-RGBD/Test",
     "image": {
       "path": "Path_Of_RGBDSOD_Datasets/DUT-RGBD/Test/Image",
       "suffix": ".jpg"

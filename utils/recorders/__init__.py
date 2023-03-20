@@ -2,9 +2,11 @@
 from .curve_drawer import CurveDrawer
 from .excel_recorder import MetricExcelRecorder
 from .metric_recorder import (
-    METRIC_MAPPING,
+    BINARY_METRIC_MAPPING,
+    GRAYSCALE_METRICS,
+    SUPPORTED_METRICS,
+    BinaryMetricRecorder,
+    GrayscaleMetricRecorder,
     GroupedMetricRecorder,
-    MetricRecorder,
-    MetricRecorder_V2,
 )
 from .txt_recorder import TxtRecorder

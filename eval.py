@@ -6,29 +6,31 @@ import warnings
 
 from metrics import cal_sod_matrics
 from utils.generate_info import get_datasets_info, get_methods_info
-from utils.misc import make_dir
-from utils.recorders import METRIC_MAPPING
+from utils.recorders import SUPPORTED_METRICS
 
 
 def get_args():
     parser = argparse.ArgumentParser(
         description=textwrap.dedent(
             r"""
-    INCLUDE:
+    A Powerful Evaluation Toolkit based on PySODMetrics.
+
+    INCLUDE: More metrics can be set in `utils/recorders/metric_recorder.py`
 
     - F-measure-Threshold Curve
     - Precision-Recall Curve
     - MAE
     - weighted F-measure
     - S-measure
-    - max/average/adaptive F-measure
-    - max/average/adaptive E-measure
-    - max/average Precision
-    - max/average Sensitivity
-    - max/average Specificity
-    - max/average F-measure
-    - max/average Dice
-    - max/average IoU
+    - max/average/adaptive/binary F-measure
+    - max/average/adaptive/binary E-measure
+    - max/average/adaptive/binary Precision
+    - max/average/adaptive/binary Recall
+    - max/average/adaptive/binary Sensitivity
+    - max/average/adaptive/binary Specificity
+    - max/average/adaptive/binary F-measure
+    - max/average/adaptive/binary Dice
+    - max/average/adaptive/binary IoU
 
     NOTE:
 
@@ -37,11 +39,27 @@ def get_args():
 
     EXAMPLES:
 
-    python eval_all.py \
-        --dataset-json configs/datasets/json/rgbd_sod.json \
-        --method-json configs/methods/json/rgbd_other_methods.json configs/methods/json/rgbd_our_method.json --metric-npy output/rgbd_metrics.npy \
+    python eval_image.py \
+        --dataset-json configs/datasets/rgbd_sod.json \
+        --method-json \
+            configs/methods/json/rgbd_other_methods.json \
+            configs/methods/json/rgbd_our_method.json \
+        --metric-names sm wfm mae fmeasure em \
+        --num-bits 4 \
+        --num-workers 4 \
+        --metric-npy output/rgbd_metrics.npy \
         --curves-npy output/rgbd_curves.npy \
-        --record-tex output/rgbd_results.txt
+        --record-txt output/rgbd_results.txt
+        --to-overwrite \
+        --record-xlsx output/test-metric.xlsx \
+        --include-dataset \
+            dataset-name1-from-dataset-json \
+            dataset-name2-from-dataset-json \
+            dataset-name3-from-dataset-json
+        --include-methods \
+            method-name1-from-method-json \
+            method-name2-from-method-json \
+            method-name3-from-method-json
     """
         ),
         formatter_class=argparse.RawTextHelpFormatter,
@@ -95,20 +113,16 @@ def get_args():
         "--metric-names",
         type=str,
         nargs="+",
-        default=["mae", "fm", "em", "sm", "wfm"],
-        choices=METRIC_MAPPING.keys(),
+        default=["mae", "fmeasure", "precision", "recall", "em", "sm", "wfm"],
+        choices=SUPPORTED_METRICS,
         help="Names of metrics",
     )
     args = parser.parse_args()
 
-    if args.metric_npy is not None:
-        make_dir(os.path.dirname(args.metric_npy))
-    if args.curves_npy is not None:
-        make_dir(os.path.dirname(args.curves_npy))
-    if args.record_txt is not None:
-        make_dir(os.path.dirname(args.record_txt))
-    if args.record_xlsx is not None:
-        make_dir(os.path.dirname(args.record_xlsx))
+    os.makedirs(os.path.dirname(args.metric_npy), exist_ok=True)
+    os.makedirs(os.path.dirname(args.curves_npy), exist_ok=True)
+    os.makedirs(os.path.dirname(args.record_txt), exist_ok=True)
+    os.makedirs(os.path.dirname(args.record_xlsx), exist_ok=True)
     if args.to_overwrite and not args.record_txt:
         warnings.warn("--to-overwrite only works with a valid --record-txt")
     return args
@@ -132,7 +146,7 @@ def main():
     )
 
     # 确保多进程在windows上也可以正常使用
-    cal_sod_matrics.cal_sod_matrics(
+    cal_sod_matrics.cal_image_matrics(
         sheet_name="Results",
         to_append=not args.to_overwrite,
         txt_path=args.record_txt,
@@ -143,7 +157,6 @@ def main():
         metrics_npy_path=args.metric_npy,
         num_bits=args.num_bits,
         num_workers=args.num_workers,
-        use_mp=False,
         metric_names=args.metric_names,
         ncols_tqdm=119,
     )

@@ -57,6 +57,8 @@ def clip_string(string: str, max_length: int, padding_char: str = " ", mode: str
 
 def formatter_for_tabulate(
     results: dict,
+    method_names: tuple,
+    dataset_names: tuple,
     dataset_titlefmt: str = "Dataset: {}",
     method_name_length=None,
     metric_value_length=None,
@@ -81,17 +83,20 @@ def formatter_for_tabulate(
         针对不同的数据集各自构造符合tabulate格式的列表并使用换行符间隔串联起来返回
     """
     all_tables = []
-    for dataset_name, dataset_metrics in results.items():
+    for dataset_name in dataset_names:
+        dataset_metrics = results[dataset_name]
         all_tables.append(dataset_titlefmt.format(dataset_name))
 
         table = []
         headers = ["methods"]
-        for method_name, metric_info in dataset_metrics.items():
+        for method_name in method_names:
+            metric_info = dataset_metrics[method_name]
+
             if method_name_length:
                 method_name = clip_string(method_name, max_length=method_name_length, mode="left")
             method_row = [method_name]
-            # 保障顺序的一致性，虽然python3中已经实现了字典的有序性，但是为了确保万无一失，（毕竟可能设计到导出和导入）这里直接重新排序
-            for metric_name, metric_value in sorted(metric_info.items(), key=lambda item: item[0]):
+
+            for metric_name, metric_value in metric_info.items():
                 if metric_value_length:
                     metric_value = clip_string(
                         str(metric_value), max_length=metric_value_length, mode="center"

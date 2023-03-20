@@ -6,6 +6,7 @@ import math
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class CurveDrawer(object):
@@ -43,7 +44,11 @@ class CurveDrawer(object):
             nrows=row_num, ncols=math.ceil(self.num_subplots / row_num), sharey=self.sharey
         )
         self.fig = fig
-        self.axes = axes.flatten()
+        self.axes = axes
+        if isinstance(self.axes, np.ndarray):
+            self.axes = self.axes.flatten()
+        else:
+            self.axes = [self.axes]
 
         self.init_subplots()
         self.dummy_data = {}

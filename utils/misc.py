@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import glob
 import os
+import re
 
 import cv2
 import numpy as np
@@ -72,30 +74,74 @@ def get_name_list(data_path: str, name_prefix: str = "", name_suffix: str = "") 
     return name_list
 
 
-def get_name_with_group_list(data_path: str, file_ext: str = None) -> list:
+def get_number_from_tail(string):
+    tail_number = re.findall(pattern="\d+$", string=string)[0]
+    return int(tail_number)
+
+
+def get_name_with_group_list(
+    data_path: str,
+    name_prefix: str = "",
+    name_suffix: str = "",
+    start_idx: int = 1,
+    end_idx: int = -1,
+):
+    """get file names with the group name
+
+    Args:
+        data_path (str): The path of data.
+        name_prefix (str, optional): The prefix of the file name. Defaults to "".
+        name_suffix (str, optional): The suffix of the file name. Defaults to "".
+        start_idx (int, optional): The index of the first frame in each group. Defaults to 1, it will skip the first frame.
+        end_idx (int, optional): The index of the last frame in each group. Defaults to -1, it will skip the last frame.
+
+    Raises:
+        NotImplementedError: Undefined.
+
+    Returns:
+        list: The name (with the group name) list and the original number of image in the dataset.
+    """
     name_list = []
     if os.path.isfile(data_path):
-        print(f" ++>> {data_path} is a file. <<++ ")
-        with open(data_path, mode="r", encoding="utf-8") as file:
-            line = file.readline()
-            while line:
-                img_name_with_group = line.split()
-                name_list.append(os.path.splitext(img_name_with_group)[0])
-                line = file.readline()
+        # 暂未遇到类似的设定
+        raise NotImplementedError
     else:
-        print(f" ++>> {data_path} is a folder. <<++ ")
-        group_names = sorted(os.listdir(data_path))
-        for group_name in group_names:
-            image_names = [
-                "/".join([group_name, x])
-                for x in sorted(os.listdir(os.path.join(data_path, group_name)))
-            ]
-            if file_ext is not None:
-                name_list += [os.path.splitext(f)[0] for f in image_names if f.endswith(file_ext)]
-            else:
-                name_list += [os.path.splitext(f)[0] for f in image_names]
-    # group_name/file_name.ext
-    name_list = list(set(name_list))  # 去重
+        if "*" in data_path:  # for VCOD
+            group_paths = glob.glob(data_path, recursive=False)
+            group_name_start_idx = data_path.find("*")
+            for group_path in group_paths:
+                group_name = group_path[group_name_start_idx:].split(os.sep)[0]
+
+                file_names = sorted(
+                    [
+                        n[len(name_prefix) : -len(name_suffix)]
+                        for n in os.listdir(group_path)
+                        if n.startswith(name_prefix) and n.endswith(name_suffix)
+                    ],
+                    key=lambda item: get_number_from_tail(item),
+                )
+
+                for file_name in file_names[start_idx:end_idx]:
+                    name_list.append(f"{group_name}/{file_name}")
+
+        else:  # for CoSOD
+            group_names = os.listdir(data_path)
+            group_paths = [os.path.join(data_path, n) for n in group_names]
+            for group_path in group_paths:
+                group_name = os.path.basename(group_path)
+
+                file_names = sorted(
+                    [
+                        n[len(name_prefix) : -len(name_suffix)]
+                        for n in os.listdir(group_path)
+                        if n.startswith(name_prefix) and n.endswith(name_suffix)
+                    ],
+                    key=lambda item: get_number_from_tail(item),
+                )
+
+                for file_name in file_names[start_idx:end_idx]:
+                    name_list.append(f"{group_name}/{file_name}")
+    name_list = sorted(set(name_list))  # 去重
     return name_list
 
 
@@ -174,16 +220,18 @@ def imread_wich_checking(path, for_color: bool = True, with_cv2: bool = True) ->
 
 
 def get_gt_pre_with_name(
+    img_name: str,
     gt_root: str,
     pre_root: str,
-    img_name: str,
-    pre_prefix: str,
-    pre_suffix: str,
-    gt_ext: str = ".png",
+    *,
+    gt_prefix: str = "",
+    pre_prefix: str = "",
+    gt_suffix: str = ".png",
+    pre_suffix: str = "",
     to_normalize: bool = False,
 ):
     img_path = os.path.join(pre_root, pre_prefix + img_name + pre_suffix)
-    gt_path = os.path.join(gt_root, img_name + gt_ext)
+    gt_path = os.path.join(gt_root, gt_prefix + img_name + gt_suffix)
 
     pre = imread_wich_checking(img_path, for_color=False)
     gt = imread_wich_checking(gt_path, for_color=False)
@@ -192,6 +240,42 @@ def get_gt_pre_with_name(
         pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=cv2.INTER_LINEAR).astype(
             np.uint8
         )
+
+    if to_normalize:
+        gt = normalize_array(gt, to_binary=True, max_eq_255=True)
+        pre = normalize_array(pre, to_binary=False, max_eq_255=True)
+    return gt, pre
+
+
+def get_gt_pre_with_name_and_group(
+    img_name: str,
+    gt_root: str,
+    pre_root: str,
+    *,
+    gt_prefix: str = "",
+    pre_prefix: str = "",
+    gt_suffix: str = ".png",
+    pre_suffix: str = "",
+    to_normalize: bool = False,
+    interpolation: int = cv2.INTER_CUBIC,
+):
+    group_name, file_name = img_name.split("/")
+    if "*" in gt_root:
+        gt_root = gt_root.replace("*", group_name)
+    else:
+        gt_root = os.path.join(gt_root, group_name)
+    if "*" in pre_root:
+        pre_root = pre_root.replace("*", group_name)
+    else:
+        pre_root = os.path.join(pre_root, group_name)
+    img_path = os.path.join(pre_root, pre_prefix + file_name + pre_suffix)
+    gt_path = os.path.join(gt_root, gt_prefix + file_name + gt_suffix)
+
+    pre = imread_wich_checking(img_path, for_color=False)
+    gt = imread_wich_checking(gt_path, for_color=False)
+
+    if pre.shape != gt.shape:
+        pre = cv2.resize(pre, dsize=gt.shape[::-1], interpolation=interpolation).astype(np.uint8)
 
     if to_normalize:
         gt = normalize_array(gt, to_binary=True, max_eq_255=True)

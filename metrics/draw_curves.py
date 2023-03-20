@@ -73,20 +73,28 @@ def draw_curves(
                 raise ValueError(f"{x} must be contained in\n{dataset_names_from_npy}")
 
     if method_aliases is not None:
-        target_unique_method_names = list(method_aliases.keys())
-        for x in target_unique_method_names:
-            if x not in unique_method_names_from_npy:
-                raise ValueError(
-                    f"{x} must be contained in\n{sorted(unique_method_names_from_npy)}"
-                )
+        target_unique_method_names = []
+        for x in method_aliases:
+            if x in unique_method_names_from_npy:
+                target_unique_method_names.append(x)
+            # Only consider the name in npy is also in alias config.
+            # if x not in unique_method_names_from_npy:
+            #     raise ValueError(
+            #         f"{x} must be contained in\n{sorted(unique_method_names_from_npy)}"
+            #     )
     else:
+        method_aliases = {}
         target_unique_method_names = unique_method_names_from_npy
 
     if our_methods is not None:
+        our_methods.reverse()
         for x in our_methods:
             if x not in target_unique_method_names:
                 raise ValueError(f"{x} must be contained in\n{target_unique_method_names}")
-        assert len(our_methods) <= len(line_styles)
+            # Put our methods into the head of the name list
+            target_unique_method_names.pop(target_unique_method_names.index(x))
+            target_unique_method_names.insert(0, x)
+        # assert len(our_methods) <= len(line_styles)
     else:
         our_methods = []
 
@@ -98,22 +106,12 @@ def draw_curves(
             if name not in ["red", "white"] or not name.startswith("light") or "gray" in name
         ]
     )
-    unique_method_settings = {}
+    unique_method_settings = OrderedDict()
     for i, method_name in enumerate(target_unique_method_names):
-        if method_name in our_methods:
-            line_color = "red"
-            line_style = line_styles[our_methods.index(method_name)]
-        else:
-            line_color = color_table[i]
-            line_style = line_styles[i % 2]
-        line_label = (
-            method_name if method_aliases is None else method_aliases.get(method_name, method_name)
-        )
-
         unique_method_settings[method_name] = {
-            "line_color": line_color,
-            "line_style": line_style,
-            "line_label": line_label,
+            "line_color": "red" if i < len(our_methods) else color_table[i],
+            "line_label": method_aliases.get(method_name, method_name),
+            "line_style": line_styles[i % len(line_styles)],
             "line_width": line_width,
         }
 
@@ -142,13 +140,26 @@ def draw_curves(
                 raise KeyError(f"{method_name} not in {sorted(dataset_results.keys())}")
             method_results = dataset_results[method_name]
             if mode == "pr":
-                assert isinstance(method_results["p"], (list, tuple))
-                assert isinstance(method_results["r"], (list, tuple))
-                y_data = method_results["p"]
-                x_data = method_results["r"]
-            else:
-                assert isinstance(method_results["fm"], (list, tuple))
-                y_data = method_results["fm"]
+                y_data = method_results.get("p")
+                if y_data is None:
+                    y_data = method_results["precision"]
+                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
+
+                x_data = method_results.get("r")
+                if x_data is None:
+                    x_data = method_results["recall"]
+                assert isinstance(x_data, (list, tuple)), (method_name, method_results.keys())
+            elif mode == "fm":
+                y_data = method_results.get("fm")
+                if y_data is None:
+                    y_data = method_results["fmeasure"]
+                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
+
+                x_data = np.linspace(0, 1, 256)
+            elif mode == "em":
+                y_data = method_results["em"]
+                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
+
                 x_data = np.linspace(0, 1, 256)
 
             curve_drawer.plot_at_axis(

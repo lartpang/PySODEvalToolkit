@@ -20,8 +20,10 @@ class TxtRecorder:
         mode = "a" if to_append else "w"
         with open(txt_path, mode=mode, encoding="utf-8") as f:
             f.write(f"\n ========>> Date: {datetime.now()} <<======== \n")
+        self.row_names = []
 
     def add_row(self, row_name, row_data, row_start_str="", row_end_str="\n"):
+        self.row_names.append(row_name)
         with open(self.txt_path, mode="a", encoding="utf-8") as f:
             f.write(f"{row_start_str} ========>> {row_name}: {row_data} <<======== {row_end_str}")
 

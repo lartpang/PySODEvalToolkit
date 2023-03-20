@@ -54,36 +54,38 @@ def simple_info_generator():
     return _template_generator
 
 
-def get_valid_elements(
-    source: list,
-    include_elements: list = None,
-    exclude_elements: list = None,
-):
-    if include_elements is None:
-        include_elements = []
-    if exclude_elements is None:
-        exclude_elements = []
-    assert not set(include_elements).intersection(
-        exclude_elements
-    ), "`include_elements` and `exclude_elements` must have no intersection."
+def get_valid_elements(source: list, include_elements: list, exclude_elements: list) -> list:
+    targeted_elements = []
+    if include_elements and not exclude_elements:  # only include_elements is not [] and not None
+        for element in include_elements:
+            assert element in source, element
+            targeted_elements.append(element)
 
-    targeted = set(source).difference(exclude_elements)
-    assert targeted, "`exclude_elements can not include all datasets."
+    elif not include_elements and exclude_elements:  # only exclude_elements is not [] and not None
+        for element in exclude_elements:
+            assert element in source, element
+        for element in source:
+            if element not in exclude_elements:
+                targeted_elements.append(element)
 
-    if include_elements:
-        # include_elements: [] or [dataset1_name, dataset2_name, ...]
-        # only latter will be used to select datasets from `targeted`
-        targeted = targeted.intersection(include_elements)
+    else:
+        raise ValueError(
+            f"include_elements: {include_elements}\nexclude_elements: {exclude_elements}"
+        )
 
-    return list(targeted)
+    if not targeted_elements:
+        print(source, include_elements, exclude_elements)
+        raise ValueError("targeted_elements must be a valid and non-empty list.")
+    return targeted_elements
 
 
 def get_methods_info(
     methods_info_jsons: list,
+    include_methods: list,
+    exclude_methods: list,
+    *,
     for_drawing: bool = False,
-    our_name: str = None,
-    include_methods: list = None,
-    exclude_methods: list = None,
+    our_name: str = "",
 ) -> OrderedDict:
     """
     在json文件中存储的对应方法的字典的键值会被直接用于绘图
@@ -116,7 +118,6 @@ def get_methods_info(
     )
     if our_name and our_name in targeted_methods:
         targeted_methods.pop(targeted_methods.index(our_name))
-        targeted_methods.sort()
         targeted_methods.insert(0, our_name)
 
     if for_drawing:
@@ -137,9 +138,7 @@ def get_methods_info(
 
 
 def get_datasets_info(
-    datastes_info_json: str,
-    include_datasets: list = None,
-    exclude_datasets: list = None,
+    datastes_info_json: str, include_datasets: list, exclude_datasets: list
 ) -> OrderedDict:
     """
     在json文件中存储的所有数据集的信息会被直接导出到一个字典中
@@ -159,7 +158,6 @@ def get_datasets_info(
         include_elements=include_datasets,
         exclude_elements=exclude_datasets,
     )
-    targeted_datasets.sort()
 
     datasets_full_info = []
     for dataset_name in targeted_datasets:

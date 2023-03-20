@@ -2,17 +2,10 @@
 # @Time    : 2021/1/4
 # @Author  : Lart Pang
 # @GitHub  : https://github.com/lartpang
+from collections import OrderedDict
 
 import numpy as np
-from py_sod_metrics.sod_metrics import (
-    MAE,
-    Emeasure,
-    Fmeasure,
-    Smeasure,
-    WeightedFmeasure,
-)
-
-from metrics.extra_metrics import ExtraSegMeasure
+import py_sod_metrics
 
 
 def ndarray_to_basetype(data):
@@ -37,32 +30,136 @@ def ndarray_to_basetype(data):
     return results
 
 
-METRIC_MAPPING = {
-    "mae": MAE,
-    "fm": Fmeasure,
-    "em": Emeasure,
-    "sm": Smeasure,
-    "wfm": WeightedFmeasure,
-    "extra": ExtraSegMeasure,
+def round_w_zero_padding(x, bit_width):
+    x = str(round(x, bit_width))
+    x += "0" * (bit_width - len(x.split(".")[-1]))
+    return x
+
+
+INDIVADUAL_METRIC_MAPPING = {
+    "mae": py_sod_metrics.MAE,
+    # "fm": py_sod_metrics.Fmeasure,
+    "em": py_sod_metrics.Emeasure,
+    "sm": py_sod_metrics.Smeasure,
+    "wfm": py_sod_metrics.WeightedFmeasure,
 }
 
+BINARY_METRIC_MAPPING = {
+    # gray-scale
+    "fmeasure": {
+        "handler": py_sod_metrics.FmeasureHandler,
+        "kwargs": dict(with_dynamic=True, with_adaptive=True, beta=0.3),
+    },
+    "precision": {
+        "handler": py_sod_metrics.PrecisionHandler,
+        "kwargs": dict(with_dynamic=True, with_adaptive=False),
+    },
+    "recall": {
+        "handler": py_sod_metrics.RecallHandler,
+        "kwargs": dict(with_dynamic=True, with_adaptive=False),
+    },
+    "iou": {
+        "handler": py_sod_metrics.IOUHandler,
+        "kwargs": dict(with_dynamic=True, with_adaptive=True),
+    },
+    "dice": {
+        "handler": py_sod_metrics.DICEHandler,
+        "kwargs": dict(with_dynamic=True, with_adaptive=True),
+    },
+    "specificity": {
+        "handler": py_sod_metrics.SpecificityHandler,
+        "kwargs": dict(with_dynamic=True, with_adaptive=True),
+    },
+    "ber": {
+        "handler": py_sod_metrics.BERHandler,
+        "kwargs": dict(with_dynamic=True, with_adaptive=True),
+    },
+    # binary metrics average over the each sample
+    "bifmeasure": {
+        "handler": py_sod_metrics.FmeasureHandler,
+        "kwargs": dict(
+            with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=True, beta=1
+        ),
+    },
+    "biprecision": {
+        "handler": py_sod_metrics.PrecisionHandler,
+        "kwargs": dict(
+            with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=True
+        ),
+    },
+    "birecall": {
+        "handler": py_sod_metrics.RecallHandler,
+        "kwargs": dict(
+            with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=True
+        ),
+    },
+    "biiou": {
+        "handler": py_sod_metrics.IOUHandler,
+        "kwargs": dict(
+            with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=True
+        ),
+    },
+    "bidice": {
+        "handler": py_sod_metrics.DICEHandler,
+        "kwargs": dict(
+            with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=True
+        ),
+    },
+    "bispecificity": {
+        "handler": py_sod_metrics.SpecificityHandler,
+        "kwargs": dict(
+            with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=True
+        ),
+    },
+    "biber": {
+        "handler": py_sod_metrics.BERHandler,
+        "kwargs": dict(
+            with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=True
+        ),
+    },
+}
 
-class MetricRecorder_V2(object):
+GRAYSCALE_METRICS = ["em"] + [k for k in BINARY_METRIC_MAPPING.keys() if not k.startswith("bi")]
+
+SUPPORTED_METRICS = ["mae", "em", "sm", "wfm"] + sorted(BINARY_METRIC_MAPPING.keys())
+
+
+class GrayscaleMetricRecorder:
+    # 'fm' is replaced by 'fmeasure' in BINARY_METRIC_MAPPING
+    suppoted_metrics = ["mae", "em", "sm", "wfm"] + sorted(
+        [k for k in BINARY_METRIC_MAPPING.keys() if not k.startswith("bi")]
+    )
+
     def __init__(self, metric_names=None):
         """
         用于统计各种指标的类
         """
-        if metric_names is None:
-            metric_names = ("mae", "fm", "em", "sm", "wfm")
-        self.metric_objs = {}
-        for metric_name in metric_names:
-            self.metric_objs[metric_name] = METRIC_MAPPING[metric_name]()
+        if not metric_names:
+            metric_names = self.suppoted_metrics
+        assert all(
+            [m in self.suppoted_metrics for m in metric_names]
+        ), f"Only support: {self.suppoted_metrics}"
 
-    def update(self, pre: np.ndarray, gt: np.ndarray):
-        assert pre.shape == gt.shape
-        assert pre.dtype == np.uint8
-        assert gt.dtype == np.uint8
-        for m_name, m_obj in self.metric_objs.items():
+        self.metric_objs = {}
+        has_existed = False
+        for metric_name in metric_names:
+            if metric_name in INDIVADUAL_METRIC_MAPPING:
+                self.metric_objs[metric_name] = INDIVADUAL_METRIC_MAPPING[metric_name]()
+            else:  # metric_name in BINARY_METRIC_MAPPING
+                if not has_existed:  # only init once
+                    self.metric_objs["fmeasurev2"] = py_sod_metrics.FmeasureV2()
+                    has_existed = True
+                metric_handler = BINARY_METRIC_MAPPING[metric_name]
+                self.metric_objs["fmeasurev2"].add_handler(
+                    handler_name=metric_name,
+                    metric_handler=metric_handler["handler"](**metric_handler["kwargs"]),
+                )
+
+    def step(self, pre: np.ndarray, gt: np.ndarray, gt_path: str):
+        assert pre.shape == gt.shape, (pre.shape, gt.shape, gt_path)
+        assert pre.dtype == gt.dtype == np.uint8, (pre.dtype, gt.dtype, gt_path)
+
+        for m_obj in self.metric_objs.values():
             m_obj.step(pre, gt)
 
     def show(self, num_bits: int = 3, return_ndarray: bool = False) -> dict:
@@ -76,59 +173,31 @@ class MetricRecorder_V2(object):
         numerical_results = {}
         for m_name, m_obj in self.metric_objs.items():
             info = m_obj.get_results()
-            if m_name == "fm":
-                fm = info["fm"]
-                pr = info["pr"]
-                sequential_results.update(
-                    {
-                        "fm": np.flip(fm["curve"]),
-                        "p": np.flip(pr["p"]),
-                        "r": np.flip(pr["r"]),
-                    }
-                )
-                numerical_results.update(
-                    {"maxf": fm["curve"].max(), "avgf": fm["curve"].mean(), "adpf": fm["adp"]}
-                )
-            elif m_name == "wfm":
-                wfm = info["wfm"]
-                numerical_results["wfm"] = wfm
-            elif m_name == "sm":
-                sm = info["sm"]
-                numerical_results["sm"] = sm
-            elif m_name == "em":
-                em = info["em"]
-                sequential_results["em"] = np.flip(em["curve"])
-                numerical_results.update(
-                    {"maxe": em["curve"].max(), "avge": em["curve"].mean(), "adpe": em["adp"]}
-                )
-            elif m_name == "mae":
-                mae = info["mae"]
-                numerical_results["mae"] = mae
-            elif m_name == "extra":
-                pre = info["pre"]
-                sen = info["sen"]
-                spec = info["spec"]
-                fm_std = info["fm"]
-                dice = info["dice"]
-                iou = info["iou"]
-                numerical_results.update(
-                    {
-                        "maxpre": pre.max(),
-                        "avgpre": pre.mean(),
-                        "maxsen": sen.max(),
-                        "avgsen": sen.mean(),
-                        "maxspec": spec.max(),
-                        "avgspec": spec.mean(),
-                        "maxfm_std": fm_std.max(),
-                        "avgfm_std": fm_std.mean(),
-                        "maxdice": dice.max(),
-                        "avgdice": dice.mean(),
-                        "maxiou": iou.max(),
-                        "avgiou": iou.mean(),
-                    }
-                )
+            if m_name == "fmeasurev2":
+                for _name, results in info.items():
+                    dynamic_results = results.get("dynamic")
+                    adaptive_results = results.get("adaptive")
+                    if dynamic_results is not None:
+                        sequential_results[_name] = np.flip(dynamic_results)
+                        numerical_results[f"max{_name}"] = dynamic_results.max()
+                        numerical_results[f"avg{_name}"] = dynamic_results.mean()
+                    if adaptive_results is not None:
+                        numerical_results[f"adp{_name}"] = adaptive_results
             else:
-                raise NotImplementedError
+                results = info[m_name]
+                if m_name in ("wfm", "sm", "mae"):
+                    numerical_results[m_name] = results
+                elif m_name == "em":
+                    sequential_results[m_name] = np.flip(results["curve"])
+                    numerical_results.update(
+                        {
+                            "maxem": results["curve"].max(),
+                            "avgem": results["curve"].mean(),
+                            "adpem": results["adp"],
+                        }
+                    )
+                else:
+                    raise NotImplementedError(m_name)
 
         if num_bits is not None and isinstance(num_bits, int):
             numerical_results = {k: v.round(num_bits) for k, v in numerical_results.items()}
@@ -138,128 +207,153 @@ class MetricRecorder_V2(object):
         return {"sequential": sequential_results, "numerical": numerical_results}
 
 
-class MetricRecorder(object):
-    def __init__(self):
+class BinaryMetricRecorder:
+    suppoted_metrics = ["mae", "sm", "wfm"] + sorted(
+        [k for k in BINARY_METRIC_MAPPING.keys() if k.startswith("bi")]
+    )
+
+    def __init__(
+        self, metric_names=("bif1", "biprecision", "birecall", "biiou", "bioa", "bikappa")
+    ):
         """
         用于统计各种指标的类
         """
-        self.mae = MAE()
-        self.fm = Fmeasure()
-        self.sm = Smeasure()
-        self.em = Emeasure()
-        self.wfm = WeightedFmeasure()
+        if not metric_names:
+            metric_names = self.suppoted_metrics
+        assert all(
+            [m in self.suppoted_metrics for m in metric_names]
+        ), f"Only support: {self.suppoted_metrics}"
 
-    def update(self, pre: np.ndarray, gt: np.ndarray):
-        assert pre.shape == gt.shape
-        assert pre.dtype == np.uint8
-        assert gt.dtype == np.uint8
+        self.metric_objs = {}
+        has_existed = False
+        for metric_name in metric_names:
+            if metric_name in INDIVADUAL_METRIC_MAPPING:
+                self.metric_objs[metric_name] = INDIVADUAL_METRIC_MAPPING[metric_name]()
+            else:  # metric_name in BINARY_METRIC_MAPPING
+                if not has_existed:  # only init once
+                    self.metric_objs["fmeasurev2"] = py_sod_metrics.FmeasureV2()
+                    has_existed = True
+                metric_handler = BINARY_METRIC_MAPPING[metric_name]
+                self.metric_objs["fmeasurev2"].add_handler(
+                    handler_name=metric_name,
+                    metric_handler=metric_handler["handler"](**metric_handler["kwargs"]),
+                )
 
-        self.mae.step(pre, gt)
-        self.sm.step(pre, gt)
-        self.fm.step(pre, gt)
-        self.em.step(pre, gt)
-        self.wfm.step(pre, gt)
+    def step(self, pre: np.ndarray, gt: np.ndarray, gt_path: str):
+        assert pre.shape == gt.shape, (pre.shape, gt.shape, gt_path)
+        assert pre.dtype == gt.dtype == np.uint8, (pre.dtype, gt.dtype, gt_path)
+
+        for m_obj in self.metric_objs.values():
+            m_obj.step(pre, gt)
 
     def show(self, num_bits: int = 3, return_ndarray: bool = False) -> dict:
-        """
-        返回指标计算结果：
+        numerical_results = {}
+        for m_name, m_obj in self.metric_objs.items():
+            info = m_obj.get_results()
+            if m_name == "fmeasurev2":
+                for _name, results in info.items():
+                    binary_results = results.get("binary")
+                    if binary_results is not None:
+                        numerical_results[_name] = binary_results
+            else:
+                results = info[m_name]
+                if m_name in ("wfm", "sm", "mae"):
+                    numerical_results[m_name] = results
+                else:
+                    raise NotImplementedError(m_name)
 
-        - 曲线数据(sequential)： fm/em/p/r
-        - 数值指标(numerical)： SM/MAE/maxE/avgE/adpE/maxF/avgF/adpF/wFm
-        """
-        fm_info = self.fm.get_results()
-        fm = fm_info["fm"]
-        pr = fm_info["pr"]
-        wfm = self.wfm.get_results()["wfm"]
-        sm = self.sm.get_results()["sm"]
-        em = self.em.get_results()["em"]
-        mae = self.mae.get_results()["mae"]
-
-        sequential_results = {
-            "fm": np.flip(fm["curve"]),
-            "em": np.flip(em["curve"]),
-            "p": np.flip(pr["p"]),
-            "r": np.flip(pr["r"]),
-        }
-        numerical_results = {
-            "SM": sm,
-            "MAE": mae,
-            "maxE": em["curve"].max(),
-            "avgE": em["curve"].mean(),
-            "adpE": em["adp"],
-            "maxF": fm["curve"].max(),
-            "avgF": fm["curve"].mean(),
-            "adpF": fm["adp"],
-            "wFm": wfm,
-        }
         if num_bits is not None and isinstance(num_bits, int):
             numerical_results = {k: v.round(num_bits) for k, v in numerical_results.items()}
         if not return_ndarray:
-            sequential_results = ndarray_to_basetype(sequential_results)
             numerical_results = ndarray_to_basetype(numerical_results)
-        return {"sequential": sequential_results, "numerical": numerical_results}
+        return {"numerical": numerical_results}
 
 
-class GroupedMetricRecorder(object):
-    def __init__(self):
+class GroupedMetricRecorder:
+    def __init__(
+        self, group_names=None, metric_names=("sm", "wfm", "mae", "fmeasure", "em", "iou", "dice")
+    ):
+        self.group_names = group_names
+        self.metric_names = metric_names
+        self.zero()
+
+    def zero(self):
         self.metric_recorders = {}
-        # 这些指标会根据最终所有分组进行平均得到的曲线计算
-        self.re_cal_metrics = ["maxE", "avgE", "maxF", "avgF"]
+        if self.group_names is not None:
+            self.metric_recorders.update(
+                {
+                    n: GrayscaleMetricRecorder(metric_names=self.metric_names)
+                    for n in self.group_names
+                }
+            )
 
-    def update(self, group_name: str, pre: np.ndarray, gt: np.ndarray):
+    def step(self, group_name: str, pre: np.ndarray, gt: np.ndarray):
         if group_name not in self.metric_recorders:
-            self.metric_recorders[group_name] = MetricRecorder()
-        self.metric_recorders[group_name].update(pre, gt)
+            self.metric_recorders[group_name] = GrayscaleMetricRecorder(
+                metric_names=self.metric_names
+            )
+        self.metric_recorders[group_name].step(pre, gt)
 
-    def show(self, num_bits: int = 3, return_ndarray: bool = False) -> dict:
-        """
-        返回指标计算结果：
-
-        - 曲线数据(sequential)： fm/em/p/r
-        - 数值指标(numerical)： SM/MAE/maxE/avgE/adpE/maxF/avgF/adpF/wFm
-        """
-        group_metrics = {}
-        for k, v in self.metric_recorders.items():
-            group_metric = v.show(num_bits=None, return_ndarray=True)
-            group_metrics[k] = {
-                **group_metric["sequential"],
-                **{
-                    metric_name: metric_value
-                    for metric_name, metric_value in group_metric["numerical"].items()
-                    if metric_name not in self.re_cal_metrics
-                },
-            }
-        avg_results = self.average_group_metrics(group_metrics=group_metrics)
-
-        sequential_results = {
-            "fm": avg_results["fm"],
-            "em": avg_results["em"],
-            "p": avg_results["p"],
-            "r": avg_results["r"],
+    def show(self, num_bits: int = 3, return_group: bool = False):
+        groups_metrics = {
+            n: r.show(num_bits=None, return_ndarray=True) for n, r in self.metric_recorders.items()
         }
+
+        results = {}
+        for group_metrics in groups_metrics.values():
+            for (
+                metric_group_name,
+                metric_group,
+            ) in group_metrics.items():  # sequential and numerical
+                for metric_name, metric_array in metric_group.items():
+                    results.setdefault(metric_group_name, {}).setdefault(metric_name, []).append(
+                        metric_array
+                    )
+
+        numerical_results = {}
+        sequential_results = {}
+        for metric_group_name, metric_group in results.items():
+            for metric_name, metric_array in metric_group.items():
+                metric_array = np.mean(np.vstack(metric_array), axis=0)  # average over all groups
+
+                if metric_name in BINARY_METRIC_MAPPING or metric_name == "em":
+                    if metric_group_name == "sequential":
+                        numerical_results[f"max{metric_name}"] = metric_array.max()
+                        numerical_results[f"avg{metric_name}"] = metric_array.mean()
+                        sequential_results[metric_name] = metric_array
+                else:
+                    if metric_group_name == "numerical":
+                        if metric_name.startswith(("max", "avg")):
+                            # these metrics (maxfm, avgfm, maxem, avgem) will be recomputed within the group
+                            continue
+                        numerical_results[metric_name] = metric_array
+
+        numerical_results = ndarray_to_basetype(numerical_results)
         numerical_results = {
-            "SM": avg_results["SM"],
-            "MAE": avg_results["MAE"],
-            "maxE": avg_results["em"].max(),
-            "avgE": avg_results["em"].mean(),
-            "adpE": avg_results["adpE"],
-            "maxF": avg_results["fm"].max(),
-            "avgF": avg_results["fm"].mean(),
-            "adpF": avg_results["adpF"],
-            "wFm": avg_results["wFm"],
+            name: round_w_zero_padding(metric, bit_width=num_bits)
+            for name, metric in numerical_results.items()
         }
-        if num_bits is not None and isinstance(num_bits, int):
-            numerical_results = {k: v.round(num_bits) for k, v in numerical_results.items()}
-        if not return_ndarray:
-            sequential_results = ndarray_to_basetype(sequential_results)
-            numerical_results = ndarray_to_basetype(numerical_results)
+        numerical_results = self.sort_results(numerical_results)
+
+        sequential_results = ndarray_to_basetype(sequential_results)
+
+        if return_group:
+            group_numerical_results = {}
+            for group_name, group_metric in groups_metrics.items():
+                group_metric = {k: v.round(num_bits) for k, v in group_metric["numerical"].items()}
+                group_metric = ndarray_to_basetype(group_metric)
+                group_numerical_results[group_name] = self.sort_results(group_metric)
+
+            return {"sequential": sequential_results, "numerical": group_numerical_results}
         return {"sequential": sequential_results, "numerical": numerical_results}
 
-    @staticmethod
-    def average_group_metrics(group_metrics: dict) -> dict:
-        recorder = defaultdict(list)
-        for group_name, metrics in group_metrics.items():
-            for metric_name, metric_array in metrics.items():
-                recorder[metric_name].append(metric_array)
-        results = {k: np.mean(np.vstack(v), axis=0) for k, v in recorder.items()}
-        return results
+    def sort_results(self, results: dict) -> OrderedDict:
+        """for a single group of metrics"""
+        sorted_results = OrderedDict()
+        a = "abcd"
+        all_keys = sorted(results.keys(), key=lambda item: item[::-1])
+        for name in self.metric_names:
+            for key in all_keys:
+                if key.endswith(name):
+                    sorted_results[key] = results[key]
+        return sorted_results
