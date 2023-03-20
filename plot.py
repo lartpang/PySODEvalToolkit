@@ -73,7 +73,7 @@ def get_args():
     parser.add_argument(
         "--mode",
         type=str,
-        choices=["pr", "fm"],
+        choices=["pr", "fm", "em"],
         default="pr",
         help="Mode for plotting. Default: pr",
     )
@@ -96,7 +96,7 @@ def main(args):
         dataset_aliases = aliases.get("dataset")
 
     draw_curves.draw_curves(
-        for_pr=args.mode == "pr",
+        mode=args.mode,
         # 不同曲线的绘图配置
         axes_setting={
             # pr曲线的配置
@@ -112,6 +112,13 @@ def main(args):
                 "y_label": r"F$_{\beta}$",
                 "x_ticks": np.linspace(0, 1, 6),
                 "y_ticks": np.linspace(0.6, 1, 6),
+            },
+            # em曲线的配置
+            "em": {
+                "x_label": "Threshold",
+                "y_label": r"E$_{m}$",
+                "x_ticks": np.linspace(0, 1, 6),
+                "y_ticks": np.linspace(0.7, 1, 6),
             },
         },
         curves_npy_path=args.curves_npys,

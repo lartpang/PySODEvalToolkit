@@ -176,7 +176,7 @@ A Python-based image binary segmentation evaluation toolbox.
 
 ### 为灰度图像的评估绘制曲线
 
-可以使用 `plot.py` 来读取 `.npy` 文件按需对指定方法和数据集的结果整理并绘制 `PR` 曲线和 `Fm` 曲线. 该脚本用法可见 `python plot.py --help` 的输出. 按照自己需求添加配置项并执行即可.
+可以使用 `plot.py` 来读取 `.npy` 文件按需对指定方法和数据集的结果整理并绘制 `PR` , `F-measure` 和 `E-measure` 曲线. 该脚本用法可见 `python plot.py --help` 的输出. 按照自己需求添加配置项并执行即可.
 
 最基本的一条是请按照子图数量, 合理地指定配置文件中的 `figure.figsize` 项的数值.
 
@@ -222,6 +222,20 @@ python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-n
 # --save-name 图像保存路径，只需写出名字，代码会加上由前面指定的 --style-cfg 中的 `savefig.format` 项指定的格式后缀名
 python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-npys output/rgb_sod/curves.npy --our-methods MINet_R50_2020 --num-col-legend 1 --mode pr --separated-legend --sharey --save-name output/rgb_sod/complex_curve_pr
 ```
+
+## 绘图示例
+
+**Precision-Recall Curve**:
+
+![PRCurves](https://user-images.githubusercontent.com/26847524/227249768-a41ef076-6355-4b96-a291-fc0e071d9d35.jpg)
+
+**F-measure Curve**:
+
+![fm-curves](https://user-images.githubusercontent.com/26847524/227249746-f61d7540-bb73-464d-bccf-9a36323dec47.jpg)
+
+**E-measure Curve**:
+
+![em-curves](https://user-images.githubusercontent.com/26847524/227249727-8323d5cf-ddd7-427b-8152-b8f47781c4e3.jpg)
 
 ## 相关文献
 
@@ -282,6 +296,10 @@ python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-n
 
 ## 更新日志
 
+* 2023年3月23日
+    1. 修复绘图代码中的一些问题。
+    2. 完善对于 E-measure 绘图的支持。
+    3. 补充一些绘图的展示，这里以我自己的 RGB-D SOD 论文 CAVER (TIP 2023) 的论文结果为例。
 * 2023年3月20日
     1. 提供更丰富的指标的支持。
     2. 更新`readme.md`和示例文件。

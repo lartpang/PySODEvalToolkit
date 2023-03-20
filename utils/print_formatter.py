@@ -90,7 +90,9 @@ def formatter_for_tabulate(
         table = []
         headers = ["methods"]
         for method_name in method_names:
-            metric_info = dataset_metrics[method_name]
+            metric_info = dataset_metrics.get(method_name)
+            if metric_info is None:
+                continue
 
             if method_name_length:
                 method_name = clip_string(method_name, max_length=method_name_length, mode="left")

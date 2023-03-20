@@ -9,7 +9,7 @@ from utils.recorders import CurveDrawer
 
 
 def draw_curves(
-    for_pr: bool = True,
+    mode: str,
     axes_setting: dict = None,
     curves_npy_path: list = None,
     row_num: int = 1,
@@ -20,14 +20,13 @@ def draw_curves(
     ncol_of_legend: int = 1,
     separated_legend: bool = False,
     sharey: bool = False,
-    line_styles=("-", "--"),
     line_width=3,
     save_name=None,
 ):
     """A better curve painter!
 
     Args:
-        for_pr (bool, optional): Plot for PR curves or FM curves. Defaults to True.
+        mode (str): `pr` for PR curves, `fm` for F-measure curves, and `em' for E-measure curves.
         axes_setting (dict, optional): Setting for axes. Defaults to None.
         curves_npy_path (list, optional): Paths of curve npy files. Defaults to None.
         row_num (int, optional): Number of rows. Defaults to 1.
@@ -38,11 +37,10 @@ def draw_curves(
         ncol_of_legend (int, optional): Number of columns for the legend. Defaults to 1.
         separated_legend (bool, optional): Use the separated legend. Defaults to False.
         sharey (bool, optional): Use a shared y-axis. Defaults to False.
-        line_styles (tuple, optional): Styles of lines. Defaults to ("-", "--").
         line_width (int, optional): Width of lines. Defaults to 3.
         save_name (str, optional): Name or path (without the extension format). Defaults to None.
     """
-    mode = "pr" if for_pr else "fm"
+    assert mode in ["pr", "fm", "em"]
     save_name = save_name or mode
     mode_axes_setting = axes_setting[mode]
 
@@ -97,8 +95,9 @@ def draw_curves(
         # assert len(our_methods) <= len(line_styles)
     else:
         our_methods = []
+    num_our_methods = len(our_methods)
 
-    # Give each method a unique color.
+    # Give each method a unique color and style.
     color_table = sorted(
         [
             color
@@ -106,14 +105,26 @@ def draw_curves(
             if name not in ["red", "white"] or not name.startswith("light") or "gray" in name
         ]
     )
+    style_table = ["-", "--", "-.", ":", "."]
+
     unique_method_settings = OrderedDict()
     for i, method_name in enumerate(target_unique_method_names):
+        if i < num_our_methods:
+            line_color = "red"
+            line_style = style_table[i % len(style_table)]
+        else:
+            other_idx = i - num_our_methods
+            line_color = color_table[other_idx]
+            line_style = style_table[other_idx % 2]
+
         unique_method_settings[method_name] = {
-            "line_color": "red" if i < len(our_methods) else color_table[i],
+            "line_color": line_color,
             "line_label": method_aliases.get(method_name, method_name),
-            "line_style": line_styles[i % len(line_styles)],
+            "line_style": line_style,
             "line_width": line_width,
         }
+    # ensure that our methods are drawn last to avoid being overwritten by other methods
+    target_unique_method_names.reverse()
 
     curve_drawer = CurveDrawer(
         row_num=row_num,
@@ -135,9 +146,13 @@ def draw_curves(
             y_ticks=y_ticks,
         )
 
-        for method_name, method_setting in unique_method_settings.items():
+        for method_name in target_unique_method_names:
+            method_setting = unique_method_settings[method_name]
+
             if method_name not in dataset_results:
-                raise KeyError(f"{method_name} not in {sorted(dataset_results.keys())}")
+                print(f"{method_name} will be skipped for {dataset_name}!")
+                continue
+
             method_results = dataset_results[method_name]
             if mode == "pr":
                 y_data = method_results.get("p")

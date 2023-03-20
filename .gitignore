@@ -282,3 +282,4 @@ gen
 /*.sh
 /results/rgb_sod.md
 /results/htmls/*.html
+!/.github/assets/*.jpg
