@@ -38,9 +38,9 @@ A Python-based image binary segmentation evaluation toolbox.
     - maximum/average/adaptive Dice
     - maximum/average/adaptive Specificity
     - maximum/average/adaptive BER
-    - Fmeasure-Threshold Curve
-    - Emeasure-Threshold Curve
-    - Precision-Recall Curve
+    - Fmeasure-Threshold Curve (执行 `eval.py` 请指定指标 `fmeasure`)
+    - Emeasure-Threshold Curve (执行 `eval.py` 请指定指标 `em`)
+    - Precision-Recall Curve (执行 `eval.py` 请指定指标 `precision` 和 `recall`，这一点不同于以前的版本，因为 `precision` 和 `recall` 的计算被从 `fmeasure` 中独立出来了)
   + 支持评估*二值图像*, 例如常见的二值分割任务.
     - binary Fmeasure
     - binary Precision
@@ -195,10 +195,10 @@ python tools/check_path.py --method-jsons configs/methods/rgb-sod/rgb_sod_method
 # --curves-npy 输出曲线数据到 output/rgb_sod/curves.npy
 # --record-txt 输出评估结果文本到 output/rgb_sod/results.txt
 # --record-xlsx 输出评估结果到excel文档 output/rgb_sod/results.xlsx
-# --metric-names 所有结果仅包含给定指标的信息
+# --metric-names 所有结果仅包含给定指标的信息, 涉及到曲线的四个指标分别为 fmeasure em precision recall
 # --include-methods 评估过程仅包含 configs/methods/rgb-sod/rgb_sod_methods.json 中的给定方法
 # --include-datasets 评估过程仅包含 configs/datasets/rgb_sod.json 中的给定数据集
-python eval.py --dataset-json configs/datasets/rgb_sod.json --method-json configs/methods/rgb-sod/rgb_sod_methods.json --metric-npy output/rgb_sod/metrics.npy --curves-npy output/rgb_sod/curves.npy --record-txt output/rgb_sod/results.txt --record-xlsx output/rgb_sod/results.xlsx --metric-names sm wfm mae fmeasure em --include-methods MINet_R50_2020 GateNet_2020 --include-datasets PASCAL-S ECSSD
+python eval.py --dataset-json configs/datasets/rgb_sod.json --method-json configs/methods/rgb-sod/rgb_sod_methods.json --metric-npy output/rgb_sod/metrics.npy --curves-npy output/rgb_sod/curves.npy --record-txt output/rgb_sod/results.txt --record-xlsx output/rgb_sod/results.xlsx --metric-names sm wfm mae fmeasure em precision recall --include-methods MINet_R50_2020 GateNet_2020 --include-datasets PASCAL-S ECSSD
 
 # 得到曲线数据文件，即这里的 output/rgb_sod/curves.npy 文件后，就可以开始绘制图像了
 
