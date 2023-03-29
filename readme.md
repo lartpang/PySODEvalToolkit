@@ -208,7 +208,8 @@ python eval.py --dataset-json configs/datasets/rgb_sod.json --method-json config
 # --curves-npys 将使用曲线数据文件 output/rgb_sod/curves.npy 来绘图
 # --mode pr: 绘制是pr曲线；fm: 绘制的是fm曲线
 # --save-name 图像保存路径，只需写出名字，代码会加上由前面指定的 --style-cfg 中的 `savefig.format` 项指定的格式后缀名
-python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-npys output/rgb_sod/curves.npy --mode pr --save-name output/rgb_sod/simple_curve_pr
+# --alias-yaml: 使用 yaml 文件指定绘图中使用的方法别名和数据集别名
+python plot.py --style-cfg examples/single_row_style.yml --num-rows 1 --curves-npys output/rgb_sod/curves.npy --mode pr --save-name output/rgb_sod/simple_curve_pr --alias-yaml configs/rgb_aliases.yaml
 
 # 复杂的例子，下面指令执行后，结果保存为 output/rgb_sod/complex_curve_pr.pdf
 # --style-cfg 使用图像风格配置文件 examples/single_row_style.yml，这里子图较少，直接使用单行的配置

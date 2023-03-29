@@ -64,7 +64,7 @@ def draw_curves(
     dataset_names_from_npy = list(curves.keys())
 
     if dataset_aliases is None:
-        dataset_aliases = {k: k for k in dataset_names_from_npy}
+        dataset_aliases = OrderedDict({k: k for k in dataset_names_from_npy})
     else:
         for x in dataset_aliases.keys():
             if x not in dataset_names_from_npy:
