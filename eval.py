@@ -119,10 +119,14 @@ def get_args():
     )
     args = parser.parse_args()
 
-    os.makedirs(os.path.dirname(args.metric_npy), exist_ok=True)
-    os.makedirs(os.path.dirname(args.curves_npy), exist_ok=True)
-    os.makedirs(os.path.dirname(args.record_txt), exist_ok=True)
-    os.makedirs(os.path.dirname(args.record_xlsx), exist_ok=True)
+    if args.metric_npy:
+        os.makedirs(os.path.dirname(args.metric_npy), exist_ok=True)
+    if args.curves_npy:
+        os.makedirs(os.path.dirname(args.curves_npy), exist_ok=True)
+    if args.record_txt:
+        os.makedirs(os.path.dirname(args.record_txt), exist_ok=True)
+    if args.record_xlsx:
+        os.makedirs(os.path.dirname(args.record_xlsx), exist_ok=True)
     if args.to_overwrite and not args.record_txt:
         warnings.warn("--to-overwrite only works with a valid --record-txt")
     return args

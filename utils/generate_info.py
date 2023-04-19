@@ -68,6 +68,9 @@ def get_valid_elements(source: list, include_elements: list, exclude_elements: l
             if element not in exclude_elements:
                 targeted_elements.append(element)
 
+    elif not include_elements and not exclude_elements:
+        targeted_elements = source
+
     else:
         raise ValueError(
             f"include_elements: {include_elements}\nexclude_elements: {exclude_elements}"
