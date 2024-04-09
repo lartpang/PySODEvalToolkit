@@ -45,70 +45,28 @@ INDIVADUAL_METRIC_MAPPING = {
     "msiou": py_sod_metrics.MSIoU,
 }
 
+# fmt: off
+gray_metric_kwargs = dict(with_dynamic=True, with_adaptive=True, with_binary=False, sample_based=True)
+binary_metric_kwargs = dict(with_dynamic=False, with_adaptive=False, with_binary=True, sample_based=False)
 BINARY_METRIC_MAPPING = {
-    "fmeasure": {
-        "handler": py_sod_metrics.FmeasureHandler,
-        "kwargs": dict(with_dynamic=True, with_adaptive=True, with_binary=False, beta=0.3),
-    },
-    "f1": {
-        "handler": py_sod_metrics.FmeasureHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=True, with_binary=False, beta=1),
-    },
-    "precision": {
-        "handler": py_sod_metrics.PrecisionHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=True, with_binary=False),
-    },
-    "recall": {
-        "handler": py_sod_metrics.RecallHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=True, with_binary=False),
-    },
-    "iou": {
-        "handler": py_sod_metrics.IOUHandler,
-        "kwargs": dict(with_dynamic=True, with_adaptive=True, with_binary=False),
-    },
-    "dice": {
-        "handler": py_sod_metrics.DICEHandler,
-        "kwargs": dict(with_dynamic=True, with_adaptive=False, with_binary=False),
-    },
-    "specificity": {
-        "handler": py_sod_metrics.SpecificityHandler,
-        "kwargs": dict(with_dynamic=True, with_adaptive=False, with_binary=False),
-    },
-    "bif1": {
-        "handler": py_sod_metrics.FmeasureHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=False, with_binary=True,
-                       sample_based=False, beta=1),
-    },
-    "biprecision": {
-        "handler": py_sod_metrics.PrecisionHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=False, with_binary=True,
-                       sample_based=False),
-    },
-    "birecall": {
-        "handler": py_sod_metrics.RecallHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=False, with_binary=True,
-                       sample_based=False),
-    },
-    "biiou": {
-        "handler": py_sod_metrics.IOUHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=False, with_binary=True,
-                       sample_based=False),
-    },
-    "bioa": {
-        "handler": py_sod_metrics.OverallAccuracyHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=False, with_binary=True,
-                       sample_based=False),
-    },
-    "bikappa": {
-        "handler": py_sod_metrics.KappaHandler,
-        "kwargs": dict(with_dynamic=False, with_adaptive=False, with_binary=True,
-                       sample_based=False),
-    },
+    "fmeasure": {"handler": py_sod_metrics.FmeasureHandler, "kwargs": dict(**gray_metric_kwargs, beta=0.3)},
+    "f1": {"handler": py_sod_metrics.FmeasureHandler, "kwargs": dict(**gray_metric_kwargs, beta=1)},
+    "precision": {"handler": py_sod_metrics.PrecisionHandler, "kwargs": gray_metric_kwargs},
+    "recall": {"handler": py_sod_metrics.RecallHandler, "kwargs": gray_metric_kwargs},
+    "iou": {"handler": py_sod_metrics.IOUHandler, "kwargs": gray_metric_kwargs},
+    "dice": {"handler": py_sod_metrics.DICEHandler, "kwargs": gray_metric_kwargs},
+    "specificity": {"handler": py_sod_metrics.SpecificityHandler, "kwargs": gray_metric_kwargs},
+     #
+    "bif1": {"handler": py_sod_metrics.FmeasureHandler, "kwargs": dict(binary_metric_kwargs, beta=1)},
+    "biprecision": {"handler": py_sod_metrics.PrecisionHandler, "kwargs": binary_metric_kwargs},
+    "birecall": {"handler": py_sod_metrics.RecallHandler, "kwargs": binary_metric_kwargs},
+    "biiou": {"handler": py_sod_metrics.IOUHandler, "kwargs": binary_metric_kwargs},
+    "bioa": {"handler": py_sod_metrics.OverallAccuracyHandler, "kwargs": binary_metric_kwargs},
+    "bikappa": {"handler": py_sod_metrics.KappaHandler, "kwargs": binary_metric_kwargs},
 }
-
 GRAYSCALE_METRICS = ["em"] + [k for k in BINARY_METRIC_MAPPING.keys() if not k.startswith("bi")]
-
 SUPPORTED_METRICS = ["mae", "em", "sm", "wfm", "msiou"] + sorted(BINARY_METRIC_MAPPING.keys())
+# fmt: off
 
 
 class GrayscaleMetricRecorder:
@@ -203,8 +161,9 @@ class BinaryMetricRecorder:
         """
         if not metric_names:
             metric_names = self.suppoted_metrics
-        assert all([m in self.suppoted_metrics for m in
-                    metric_names]), f"Only support: {self.suppoted_metrics}"
+        assert all(
+            [m in self.suppoted_metrics for m in metric_names]
+        ), f"Only support: {self.suppoted_metrics}"
 
         self.metric_objs = {"fmeasurev2": py_sod_metrics.FmeasureV2()}
         for metric_name in metric_names:
