@@ -280,6 +280,8 @@ gen
 /configs/
 # /*.py
 /*.sh
+/*.ps1
+/*.bat
 /results/rgb_sod.md
 /results/htmls/*.html
 !/.github/assets/*.jpg

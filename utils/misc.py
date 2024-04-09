@@ -82,8 +82,9 @@ def get_name_with_group_list(
     data_path: str,
     name_prefix: str = "",
     name_suffix: str = "",
-    start_idx: int = 1,
-    end_idx: int = -1,
+    start_idx: int = 0,
+    end_idx: int = None,
+    sep: str = "<sep>",
 ):
     """get file names with the group name
 
@@ -91,8 +92,9 @@ def get_name_with_group_list(
         data_path (str): The path of data.
         name_prefix (str, optional): The prefix of the file name. Defaults to "".
         name_suffix (str, optional): The suffix of the file name. Defaults to "".
-        start_idx (int, optional): The index of the first frame in each group. Defaults to 1, it will skip the first frame.
-        end_idx (int, optional): The index of the last frame in each group. Defaults to -1, it will skip the last frame.
+        start_idx (int, optional): The index of the first frame in each group. Defaults to 0, it will not skip any frames.
+        end_idx (int, optional): The index of the last frame in each group. Defaults to None, it will not skip any frames.
+        sep (str, optional): The returned name is a string containing group_name and file_name separated by `sep`.
 
     Raises:
         NotImplementedError: Undefined.
@@ -121,7 +123,7 @@ def get_name_with_group_list(
                 )
 
                 for file_name in file_names[start_idx:end_idx]:
-                    name_list.append(f"{group_name}/{file_name}")
+                    name_list.append(f"{group_name}{sep}{file_name}")
 
         else:  # for CoSOD
             group_names = os.listdir(data_path)
@@ -139,7 +141,7 @@ def get_name_with_group_list(
                 )
 
                 for file_name in file_names[start_idx:end_idx]:
-                    name_list.append(f"{group_name}/{file_name}")
+                    name_list.append(f"{group_name}{sep}{file_name}")
     name_list = sorted(set(name_list))  # 去重
     return name_list
 
@@ -221,8 +223,9 @@ def get_gt_pre_with_name_and_group(
     pre_suffix: str = "",
     to_normalize: bool = False,
     interpolation: int = cv2.INTER_CUBIC,
+    sep: str = "<sep>",
 ):
-    group_name, file_name = img_name.split("/")
+    group_name, file_name = img_name.split(sep)
     if "*" in gt_root:
         gt_root = gt_root.replace("*", group_name)
     else:

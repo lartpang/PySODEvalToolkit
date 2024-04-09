@@ -9,15 +9,13 @@ from threading import RLock as TRLock
 import numpy as np
 from tqdm import tqdm
 
-from utils.misc import (
-    get_gt_pre_with_name_and_group,
-    get_name_with_group_list,
-    make_dir,
-)
+from utils.misc import get_gt_pre_with_name, get_name_list, make_dir
 from utils.print_formatter import formatter_for_tabulate
 from utils.recorders import (
+    BINARY_METRIC_MAPPING,
     GRAYSCALE_METRICS,
-    GroupedMetricRecorder,
+    BinaryMetricRecorder,
+    GrayscaleMetricRecorder,
     MetricExcelRecorder,
     TxtRecorder,
 )
@@ -103,7 +101,7 @@ class Recorder:
                     )
 
 
-def cal_video_matrics(
+def cal_metrics(
     sheet_name: str = "results",
     txt_path: str = "",
     to_append: bool = True,
@@ -114,11 +112,7 @@ def cal_video_matrics(
     metrics_npy_path: str = "./metrics.npy",
     num_bits: int = 3,
     num_workers: int = 2,
-    ncols_tqdm: int = 79,
-    metric_names: tuple = ("sm", "wfm", "mae", "avgdice", "avgiou", "adpe", "avge", "maxe"),
-    return_group: bool = False,
-    start_idx: int = 1,
-    end_idx: int = -1,
+    metric_names: tuple = ("sm", "wfm", "mae", "fmeasure", "em"),
 ):
     """Save the results of all models on different datasets in a `npy` file in the form of a
     dictionary.
@@ -134,11 +128,7 @@ def cal_video_matrics(
         metrics_npy_path (str, optional): The npy file path for saving metric values. Defaults to "./metrics.npy".
         num_bits (int, optional): The number of bits used to format results. Defaults to 3.
         num_workers (int, optional): The number of workers of multiprocessing or multithreading. Defaults to 2.
-        ncols_tqdm (int, optional): Number of columns for tqdm. Defaults to 79.
-        metric_names (tuple, optional): Names of metrics. Defaults to ("sm", "wfm", "em", "mae", "dice", "iou").
-        return_group (bool, optional): Whether to return the grouped results. Defaults to False.
-        start_idx (int, optional): The index of the first frame in each gt sequence. Defaults to 1, it will skip the first frame. If it is set to None, the code will not skip frames.
-        end_idx (int, optional): The index of the last frame in each gt sequence. Defaults to -1, it will skip the last frame. If it is set to None, the code will not skip frames.
+        metric_names (tuple, optional): Names of metrics. Defaults to ("sm", "wfm", "mae", "fmeasure", "em").
 
     Returns:
         {
@@ -156,7 +146,12 @@ def cal_video_matrics(
         }
 
     """
-    metric_class = GroupedMetricRecorder
+    if all([x in BinaryMetricRecorder.suppoted_metrics for x in metric_names]):
+        metric_class = BinaryMetricRecorder
+    elif all([x in GrayscaleMetricRecorder.suppoted_metrics for x in metric_names]):
+        metric_class = GrayscaleMetricRecorder
+    else:
+        raise ValueError(metric_names)
 
     method_names = tuple(methods_info.keys())
     dataset_names = tuple(datasets_info.keys())
@@ -171,11 +166,11 @@ def cal_video_matrics(
     )
 
     tqdm.set_lock(TRLock())
-    pool_cls = pool.ThreadPool
-    procs = pool_cls(processes=num_workers, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),))
+    procs = pool.ThreadPool(
+        processes=num_workers, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)
+    )
     print(f"Create a {procs}).")
 
-    procs_idx = 0
     for dataset_name, dataset_path in datasets_info.items():
         # 获取真值图片信息
         gt_info = dataset_path["mask"]
@@ -185,19 +180,14 @@ def cal_video_matrics(
         # 真值名字列表
         gt_index_file = dataset_path.get("index_file")
         if gt_index_file:
-            gt_name_list = get_name_with_group_list(
-                data_path=gt_index_file,
-                name_prefix=gt_prefix,
-                name_suffix=gt_suffix,
+            gt_name_list = get_name_list(
+                data_path=gt_index_file, name_prefix=gt_prefix, name_suffix=gt_suffix
             )
         else:
-            gt_name_list = get_name_with_group_list(
-                data_path=gt_root,
-                name_prefix=gt_prefix,
-                name_suffix=gt_suffix,
-                start_idx=start_idx,
-                end_idx=end_idx,
+            gt_name_list = get_name_list(
+                data_path=gt_root, name_prefix=gt_prefix, name_suffix=gt_suffix
             )
+        gt_info_pair = (gt_root, gt_prefix, gt_suffix)
         assert len(gt_name_list) > 0, "there is not ground truth."
 
         # ==>> test the intersection between pre and gt for each method <<==
@@ -212,37 +202,31 @@ def cal_video_matrics(
             pre_prefix = method_dataset_info.get("prefix", "")
             pre_suffix = method_dataset_info["suffix"]
             pre_root = method_dataset_info["path"]
-            pre_name_list = get_name_with_group_list(
+            pre_name_list = get_name_list(
                 data_path=pre_root, name_prefix=pre_prefix, name_suffix=pre_suffix
             )
+            pre_info_pair = (pre_root, pre_prefix, pre_suffix)
 
             # get the intersection
-            eval_name_list = sorted(list(set(gt_name_list).intersection(pre_name_list)))
+            eval_name_list = sorted(set(gt_name_list).intersection(pre_name_list))
             if len(eval_name_list) == 0:
                 tqdm.write(f"{method_name} does not have results on {dataset_name}")
                 continue
 
+            desc = f"[{dataset_name}({len(gt_name_list)}):{method_name}({len(pre_name_list)})]"
             kwargs = dict(
                 names=eval_name_list,
                 num_bits=num_bits,
-                pre_root=pre_root,
-                pre_prefix=pre_prefix,
-                pre_suffix=pre_suffix,
-                gt_root=gt_root,
-                gt_prefix=gt_prefix,
-                gt_suffix=gt_suffix,
-                desc=f"[{dataset_name}({len(gt_name_list)}):{method_name}({len(pre_name_list)})]",
-                proc_idx=procs_idx,
+                pre_info_pair=pre_info_pair,
+                gt_info_pair=gt_info_pair,
                 metric_names=metric_names,
-                ncols_tqdm=ncols_tqdm,
                 metric_class=metric_class,
-                return_group=return_group,
+                desc=desc,
             )
             callback = partial(recorder.record, dataset_name=dataset_name, method_name=method_name)
             procs.apply_async(func=evaluate, kwds=kwargs, callback=callback)
-            # for debugging
+            # print(" -------------------- [DEBUG] -------------------- ")
             # callback(evaluate(**kwargs), dataset_name=dataset_name, method_name=method_name)
-            procs_idx += 1
     procs.close()
     procs.join()
 
@@ -259,43 +243,22 @@ def cal_video_matrics(
     tqdm.write(f"All methods have been evaluated:\n{formatted_string}")
 
 
-def evaluate(
-    names,
-    num_bits,
-    gt_root,
-    gt_prefix,
-    gt_suffix,
-    pre_root,
-    pre_prefix,
-    pre_suffix,
-    metric_class,
-    desc="",
-    proc_idx=None,
-    metric_names=None,
-    ncols_tqdm=79,
-    return_group=False,
-):
-    group_names = sorted(set([n.split(os.sep)[0] for n in names]))
-    metric_recoder = metric_class(group_names=group_names, metric_names=metric_names)
+def evaluate(names, num_bits, pre_info_pair, gt_info_pair, metric_class, metric_names, desc=""):
+    metric_recoder = metric_class(metric_names=metric_names)
     # https://github.com/tqdm/tqdm#parameters
     # https://github.com/tqdm/tqdm/blob/master/examples/parallel_bars.py
-    tqdm_bar = tqdm(
-        names, total=len(names), desc=desc, position=proc_idx, ncols=ncols_tqdm, lock_args=(False,)
-    )
-    for name in tqdm_bar:
-        group_name = name.split("/")[0]
-        gt, pre = get_gt_pre_with_name_and_group(
+    for name in tqdm(names, total=len(names), desc=desc, ncols=79, lock_args=(False,)):
+        gt, pre = get_gt_pre_with_name(
             img_name=name,
-            pre_root=pre_root,
-            pre_prefix=pre_prefix,
-            pre_suffix=pre_suffix,
-            gt_root=gt_root,
-            gt_prefix=gt_prefix,
-            gt_suffix=gt_suffix,
+            pre_root=pre_info_pair[0],
+            pre_prefix=pre_info_pair[1],
+            pre_suffix=pre_info_pair[2],
+            gt_root=gt_info_pair[0],
+            gt_prefix=gt_info_pair[1],
+            gt_suffix=gt_info_pair[2],
             to_normalize=False,
         )
-        metric_recoder.step(pre=pre, gt=gt, gt_path=os.path.join(gt_root, name))
+        metric_recoder.step(pre=pre, gt=gt, gt_path=os.path.join(gt_info_pair[0], name))
 
-    # TODO: 打印的形式有待进一步完善
-    method_results = metric_recoder.show(num_bits=num_bits, return_group=return_group)
+    method_results = metric_recoder.show(num_bits=num_bits, return_ndarray=False)
     return method_results

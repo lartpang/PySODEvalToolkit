@@ -4,7 +4,7 @@ import os
 import textwrap
 import warnings
 
-from metrics import cal_sod_matrics
+from metrics import image_metrics, video_metrics
 from utils.generate_info import get_datasets_info, get_methods_info
 from utils.recorders import SUPPORTED_METRICS
 
@@ -39,7 +39,7 @@ def get_args():
 
     EXAMPLES:
 
-    python eval_image.py \
+    python eval.py \
         --dataset-json configs/datasets/rgbd_sod.json \
         --method-json \
             configs/methods/json/rgbd_other_methods.json \
@@ -113,11 +113,40 @@ def get_args():
         "--metric-names",
         type=str,
         nargs="+",
-        default=["mae", "fmeasure", "precision", "recall", "em", "sm", "wfm"],
+        default=["sm", "wfm", "mae", "fmeasure", "em", "precision", "recall", "msiou"],
         choices=SUPPORTED_METRICS,
         help="Names of metrics",
     )
+    parser.add_argument(
+        "--data-type",
+        type=str,
+        default="image",
+        choices=["image", "video"],
+        help="Type of data.",
+    )
+
+    known_args = parser.parse_known_args()[0]
+    if known_args.data_type == "video":
+        parser.add_argument(
+            "--valid-frame-start",
+            type=int,
+            default=0,
+            help="Valid start index of the frame in each gt video. Defaults to 1, it will skip the first frame. If it is set to None, the code will not skip frames.",
+        )
+        parser.add_argument(
+            "--valid-frame-end",
+            type=int,
+            default=0,
+            help="Valid end index of the frame in each gt video. Defaults to -1, it will skip the last frame. If it is set to 0, the code will not skip frames.",
+        )
+
     args = parser.parse_args()
+
+    if args.data_type == "video":
+        args.valid_frame_start = max(args.valid_frame_start, 0)
+        args.valid_frame_end = min(args.valid_frame_end, 0)
+        if args.valid_frame_end == 0:
+            args.valid_frame_end = None
 
     if args.metric_npy:
         os.makedirs(os.path.dirname(args.metric_npy), exist_ok=True)
@@ -149,22 +178,39 @@ def main():
         exclude_methods=args.exclude_methods,
     )
 
-    # 确保多进程在windows上也可以正常使用
-    cal_sod_matrics.cal_image_matrics(
-        sheet_name="Results",
-        to_append=not args.to_overwrite,
-        txt_path=args.record_txt,
-        xlsx_path=args.record_xlsx,
-        methods_info=methods_info,
-        datasets_info=datasets_info,
-        curves_npy_path=args.curves_npy,
-        metrics_npy_path=args.metric_npy,
-        num_bits=args.num_bits,
-        num_workers=args.num_workers,
-        metric_names=args.metric_names,
-        ncols_tqdm=119,
-    )
+    if args.data_type == "image":
+        image_metrics.cal_metrics(
+            sheet_name="Results",
+            to_append=not args.to_overwrite,
+            txt_path=args.record_txt,
+            xlsx_path=args.record_xlsx,
+            methods_info=methods_info,
+            datasets_info=datasets_info,
+            curves_npy_path=args.curves_npy,
+            metrics_npy_path=args.metric_npy,
+            num_bits=args.num_bits,
+            num_workers=args.num_workers,
+            metric_names=args.metric_names,
+        )
+    else:
+        video_metrics.cal_metrics(
+            sheet_name="Results",
+            to_append=not args.to_overwrite,
+            txt_path=args.record_txt,
+            xlsx_path=args.record_xlsx,
+            methods_info=methods_info,
+            datasets_info=datasets_info,
+            curves_npy_path=args.curves_npy,
+            metrics_npy_path=args.metric_npy,
+            num_bits=args.num_bits,
+            num_workers=args.num_workers,
+            metric_names=args.metric_names,
+            return_group=False,
+            start_idx=args.valid_frame_start,
+            end_idx=args.valid_frame_end,
+        )
 
 
+# 确保多进程在windows上也可以正常使用
 if __name__ == "__main__":
     main()
