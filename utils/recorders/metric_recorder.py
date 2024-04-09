@@ -57,7 +57,7 @@ BINARY_METRIC_MAPPING = {
     "dice": {"handler": py_sod_metrics.DICEHandler, "kwargs": gray_metric_kwargs},
     "specificity": {"handler": py_sod_metrics.SpecificityHandler, "kwargs": gray_metric_kwargs},
      #
-    "bif1": {"handler": py_sod_metrics.FmeasureHandler, "kwargs": dict(binary_metric_kwargs, beta=1)},
+    "bif1": {"handler": py_sod_metrics.FmeasureHandler, "kwargs": dict(**binary_metric_kwargs, beta=1)},
     "biprecision": {"handler": py_sod_metrics.PrecisionHandler, "kwargs": binary_metric_kwargs},
     "birecall": {"handler": py_sod_metrics.RecallHandler, "kwargs": binary_metric_kwargs},
     "biiou": {"handler": py_sod_metrics.IOUHandler, "kwargs": binary_metric_kwargs},
@@ -66,7 +66,7 @@ BINARY_METRIC_MAPPING = {
 }
 GRAYSCALE_METRICS = ["em"] + [k for k in BINARY_METRIC_MAPPING.keys() if not k.startswith("bi")]
 SUPPORTED_METRICS = ["mae", "em", "sm", "wfm", "msiou"] + sorted(BINARY_METRIC_MAPPING.keys())
-# fmt: off
+# fmt: on
 
 
 class GrayscaleMetricRecorder:
