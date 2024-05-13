@@ -113,10 +113,6 @@ optional arguments:
 
 最后将这些信息汇总到一个完整的字典中, 直接导出到json文件中, 保存到输出目录下.
 
-## `markdown2html.py`
-
-该文件用于将results中存放结果信息的markdown文件转化为html文件, 便于在基于github page的静态站点上进行展示.
-
 ## `rename.py`
 
 批量重命名.
