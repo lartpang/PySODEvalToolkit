@@ -47,41 +47,18 @@ def get_args():
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
+    # fmt: off
     parser.add_argument("--alias-yaml", type=str, help="Yaml file for datasets and methods alias.")
-    parser.add_argument(
-        "--style-cfg",
-        type=str,
-        required=True,
-        help="Yaml file for plotting curves.",
-    )
-    parser.add_argument(
-        "--curves-npys",
-        required=True,
-        type=str,
-        nargs="+",
-        help="Npy file for saving curve results.",
-    )
-    parser.add_argument(
-        "--our-methods", type=str, nargs="+", help="Names of our methods for highlighting it."
-    )
-    parser.add_argument(
-        "--num-rows", type=int, default=1, help="Number of rows for subplots. Default: 1"
-    )
-    parser.add_argument(
-        "--num-col-legend", type=int, default=1, help="Number of columns in the legend. Default: 1"
-    )
-    parser.add_argument(
-        "--mode",
-        type=str,
-        choices=["pr", "fm", "em"],
-        default="pr",
-        help="Mode for plotting. Default: pr",
-    )
-    parser.add_argument(
-        "--separated-legend", action="store_true", help="Use the separated legend."
-    )
+    parser.add_argument("--style-cfg", type=str, required=True, help="Yaml file for plotting curves.")
+    parser.add_argument("--curves-npys", required=True, type=str, nargs="+", help="Npy file for saving curve results.")
+    parser.add_argument("--our-methods", type=str, nargs="+", help="Names of our methods for highlighting it.")
+    parser.add_argument("--num-rows", type=int, default=1, help="Number of rows for subplots. Default: 1")
+    parser.add_argument("--num-col-legend", type=int, default=1, help="Number of columns in the legend. Default: 1")
+    parser.add_argument("--mode", type=str, choices=["pr", "fm", "em", "iou", "dice"], default="pr", help="Mode for plotting. Default: pr")
+    parser.add_argument("--separated-legend", action="store_true", help="Use the separated legend.")
     parser.add_argument("--sharey", action="store_true", help="Use the shared y-axis.")
     parser.add_argument("--save-name", type=str, help="the exported file path")
+    # fmt: on
     args = parser.parse_args()
 
     return args
@@ -95,32 +72,48 @@ def main(args):
         method_aliases = aliases.get("method")
         dataset_aliases = aliases.get("dataset")
 
+    # TODO: Better method to set axes_setting
+    axes_setting = {
+        # pr curve
+        "pr": {
+            "x_label": "Recall",
+            "y_label": "Precision",
+            "x_ticks": np.linspace(0.5, 1, 6),
+            "y_ticks": np.linspace(0.7, 1, 6),
+        },
+        # fm curve
+        "fm": {
+            "x_label": "Threshold",
+            "y_label": r"F$_{\beta}$",
+            "x_ticks": np.linspace(0, 1, 6),
+            "y_ticks": np.linspace(0.6, 1, 6),
+        },
+        # em curve
+        "em": {
+            "x_label": "Threshold",
+            "y_label": r"E$_{m}$",
+            "x_ticks": np.linspace(0, 1, 6),
+            "y_ticks": np.linspace(0.7, 1, 6),
+        },
+        # iou curve
+        "iou": {
+            "x_label": "Threshold",
+            "y_label": "IoU",
+            "x_ticks": np.linspace(0, 1, 6),
+            "y_ticks": np.linspace(0.4, 1, 6),
+        },
+        # dice curve
+        "dice": {
+            "x_label": "Threshold",
+            "y_label": "Dice",
+            "x_ticks": np.linspace(0, 1, 6),
+            "y_ticks": np.linspace(0.4, 1, 6),
+        },
+    }
+
     draw_curves.draw_curves(
         mode=args.mode,
-        # 不同曲线的绘图配置
-        axes_setting={
-            # pr曲线的配置
-            "pr": {
-                "x_label": "Recall",
-                "y_label": "Precision",
-                "x_ticks": np.linspace(0.5, 1, 6),
-                "y_ticks": np.linspace(0.7, 1, 6),
-            },
-            # fm曲线的配置
-            "fm": {
-                "x_label": "Threshold",
-                "y_label": r"F$_{\beta}$",
-                "x_ticks": np.linspace(0, 1, 6),
-                "y_ticks": np.linspace(0.6, 1, 6),
-            },
-            # em曲线的配置
-            "em": {
-                "x_label": "Threshold",
-                "y_label": r"E$_{m}$",
-                "x_ticks": np.linspace(0, 1, 6),
-                "y_ticks": np.linspace(0.7, 1, 6),
-            },
-        },
+        axes_setting=axes_setting,
         curves_npy_path=args.curves_npys,
         row_num=args.num_rows,
         method_aliases=method_aliases,

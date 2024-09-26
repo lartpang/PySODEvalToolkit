@@ -64,82 +64,28 @@ def get_args():
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
+    # fmt: off
     parser.add_argument("--dataset-json", required=True, type=str, help="Json file for datasets.")
-    parser.add_argument(
-        "--method-json", required=True, nargs="+", type=str, help="Json file for methods."
-    )
+    parser.add_argument("--method-json", required=True, nargs="+", type=str, help="Json file for methods.")
     parser.add_argument("--metric-npy", type=str, help="Npy file for saving metric results.")
     parser.add_argument("--curves-npy", type=str, help="Npy file for saving curve results.")
     parser.add_argument("--record-txt", type=str, help="Txt file for saving metric results.")
     parser.add_argument("--to-overwrite", action="store_true", help="To overwrite the txt file.")
     parser.add_argument("--record-xlsx", type=str, help="Xlsx file for saving metric results.")
-    parser.add_argument(
-        "--include-methods",
-        type=str,
-        nargs="+",
-        help="Names of only specific methods you want to evaluate.",
-    )
-    parser.add_argument(
-        "--exclude-methods",
-        type=str,
-        nargs="+",
-        help="Names of some specific methods you do not want to evaluate.",
-    )
-    parser.add_argument(
-        "--include-datasets",
-        type=str,
-        nargs="+",
-        help="Names of only specific datasets you want to evaluate.",
-    )
-    parser.add_argument(
-        "--exclude-datasets",
-        type=str,
-        nargs="+",
-        help="Names of some specific datasets you do not want to evaluate.",
-    )
-    parser.add_argument(
-        "--num-workers",
-        type=int,
-        default=4,
-        help="Number of workers for multi-threading or multi-processing. Default: 4",
-    )
-    parser.add_argument(
-        "--num-bits",
-        type=int,
-        default=3,
-        help="Number of decimal places for showing results. Default: 3",
-    )
-    parser.add_argument(
-        "--metric-names",
-        type=str,
-        nargs="+",
-        default=["sm", "wfm", "mae", "fmeasure", "em", "precision", "recall", "msiou"],
-        choices=SUPPORTED_METRICS,
-        help="Names of metrics",
-    )
-    parser.add_argument(
-        "--data-type",
-        type=str,
-        default="image",
-        choices=["image", "video"],
-        help="Type of data.",
-    )
+    parser.add_argument("--include-methods", type=str, nargs="+", help="Names of only specific methods you want to evaluate.")
+    parser.add_argument("--exclude-methods", type=str, nargs="+", help="Names of some specific methods you do not want to evaluate.")
+    parser.add_argument("--include-datasets", type=str, nargs="+", help="Names of only specific datasets you want to evaluate.")
+    parser.add_argument("--exclude-datasets", type=str, nargs="+", help="Names of some specific datasets you do not want to evaluate.")
+    parser.add_argument("--num-workers", type=int, default=4, help="Number of workers for multi-threading or multi-processing. Default: 4")
+    parser.add_argument("--num-bits", type=int, default=3, help="Number of decimal places for showing results. Default: 3")
+    parser.add_argument("--metric-names", type=str, nargs="+", default=["sm", "wfm", "mae", "fmeasure", "em", "precision", "recall", "msiou"], choices=SUPPORTED_METRICS, help="Names of metrics")
+    parser.add_argument("--data-type", type=str, default="image", choices=["image", "video"], help="Type of data.")
 
     known_args = parser.parse_known_args()[0]
     if known_args.data_type == "video":
-        parser.add_argument(
-            "--valid-frame-start",
-            type=int,
-            default=0,
-            help="Valid start index of the frame in each gt video. Defaults to 1, it will skip the first frame. If it is set to None, the code will not skip frames.",
-        )
-        parser.add_argument(
-            "--valid-frame-end",
-            type=int,
-            default=0,
-            help="Valid end index of the frame in each gt video. Defaults to -1, it will skip the last frame. If it is set to 0, the code will not skip frames.",
-        )
-
+        parser.add_argument("--valid-frame-start", type=int, default=0, help="Valid start index of the frame in each gt video. Defaults to 1, it will skip the first frame. If it is set to None, the code will not skip frames.")
+        parser.add_argument("--valid-frame-end", type=int, default=0, help="Valid end index of the frame in each gt video. Defaults to -1, it will skip the last frame. If it is set to 0, the code will not skip frames.")
+    # fmt: on
     args = parser.parse_args()
 
     if args.data_type == "video":

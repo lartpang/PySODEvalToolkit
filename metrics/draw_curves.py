@@ -7,6 +7,16 @@ from matplotlib import colors
 
 from utils.recorders import CurveDrawer
 
+# Align the mode with those in GRAYSCALE_METRICS
+_YX_AXIS_NAMES = {
+    "pr": ("precision", "recall"),
+    "fm": ("fmeasure", None),
+    "fmeasure": ("fmeasure", None),
+    "em": ("em", None),
+    "iou": ("iou", None),
+    "dice": ("dice", None),
+}
+
 
 def draw_curves(
     mode: str,
@@ -40,12 +50,8 @@ def draw_curves(
         line_width (int, optional): Width of lines. Defaults to 3.
         save_name (str, optional): Name or path (without the extension format). Defaults to None.
     """
-    assert mode in ["pr", "fm", "em"]
     save_name = save_name or mode
-    mode_axes_setting = axes_setting[mode]
-
-    x_label, y_label = mode_axes_setting["x_label"], mode_axes_setting["y_label"]
-    x_ticks, y_ticks = mode_axes_setting["x_ticks"], mode_axes_setting["y_ticks"]
+    y_axis_name, x_axis_name = _YX_AXIS_NAMES[mode]
 
     assert curves_npy_path
     if not isinstance(curves_npy_path, (list, tuple)):
@@ -137,14 +143,6 @@ def draw_curves(
 
     for idx, (dataset_name, dataset_alias) in enumerate(dataset_aliases.items()):
         dataset_results = curves[dataset_name]
-        curve_drawer.set_axis_property(
-            idx=idx,
-            title=dataset_alias.upper(),
-            x_label=x_label,
-            y_label=y_label,
-            x_ticks=x_ticks,
-            y_ticks=y_ticks,
-        )
 
         for method_name in target_unique_method_names:
             method_setting = unique_method_settings[method_name]
@@ -154,30 +152,19 @@ def draw_curves(
                 continue
 
             method_results = dataset_results[method_name]
-            if mode == "pr":
-                y_data = method_results.get("p")
-                if y_data is None:
-                    y_data = method_results["precision"]
+
+            if y_axis_name is None:
+                y_data = np.linspace(0, 1, 256)
+            else:
+                y_data = method_results[y_axis_name]
                 assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
 
-                x_data = method_results.get("r")
-                if x_data is None:
-                    x_data = method_results["recall"]
+            if x_axis_name is None:
+                x_data = np.linspace(0, 1, 256)
+            else:
+                x_data = method_results[x_axis_name]
                 assert isinstance(x_data, (list, tuple)), (method_name, method_results.keys())
-            elif mode == "fm":
-                y_data = method_results.get("fm")
-                if y_data is None:
-                    y_data = method_results["fmeasure"]
-                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
 
-                x_data = np.linspace(0, 1, 256)
-            elif mode == "em":
-                y_data = method_results["em"]
-                assert isinstance(y_data, (list, tuple)), (method_name, method_results.keys())
-
-                x_data = np.linspace(0, 1, 256)
-
-            curve_drawer.plot_at_axis(
-                idx=idx, method_curve_setting=method_setting, x_data=x_data, y_data=y_data
-            )
+            curve_drawer.plot_at_axis(idx, method_setting, x_data=x_data, y_data=y_data)
+        curve_drawer.set_axis_property(idx, dataset_alias, **axes_setting[mode])
     curve_drawer.save(path=save_name)
